@@ -1,5 +1,6 @@
-function handlePretendSubmit(){
-    $('.pretend-submit').click(e =>{
+function handleLogin(){
+    $('.js-login-button').click(e =>{
+        e.preventDefault();
         $('.landing-page').addClass("hidden");
         $('.event-page').removeClass("hidden");
     });
@@ -12,5 +13,5 @@ function handleActivity(){
     });
 };
 
-handlePretendSubmit();
+handleLogin();
 handleActivity();
