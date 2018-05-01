@@ -21,26 +21,4 @@ describe('Event planning API', function(){
                 expect(res).to.be.html;
             });
     });
-
-    it('should answer a request to event.html with 200 status and html', function(){
-        let res;
-        return chai.request(app)
-            .get('/event.html')
-            .then(function(_res){
-                res = _res;
-                expect(res).to.have.status(200);
-                expect(res).to.be.html;
-            });
-    });
-
-    it('should answer a request to activity.html with 200 status and html', function(){
-        let res;
-        return chai.request(app)
-            .get('/activity.html')
-            .then(function(_res){
-                res = _res;
-                expect(res).to.have.status(200);
-                expect(res).to.be.html;
-            });
-    });
 });
