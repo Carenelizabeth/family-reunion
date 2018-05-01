@@ -1,0 +1,14 @@
+.hidden{
+    display: none;
+}
+
+.all-activities{
+    display: flex;
+    justify-content: space-around;
+}
+
+.activity{
+    height: 100px;
+    width: 100px;
+    background-color: red;
+}
