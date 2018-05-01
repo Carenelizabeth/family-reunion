@@ -19,6 +19,6 @@ describe('Event planning API', function(){
                 res = _res;
                 expect(res).to.have.status(200);
                 expect(res).to.be.html;
-            })
-    })
-})
+            });
+    });
+});
