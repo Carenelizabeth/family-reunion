@@ -65,6 +65,8 @@ body{
 }
 
 .landing-page{
+    justify-content: center;
+    align-items: center;
     height: 100vh;
     width: 100%;
 }
@@ -93,8 +95,15 @@ legend{
     color: #33192D;
 }
 
+.event-page{
+    display: flex;
+    flex-direction: column;
+}
+
 .all-activities{
     display: flex;
+    width: 50%;
+    margin: 40px;
     justify-content: space-around;
 }
 
