@@ -53,6 +53,12 @@ body{
     background-color: #BCEDB1
 }
 
+main{
+    width: 100%;
+    height: 100vh;
+    background-color: #BCEDB1
+}
+
 .hidden{
     display: none;
 }
@@ -89,7 +95,7 @@ input, legend{
     margin-bottom: 20px; 
 }
 
-legend{
+legend, h2{
     font-size: 24px;
     font-weight: bold;
     color: #47233F;
@@ -117,4 +123,35 @@ legend{
     flex-direction: column;
     justify-content: space-between;
     border: solid 1px  #1F1F1F;
+}
+
+.contain-modal{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.overlay{
+    background-color: rgba(0,0,0,.6);
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.modal{
+    background-color: white;
+    min-height: 300px;
+    min-width: 200px;
+    z-index: 1;
+}
+
+.behind{
+    z-index: -1;
 }

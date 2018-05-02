@@ -50,8 +50,10 @@ function handleLogin(){
 };
 
 function handleNewActivity(){
-    $('.js-make-activity').click(e =>
-    console.log('handle new activity ran'))
+    $('.js-make-activity').click(e =>{
+    console.log('handle new activity ran');
+    $('.contain-modal').removeClass("behind");
+    })
 }
 
 function handleRSVP(){

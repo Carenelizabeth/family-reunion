@@ -9,44 +9,51 @@
     </head>
 </html>
 <body>
-    <section class="js-landing-page">
-        <div class="content landing-page">
-            <form class="js-login">
-                <fieldset>
-                    <legend>Log In</legend>
-                    <label for="login-email">Email</label>
-                    <input type="text" name="login-email" id="login-email" class="user-email" required>
-                    <label for="user-password">Password</label>
-                    <input type="text" name="user-password" id="user-password" required>
-                </fieldset>
-                <button type="submit" class="js-login-button">Submit</button>
-            </form>
-        </div>
-    </section>
-
-    <section class="js-event-page hidden" aria-live="polite">
-        <div class="content event-page">
-            <div class="event-information"></div>
-            <div class="all-activities"></div>
-            <div class="event-page-buttons">
-                <button type="button" class="js-make-activity">New Activity</button>
-                <button type="button" class="js-RSVP">RSVP</button>
+    <main>
+        <section class="js-landing-page">
+            <div class="content landing-page">
+                <form class="js-login">
+                    <fieldset>
+                        <legend>Log In</legend>
+                        <label for="login-email">Email</label>
+                        <input type="text" name="login-email" id="login-email" class="user-email" required>
+                        <label for="user-password">Password</label>
+                        <input type="text" name="user-password" id="user-password" required>
+                    </fieldset>
+                    <button type="submit" class="js-login-button">Submit</button>
+                </form>
             </div>
-    </section>
+        </section>
 
-    <section class="make-activity-page hidden">
-        <p>Here's where you make a new activity</p>
-    </section>
+        <section class="js-event-page hidden" aria-live="polite">
+            <div class="content event-page">
+                <div class="event-information"></div>
+                <div class="all-activities"></div>
+                <div class="event-page-buttons">
+                    <button type="button" class="js-make-activity">New Activity</button>
+                    <button type="button" class="js-RSVP">RSVP</button>
+                </div>
+        </section>
 
-    <section class="js-activity-page hidden">
-        <div class="activity-page content">
-            <p>Detailed activity view</p>
-        </div>
-    </section>
+        <section class="make-activity-page hidden">
+            <p>Here's where you make a new activity</p>
+        </section>
 
-    <section class="rsvp-page hidden">
-        <p>Let everyone know you will be coming!</p>
-    </section>
+        <section class="js-activity-page hidden">
+            <div class="activity-page content">
+                <p>Detailed activity view</p>
+            </div>
+        </section>
+
+        <section class="rsvp-page hidden">
+            <p>Let everyone know you will be coming!</p>
+        </section>
+    </main>
+
+    <div class="contain-modal behind">
+        <div class="overlay"></div>
+        <div class="modal"></div>
+    </div>
 
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="datastore.js" type="text/javascript"></script>
