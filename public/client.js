@@ -1,7 +1,9 @@
 //these next functions display the event page
 //with all current activities listed
 function showEventPage(){
+    console.log('show event page ran');
     $('.js-landing-page').addClass("hidden");
+    $('.js-activity-page').addClass("hidden");
     $('.js-event-page').removeClass("hidden");
     const event = renderEvent()
     const activity = activitySTORE.map((item, index) => renderActivities(item));
@@ -81,6 +83,10 @@ function showActivityPage(){
     $('.js-activity-page').removeClass("hidden");
 }
 
+function closeModal(){
+    $('.contain-modal').addClass("behind")
+}
+
 
 //event handlers
 function handleLogin(){
@@ -101,6 +107,7 @@ function handleNewActivity(){
         $('.contain-modal').removeClass("behind");
         const activity = createActivity();
         $('.modal').html(activity);
+        handleSubmitNewActivity();
     })
 }
 
@@ -116,19 +123,25 @@ function handleActivity(){
 };
 
 function handleCloseModal(){
-    $('.overlay').click(e => $('.contain-modal').addClass("behind"));
+    $('.overlay').click(e => closeModal());
 }
 
 function handleSubmitNewActivity(){
-    $('.js-activity-form').submit(e =>{
-        e.preventDefault();
-        showEventPage();
+    $('.js-activity-form').on('submit', function(event){
+        event.preventDefault();
+        showActivityPage();
+        closeModal();
+        console.log('handle submit activity ran');
     });
 };
+
+function returnToEvent(){
+    $('.back-to-event').click(e => showEventPage());
+}
 
 handleLogin();
 handleNewActivity()
 handleRSVP()
 handleActivity();
 handleCloseModal();
-handleSubmitNewActivity();
+returnToEvent();
