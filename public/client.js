@@ -12,26 +12,23 @@ function handleLogin(){
 };
 
 function showEventPage(){
-    console.log('show event page ran');
-    console.log('I do not know!!');
     $('.js-landing-page').addClass("hidden");
     $('.js-event-page').removeClass("hidden");
     const activity = activitySTORE.map((item, index) =>{
         renderActivities(item);
     });
     console.log(activity);
-    $('.all-activities').html(activity);
+    //$('.all-activities').html(activity);
 }
 
 function renderActivities(results){
-    console.log('render activities ran');
     console.log(results.activity_name);
     return`        
-        <div class="activity">
-            <h2 class="activity-name">${results.activity_name}</h2>
-            <p class="host-name">${results.host_name}</p>
-            <p class="price">${results.activity_cost}</p>
-        </div>`;
+    <div class="activity">
+        <h2 class="activity-name">${results.activity_name}</h2>
+        <p class="host-name">${results.host_name}</p>
+        <p class="price">${results.activity_cost}</p>
+    </div>`;
 }
 
 function validateLogin(email, password){
