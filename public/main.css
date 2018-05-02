@@ -108,7 +108,7 @@ legend{
 }
 
 .activity{
-    height: 100px;
-    width: 100px;
-    background-color: red;
+    min-height: 100px;
+    min-width: 100px;
+    background-color: white;
 }
