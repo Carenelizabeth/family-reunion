@@ -111,4 +111,10 @@ legend{
     min-height: 100px;
     min-width: 100px;
     background-color: white;
+    padding: 20px;
+    margin: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: solid 1px  #1F1F1F;
 }
