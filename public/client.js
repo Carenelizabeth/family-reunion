@@ -14,22 +14,29 @@ function handleLogin(){
 function showEventPage(){
     $('.js-landing-page').addClass("hidden");
     $('.js-event-page').removeClass("hidden");
-    const activity = activitySTORE.map((item, index) =>
-        renderActivities(item)
-    );
+    const event = renderEvent()
+    const activity = activitySTORE.map((item, index) => renderActivities(item));
     console.log(activity);
+    $('.event-information').html(event);
     $('.all-activities').html(activity);
+}
+
+function renderEvent(){
+    return `
+        <h1 class="event-name">${eventSTORE[0].event_name}</h1>
+        <p>${eventSTORE[0].event_location}</p>
+        <p>${eventSTORE[0].event_dates}</p>`
 }
 
 function renderActivities(results){
     console.log(results.activity_name)
     return `        
-    <div class="activity">
-        <h2 class="activity-name">${results.activity_name}</h2>
-        <p>${results.host_name}</p>
-        <p class="activity-cost">${results.activity_cost}</p>
-    </div>`;
-}
+        <div class="activity">
+            <h2 class="activity-name">${results.activity_name}</h2>
+            <p>${results.host_name}</p>
+            <p class="activity-cost">${results.activity_cost}</p>
+         </div>`;
+    }
 
 function validateLogin(email, password){
     console.log(email);
