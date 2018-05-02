@@ -49,6 +49,33 @@ function validateLogin(email, password){
     }
 }
 
+function createActivity(){
+    return`
+        <section class="make-activity-page">
+            <form>
+                <fieldset>
+                    <legend>Required Fields</legend>
+                        <label for="activity-name">Activity name</label>
+                        <input type="text" name="activity-name" id="activity-name" required>
+                        <label for="activity-description"></label>
+                        <textarea class="text-input" id="activity-description" required></textarea>
+                </fieldset>
+                <fieldset>
+                    <legend>Optional Fields</legend>
+                        <label for="activity-date">Date</label>
+                        <input type="date" name="activity-date" id="activity-date" class="date">
+                        <label for="activity-time">Time</label>
+                        <input type="time" name="activity-time" id="activity-time">
+                        <label for="activity-cost">Price</label>
+                        <input type="number" name="activity-cost" id="activity-cost">
+                        <label for="kid-friendly">Suitable for chldren under 12?</label>
+                        <input type="checkbox" name="kid-friendly" id="kid-friendly">
+                </fieldset>
+                    <button type="submit" class="submit-new-activity">Submit</button>
+            </form>
+        </section>`
+}
+
 //event handlers
 function handleLogin(){
     $('.js-login').submit(e =>{
@@ -65,8 +92,10 @@ function handleLogin(){
 
 function handleNewActivity(){
     $('.js-make-activity').click(e =>{
-    console.log('handle new activity ran');
-    $('.contain-modal').removeClass("behind");
+        console.log('handle new activity ran');
+        $('.contain-modal').removeClass("behind");
+        const activity = createActivity();
+        $('.modal').html(activity);
     })
 }
 
@@ -82,7 +111,19 @@ function handleActivity(){
     });
 };
 
+function handleCloseModal(){
+    $('.overlay').click(e => $('.contain-modal').addClass("behind"));
+}
+
+function handleSubmitNewActivity(){
+    $('.submit-new-activity').click(function(e){
+        e.preventDefault();
+        
+    })
+}
+
 handleLogin();
 handleNewActivity()
 handleRSVP()
 handleActivity();
+handleCloseModal();

@@ -97,7 +97,7 @@ p{
     padding: 40px;
 }
 
-.js-login fieldset{
+fieldset{
     display: flex;
     flex-direction: column;
 }
@@ -162,8 +162,16 @@ legend, h2{
     min-height: 300px;
     min-width: 200px;
     z-index: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
 }
 
 .behind{
     z-index: -1;
+}
+
+.text-input{
+    width: 300px;
+    height: 100px;
 }
