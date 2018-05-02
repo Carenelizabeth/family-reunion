@@ -1,16 +1,5 @@
-function handleLogin(){
-    $('.js-login').submit(e =>{
-        e.preventDefault();
-        let email = $(e.currentTarget).find('#login-email').val();
-        console.log(email);
-        console.log('what is going on?');
-        let password = $(e.currentTarget).find('#user-password').val();
-        console.log(password);
-        //validateLogin(email, password);
-        showEventPage();
-    });
-};
-
+//these next functions display the event page
+//with all current activities listed
 function showEventPage(){
     $('.js-landing-page').addClass("hidden");
     $('.js-event-page').removeClass("hidden");
@@ -46,6 +35,30 @@ function validateLogin(email, password){
     }
 }
 
+//event handlers
+function handleLogin(){
+    $('.js-login').submit(e =>{
+        e.preventDefault();
+        let email = $(e.currentTarget).find('#login-email').val();
+        console.log(email);
+        console.log('what is going on?');
+        let password = $(e.currentTarget).find('#user-password').val();
+        console.log(password);
+        //validateLogin(email, password);
+        showEventPage();
+    });
+};
+
+function handleNewActivity(){
+    $('.js-make-activity').click(e =>
+    console.log('handle new activity ran'))
+}
+
+function handleRSVP(){
+    $('.js-RSVP').click(e =>
+    console.log('handleRSVP ran'))
+}
+
 function handleActivity(){
     $('.js-event-page').on('click', '.activity', e =>{
         $('.js-event-page').addClass("hidden");
@@ -54,4 +67,6 @@ function handleActivity(){
 };
 
 handleLogin();
+handleNewActivity()
+handleRSVP()
 handleActivity();
