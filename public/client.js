@@ -3,19 +3,17 @@ function handleLogin(){
         e.preventDefault();
         let email = $(e.currentTarget).find('#login-email').val();
         console.log(email);
+        console.log('what is going on?');
         let password = $(e.currentTarget).find('#user-password').val();
         console.log(password);
-<<<<<<< HEAD
-        if (!(validateLogin(email, password))){alert: "oh, no!"}
-        else{showEventPage()}
-=======
         validateLogin(email, password);
         showEventPage();
->>>>>>> b4169f7d7c0b553737f343cf90d8c3033984d882
     });
 };
 
 function showEventPage(){
+    console.log('show event page ran');
+    console.log('I do not know!!');
     $('.js-landing-page').addClass("hidden");
     $('.js-event-page').removeClass("hidden");
     const activity = activitySTORE.map((item, index) =>{
@@ -26,6 +24,7 @@ function showEventPage(){
 }
 
 function renderActivities(results){
+    console.log('render activities ran');
     console.log(results.activity_name);
     return`        
         <div class="activity">
@@ -42,12 +41,6 @@ function validateLogin(email, password){
         return false;
     }
 }
-
-function showEventPage(){
-    $('.js-landing-page').addClass("hidden");
-    $('.js-event-page').removeClass("hidden");
-}
-
 
 function handleActivity(){
     $('.js-event-page').on('click', '.activity', e =>{
