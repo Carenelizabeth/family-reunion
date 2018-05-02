@@ -19,11 +19,25 @@ function renderEvent(){
 
 function renderActivities(results){
     console.log(results.activity_name)
+    let price;
+    if(results.activity_cost == undefined || results.activity_cost == 0){
+        price = "free"
+    }
+    else{
+        price = `$${results.activity_cost}`
+    }
+    console.log(price);
     return `        
         <div class="activity">
             <h2 class="activity-name">${results.activity_name}</h2>
-            <p>${results.host_name}</p>
-            <p class="activity-cost">${results.activity_cost}</p>
+            <div>
+                <p>Activity planner:</p>
+                <p>${results.host_name}</p>
+            </div>
+            <div>
+                <p>Cost:</p>
+                <p class="activity-cost">${price}</p>
+            </div>
          </div>`;
     }
 
