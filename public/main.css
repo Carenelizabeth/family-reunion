@@ -72,6 +72,15 @@ p{
     font-size: 16px;
 }
 
+button{
+    background-color: #FFE0F8;
+    height: 50px;
+    min-width: 150px;
+    border: solid 2px #47233F;
+    border-radius: 5%;
+    font-size: 24px;
+}
+
 .hidden{
     display: none;
 }
