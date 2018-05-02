@@ -5,14 +5,8 @@ function handleLogin(){
         console.log(email);
         let password = $(e.currentTarget).find('#user-password').val();
         console.log(password);
-        let valid = validateLogin(email, password);
-        console.log(valid);
-        if(!(valid = true)){
-            alert("something went wrong")
-        }
-        else {
-            $('.js-landing-page').addClass("hidden");
-             $('.js-event-page').removeClass("hidden");};
+        if (!(validateLogin(email, password))){alert: "oh, no!"}
+        else{showEventPage()}
     });
 };
 
@@ -22,8 +16,13 @@ function validateLogin(email, password){
         alert("Please enter a valid email");
         return false;
     }
-
 }
+
+function showEventPage(){
+    $('.js-landing-page').addClass("hidden");
+    $('.js-event-page').removeClass("hidden");
+}
+
 
 function handleActivity(){
     $('.js-event-page').on('click', '.activity', e =>{
