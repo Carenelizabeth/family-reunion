@@ -49,16 +49,17 @@ function validateLogin(email, password){
     }
 }
 
+//form for creating a new activity; appears in modal
 function createActivity(){
     return`
         <section class="make-activity-page">
-            <form>
+            <form class="js-activity-form">
                 <fieldset>
                     <legend>Required Fields</legend>
                         <label for="activity-name">Activity name</label>
-                        <input type="text" name="activity-name" id="activity-name" required>
+                        <input type="text" name="activity-name" id="activity-name">
                         <label for="activity-description"></label>
-                        <textarea class="text-input" id="activity-description" required></textarea>
+                        <textarea class="text-input" id="activity-description"></textarea>
                 </fieldset>
                 <fieldset>
                     <legend>Optional Fields</legend>
@@ -71,10 +72,15 @@ function createActivity(){
                         <label for="kid-friendly">Suitable for chldren under 12?</label>
                         <input type="checkbox" name="kid-friendly" id="kid-friendly">
                 </fieldset>
-                    <button type="submit" class="submit-new-activity">Submit</button>
+                <button type="submit" class="submit-new-activity">Submit</button>
             </form>
         </section>`
 }
+function showActivityPage(){
+    $('.js-event-page').addClass("hidden");
+    $('.js-activity-page').removeClass("hidden");
+}
+
 
 //event handlers
 function handleLogin(){
@@ -82,7 +88,6 @@ function handleLogin(){
         e.preventDefault();
         let email = $(e.currentTarget).find('#login-email').val();
         console.log(email);
-        console.log('what is going on?');
         let password = $(e.currentTarget).find('#user-password').val();
         console.log(password);
         //validateLogin(email, password);
@@ -106,8 +111,7 @@ function handleRSVP(){
 
 function handleActivity(){
     $('.js-event-page').on('click', '.activity', e =>{
-        $('.js-event-page').addClass("hidden");
-        $('.js-activity-page').removeClass("hidden");
+        showActivityPage();
     });
 };
 
@@ -116,14 +120,15 @@ function handleCloseModal(){
 }
 
 function handleSubmitNewActivity(){
-    $('.submit-new-activity').click(function(e){
+    $('.js-activity-form').submit(e =>{
         e.preventDefault();
-        
-    })
-}
+        showEventPage();
+    });
+};
 
 handleLogin();
 handleNewActivity()
 handleRSVP()
 handleActivity();
 handleCloseModal();
+handleSubmitNewActivity();
