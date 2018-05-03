@@ -1,0 +1,259 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+body {
+  line-height: 1;
+}
+ol, ul {
+  list-style: none;
+}
+blockquote, q {
+  quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/*Start Custom CSS*/
+
+*{box-sizing: border-box;}
+
+body{
+    background-color: #96BDB4;
+}
+
+main{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    background-color: #96BDB4;
+}
+
+h1, h2, legend{
+    color: #7A1008;
+    font-size: 28px;
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+h1{
+    padding: 10px 0;
+    font-size: 40px;
+    font-family: 'Pangolin', cursive;
+}
+
+p, label{
+    line-height: 1.6em;
+    font-size: 18px;
+    font-family: 'Roboto', sans-serif;
+}
+
+label{
+    font-weight: bold;
+}
+
+.fun-text{
+    font-family: 'Pangolin', cursive;
+    font-size: 22px;
+    color: #0F402F;
+}
+
+button{
+    background-color: #F4FFDD;
+    height: 50px;
+    min-width: 150px;
+    max-width: 200px;
+    border: solid 2px #0F4030;
+    border-radius: 5%;
+    font-size: 24px;
+    font-family: 'Pangolin', cursive;
+}
+
+.hidden{
+    display: none;
+}
+
+.content{
+    max-width: 980px;
+    padding: 40px;
+    display: flex;
+}
+
+.landing-page{
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100%;
+}
+
+.js-login{
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    border: solid 2px #47233F;
+    border-radius: 2%;
+    padding: 40px;
+    -webkit-box-shadow: 10px 14px 21px 0px rgba(54,54,54,0.75);
+    -moz-box-shadow: 10px 14px 21px 0px rgba(54,54,54,0.75);
+    box-shadow: 10px 14px 21px 0px rgba(54,54,54,0.75);
+}
+
+fieldset{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+input, legend{
+    margin-bottom: 20px; 
+}
+
+legend, h2{
+    font-size: 24px;
+    font-weight: bold;
+}
+
+input{
+    height: 40px;
+    min-width: 150px;
+    font-size: 16px;
+}
+
+input[type="checkbox"]{
+    height: 30px;
+    width: 30px;
+    text-align: left;
+}
+
+#kid-friendly{
+    width: 30px;
+}
+
+textarea{
+    margin-bottom: 20px;
+}
+
+.event-page{
+    display: flex;
+    flex-direction: column;
+}
+
+.js-make-activity{
+    width: 200px;
+    align-self: flex-end;
+}
+
+.js-RSVP{
+    z-index: 1;
+}
+
+.all-activities{
+    display: flex;
+    margin: 40px 0;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.activity, .event-information, .wrapper{
+    min-height: 300px;
+    min-width: 250px;
+    background-color: white;
+    padding: 20px;
+    margin: 20px 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: auto;
+    border: solid 2px #0F402F;
+    border-radius: 2%;
+    -webkit-box-shadow: 10px 14px 21px 0px rgba(54,54,54,0.75);
+    -moz-box-shadow: 10px 14px 21px 0px rgba(54,54,54,0.75);
+    box-shadow: 10px 14px 21px 0px rgba(54,54,54,0.75);
+}
+
+.contain-modal{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.overlay{
+    background-color: rgba(0,0,0,.6);
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.modal{
+    background-color: white;
+    min-height: 300px;
+    min-width: 200px;
+    z-index: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    border: solid 2px #0F402F;
+    border-radius: 2%;
+    -webkit-box-shadow: 14px 26px 45px 4px rgba(0,0,0,0.69);
+    -moz-box-shadow: 14px 26px 45px 4px rgba(0,0,0,0.69);
+    box-shadow: 14px 26px 45px 4px rgba(0,0,0,0.69);
+}
+
+.behind{
+    z-index: -1;
+}
+
+.text-input{
+    width: 300px;
+    height: 100px;
+}
+
+.activity-details, .activity-discussion{
+    width: 100%
+}
+
+.activity-page{
+    flex-direction: column;
+}
