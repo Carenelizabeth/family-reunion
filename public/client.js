@@ -103,6 +103,31 @@ function respondActivity(){
 function showActivityPage(){
     $('.js-event-page').addClass("hidden");
     $('.js-activity-page').removeClass("hidden");
+    const activity = renderActivityPage();
+    console.log(activity);
+    $('.activity-page').html(activity);
+    returnToEvent();
+    handleRSVP();
+}
+
+function renderActivityPage(){
+    return`            
+        <div class="activity-details wrapper">
+                <button type="button" class="back-to-event">Return to event</button>
+                <h2>${activitySTORE[0].activity_name}</h2>
+                <p>Optional date and time</p>
+                <p>Host: <span class="fun-text">${activitySTORE[0].host_name}</span></p>
+                <p>Email host, maybe</p>
+                <p>${activitySTORE[0].activity_description}</p>
+                <p class="activity-cost">Cost: <span="fun-text">$500</span></p>
+                <p class="fun-text">${activitySTORE[0].adults_attending} adults   ${activitySTORE[0].children_attending} kids</p>
+                <button type="button" class="js-RSVP">RSVP</button>
+        </div>
+        <div class="activity-discussion wrapper">
+            <p class="group-message">${activitySTORE[0].activity_notes}</p>
+            <textarea class="text-input"></textarea>
+            <button type="button">Post</button>
+        </div>`
 }
 
 function openModal(){
@@ -184,4 +209,4 @@ handleLogin();
 
 handleActivity();
 handleCloseModal();
-returnToEvent();
+
