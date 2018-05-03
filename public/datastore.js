@@ -25,10 +25,7 @@ const activitySTORE = [
     children_attending: 0,
     adults_attending: 0
 },
-    {group_name: "Something Else",
-    host_name: "Doesn't Belong",
-    activity_name: "party-crashing"
-},
+
     {group_name: "HG Mamas",
     host_name: "Tired Mess",
     activity_name: "Hanging by the pool",

@@ -15,8 +15,10 @@ function showEventPage(){
 function renderEvent(){
     return `
         <h1 class="event-name">${eventSTORE[0].event_name}</h1>
-        <p>${eventSTORE[0].event_location}</p>
-        <p>${eventSTORE[0].event_dates}</p>`
+        <p>Where? <span class="fun-text">${eventSTORE[0].event_location}!</span></p>
+        <p>When? <span class="fun-text">${eventSTORE[0].event_dates}</span></p>
+        <p>Join a fun activity below or create your own!</p>`
+        
 }
 
 function renderActivities(results){
@@ -33,12 +35,14 @@ function renderActivities(results){
         <div class="activity">
             <h2 class="activity-name">${results.activity_name}</h2>
             <div>
-                <p>Activity planner:</p>
-                <p>${results.host_name}</p>
+                <p>Host: <span class="fun-text">${results.host_name}</span></p>
+            </div>
+            <div class="attending">
+                <p>How many are going?</p>
+                <p class="fun-text">${results.adults_attending} adults   ${results.children_attending} kids</p>
             </div>
             <div>
-                <p>Cost:</p>
-                <p class="activity-cost">${price}</p>
+                <p class="activity-cost">Cost: <span="fun-text">${price}</span></p>
             </div>
          </div>`;
     }

@@ -52,33 +52,51 @@ table {
 *{box-sizing: border-box;}
 
 body{
-    background-color: #BCEDB1;
+    background-color: #96BDB4;
 }
 
 main{
     width: 100%;
     height: 100vh;
-    background-color: #BCEDB1;
+    display: flex;
+    justify-content: center;
+    background-color: #96BDB4;
+}
+
+h1, h2, legend{
+    color: #7A1008;
+    font-size: 28px;
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold;
+    margin-bottom: 10px;
 }
 
 h1{
     padding: 10px 0;
-    font-size: 36px;
-    color: #47233F;
+    font-size: 40px;
+    font-family: 'Pangolin', cursive;
 }
 
-p{
+p, label{
     line-height: 1.6em;
-    font-size: 16px;
+    font-size: 18px;
+    font-family: 'Roboto', sans-serif;
+}
+
+.fun-text{
+    font-family: 'Pangolin', cursive;
+    font-size: 22px;
+    color: #0F402F;
 }
 
 button{
-    background-color: #FFE0F8;
+    background-color: #F4FFDD;
     height: 50px;
     min-width: 150px;
-    border: solid 2px #47233F;
+    border: solid 2px #0F4030;
     border-radius: 5%;
     font-size: 24px;
+    font-family: 'Pangolin', cursive;
 }
 
 .hidden{
@@ -86,6 +104,7 @@ button{
 }
 
 .content{
+    width: 980px;
     padding: 40px;
     height: 100vh;
     display: flex;
@@ -102,8 +121,12 @@ button{
     display: flex;
     flex-direction: column;
     background-color: white;
-    border: solid 2px #1F1F1F;
+    border: solid 2px #47233F;
+    border-radius: 2%;
     padding: 40px;
+    -webkit-box-shadow: 10px 14px 21px 0px rgba(54,54,54,0.75);
+    -moz-box-shadow: 10px 14px 21px 0px rgba(54,54,54,0.75);
+    box-shadow: 10px 14px 21px 0px rgba(54,54,54,0.75);
 }
 
 fieldset{
@@ -119,7 +142,6 @@ input, legend{
 legend, h2{
     font-size: 24px;
     font-weight: bold;
-    color: #47233F;
 }
 
 .event-page{
@@ -134,16 +156,29 @@ legend, h2{
     flex-wrap: wrap;
 }
 
-.activity{
-    min-height: 200px;
-    min-width: 100px;
+.activity, .event-information{
+    min-height: 300px;
+    min-width: 250px;
     background-color: white;
     padding: 20px;
     margin: 20px 5px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    border: solid 1px  #1F1F1F;
+    border: solid 2px #0F402F;
+    border-radius: 2%;
+    -webkit-box-shadow: 10px 14px 21px 0px rgba(54,54,54,0.75);
+    -moz-box-shadow: 10px 14px 21px 0px rgba(54,54,54,0.75);
+    box-shadow: 10px 14px 21px 0px rgba(54,54,54,0.75);
+}
+
+.event-page-buttons{
+    display: flex;
+    justify-content: flex-end;
+}
+
+.event-page-buttons button{
+    margin-left: 20px;
 }
 
 .contain-modal{
@@ -174,6 +209,11 @@ legend, h2{
     padding: 20px;
     display: flex;
     flex-direction: column;
+    border: solid 2px #0F402F;
+    border-radius: 2%;
+    -webkit-box-shadow: 14px 26px 45px 4px rgba(0,0,0,0.69);
+    -moz-box-shadow: 14px 26px 45px 4px rgba(0,0,0,0.69);
+    box-shadow: 14px 26px 45px 4px rgba(0,0,0,0.69);
 }
 
 .behind{
