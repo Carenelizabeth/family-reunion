@@ -14,6 +14,7 @@ function showEventPage(){
     handleRSVP();
 }
 
+//displays main event as a banner
 function renderEvent(){
     return `
         <h1 class="event-name">${eventSTORE[0].event_name}</h1>
@@ -23,6 +24,7 @@ function renderEvent(){
         <button type="button" class="js-make-activity">New Activity</button>`        
 }
 
+//displays activites that have been created under the event
 function renderActivities(results){
     console.log(results.activity_name)
     let price;
@@ -49,14 +51,6 @@ function renderActivities(results){
             <button type="button" class="js-RSVP">RSVP</button>
          </div>`;
     }
-
-function validateLogin(email, password){
-    console.log(email);
-    if(!(email.includes('@'))){
-        alert("Please enter a valid email")
-        return false;
-    }
-}
 
 //form for creating a new activity; appears in modal
 function createActivity(){
@@ -86,6 +80,7 @@ function createActivity(){
         </section>`
 }
 
+//form for adding a response; appears in modal
 function respondActivity(){
     return`        
         <section class="rsvp-page">
@@ -110,6 +105,10 @@ function showActivityPage(){
     $('.js-activity-page').removeClass("hidden");
 }
 
+function openModal(){
+    $('.contain-modal').removeClass("behind")
+}
+
 function closeModal(){
     $('.contain-modal').addClass("behind")
 }
@@ -131,7 +130,7 @@ function handleLogin(){
 function handleNewActivity(){
     $('.js-make-activity').click(e =>{
         console.log('handle new activity ran');
-        $('.contain-modal').removeClass("behind");
+        openModal();
         const activity = createActivity();
         $('.modal').html(activity);
         handleSubmitNewActivity();
@@ -141,7 +140,7 @@ function handleNewActivity(){
 function handleRSVP(){
     $('.js-RSVP').click(e =>{
     console.log('handleRSVP ran');
-    $('.contain-modal').removeClass("behind")
+    openModal();
     const rsvp = respondActivity();
     $('.modal').html(rsvp);
     handleSubmitResponse();    
