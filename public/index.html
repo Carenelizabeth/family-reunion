@@ -30,10 +30,6 @@
             <div class="content event-page">
                 <div class="event-information"></div>
                 <div class="all-activities"></div>
-                <div class="event-page-buttons">
-                    <button type="button" class="js-make-activity fun-text">New Activity</button>
-                    <button type="button" class="js-RSVP">RSVP</button>
-                </div>
         </section>
 
         <section class="js-activity-page hidden">
@@ -43,7 +39,19 @@
         </section>
 
         <section class="rsvp-page hidden">
-            <p>Let everyone know you will be coming!</p>
+            <form>
+                <h2>${activitySTORE[0].activity_name}</h2>
+                <fieldset>
+                    <legend>Who's coming?</legend>
+                    <label for="kids-attending">Kids (under 12)</label>
+                    <input type="number" max="10" name="kids-attending" id="kids-attending">
+                    <label for="adults-attending"></label>
+                    <input type="number" max="10" name="adults-attending" id="adults-attending">
+                </fieldset>
+                <h3>Add additional comments</h3>
+                <textarea class="text-input"></textarea>
+                <button type="submit" class="submit-rsvp">Submit</button>
+            </form>
         </section>
     </main>
 

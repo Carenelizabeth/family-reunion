@@ -9,7 +9,9 @@ function showEventPage(){
     const activity = activitySTORE.map((item, index) => renderActivities(item));
     console.log(activity);
     $('.event-information').html(event);
+    handleNewActivity();
     $('.all-activities').html(activity);
+    handleRSVP();
 }
 
 function renderEvent(){
@@ -17,8 +19,8 @@ function renderEvent(){
         <h1 class="event-name">${eventSTORE[0].event_name}</h1>
         <p>Where? <span class="fun-text">${eventSTORE[0].event_location}!</span></p>
         <p>When? <span class="fun-text">${eventSTORE[0].event_dates}</span></p>
-        <p>Join a fun activity below or create your own!</p>`
-        
+        <p>Join a fun activity below or create your own!</p>
+        <button type="button" class="js-make-activity">New Activity</button>`        
 }
 
 function renderActivities(results){
@@ -44,6 +46,7 @@ function renderActivities(results){
             <div>
                 <p class="activity-cost">Cost: <span="fun-text">${price}</span></p>
             </div>
+            <button type="button" class="js-RSVP">RSVP</button>
          </div>`;
     }
 
@@ -64,8 +67,8 @@ function createActivity(){
                     <legend>Required Fields</legend>
                         <label for="activity-name">Activity name</label>
                         <input type="text" name="activity-name" id="activity-name">
-                        <label for="activity-description"></label>
-                        <textarea class="text-input" id="activity-description"></textarea>
+                        <h3>Give a brief description</h3>
+                        <textarea class="text-input"></textarea>
                 </fieldset>
                 <fieldset>
                     <legend>Optional Fields</legend>
@@ -74,7 +77,7 @@ function createActivity(){
                         <label for="activity-time">Time</label>
                         <input type="time" name="activity-time" id="activity-time">
                         <label for="activity-cost">Price</label>
-                        <input type="number" name="activity-cost" id="activity-cost">
+                        <input type="number" step="0.01" name="activity-cost" id="activity-cost">
                         <label for="kid-friendly">Suitable for chldren under 12?</label>
                         <input type="checkbox" name="kid-friendly" id="kid-friendly">
                 </fieldset>
@@ -82,6 +85,26 @@ function createActivity(){
             </form>
         </section>`
 }
+
+function respondActivity(){
+    return`        
+        <section class="rsvp-page">
+            <form class="js-rsvp-form">
+                <h2>${activitySTORE[0].activity_name}</h2>
+                <fieldset>
+                    <legend>Who's coming?</legend>
+                    <label for="kids-attending">Kids (under 12)</label>
+                    <input type="number" max="10" name="kids-attending" id="kids-attending">
+                    <label for="adults-attending"></label>
+                    <input type="number" max="10" name="adults-attending" id="adults-attending">
+                </fieldset>
+                <h3>Add additional comments</h3>
+                <textarea class="text-input"></textarea>
+                <button type="submit" class="submit-rsvp">Submit</button>
+            </form>
+        </section>`
+}
+
 function showActivityPage(){
     $('.js-event-page').addClass("hidden");
     $('.js-activity-page').removeClass("hidden");
@@ -116,8 +139,13 @@ function handleNewActivity(){
 }
 
 function handleRSVP(){
-    $('.js-RSVP').click(e =>
-    console.log('handleRSVP ran'))
+    $('.js-RSVP').click(e =>{
+    console.log('handleRSVP ran');
+    $('.contain-modal').removeClass("behind")
+    const rsvp = respondActivity();
+    $('.modal').html(rsvp);
+    handleSubmitResponse();    
+})
 }
 
 function handleActivity(){
@@ -139,13 +167,22 @@ function handleSubmitNewActivity(){
     });
 };
 
+function handleSubmitResponse(){
+    $('.js-rsvp-form').submit(e =>{
+        e.preventDefault();
+        showActivityPage();
+        closeModal();
+        console.log('handle submit rsvp ran');
+    })
+}
+
 function returnToEvent(){
     $('.back-to-event').click(e => showEventPage());
 }
 
 handleLogin();
-handleNewActivity()
-handleRSVP()
+
+
 handleActivity();
 handleCloseModal();
 returnToEvent();
