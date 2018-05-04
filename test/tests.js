@@ -139,8 +139,8 @@ describe('Event API endpoint', function(){
                 return Event.findById(updateEvent.id);
             })
             .then(function(uEvent){
-                expect(uEvent.name).to.equal(updateEvent.event_name);
-                expect(uEvent.location).to.equal(updateEvent.event_location);
+                expect(uEvent.event_name).to.equal(updateEvent.event_name);
+                expect(uEvent.event_location).to.equal(updateEvent.event_location);
             })
         });
     });

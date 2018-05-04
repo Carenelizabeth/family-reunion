@@ -66,29 +66,31 @@ router.post('/', (req, res) => {
         });
 });
 
-router.put('/:id', (res, req) =>{
+router.put('/:id', (req, res) => {
+    console.log(req.params.id);
+    console.log(req.body.id);
     if (!(req.params.id && req.body.id && req.params.id === req.body.id)) {
         res.status(400).json({
           error: 'Request path id and request body id values must match'
         });
       }
     
-    const updated = {};
+    const toUpdate = {};
     const updateableFields = ['event_location', 'event_dates', 'event_name'];
     updateableFields.forEach(field => {
         if (field in req.body) {
-            updated[field] = req.body[field];
+            toUpdate[field] = req.body[field];
         }
     });
 
     Event
-        .findByIdAndUpdate(req.params.id, { $set: updated }, { new: true })
+        .findByIdAndUpdate(req.params.id, { $set: toUpdate })
         .then(updatedEvent => res.status(204).end())
         .catch(err => res.status(500).json({ message: 'Something went wrong' }));
 
 })
 
-app.delete('/:id', (req, res) => {
+router.delete('/:id', (req, res) => {
     Event
       .findByIdAndRemove(req.params.id)
       .then(() => {
