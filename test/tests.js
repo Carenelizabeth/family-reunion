@@ -151,17 +151,17 @@ describe('Event API endpoint', function(){
 
             return Event
                 .findOne()
-                .then(function(post){
-                    deletePost.id = post.id;
+                .then(function(event){
+                    deleteEvent.id = event.id;
                 })
                 return chai.request(app)
-                    .delete(`/event/{${deletePost.id}`)
+                    .delete(`/event/{${deleteEvent.id}`)
                     .then (function(res){
                         expect(res).to.have.status(204);
                         return Event.findById(deleteEvent.id)
                     })
-                .then(function(dpost){
-                    expect(dpost).to.be.null;
+                .then(function(dEvent){
+                    expect(dEvent).to.be.null;
                 })
 
         });

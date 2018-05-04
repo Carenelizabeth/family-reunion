@@ -41,7 +41,7 @@ router.get('/:id', (req, res) => {
         });
 });
 
-router.post('/', jsonParser, (req, res) => {
+router.post('/', (req, res) => {
     const requiredFields = ['event_name', 'event_location', 'event_dates', 'event_organizer']
     for (let i=0; i < requiredFields.length; i++){
         const field = requiredFields[i];
@@ -65,6 +65,37 @@ router.post('/', jsonParser, (req, res) => {
             res.status(500).json({error: 'Oh no! Panic!!!'});
         });
 });
+
+router.put('/:id', (res, req) =>{
+    if (!(req.params.id && req.body.id && req.params.id === req.body.id)) {
+        res.status(400).json({
+          error: 'Request path id and request body id values must match'
+        });
+      }
+    
+    const updated = {};
+    const updateableFields = ['event_location', 'event_dates', 'event_name'];
+    updateableFields.forEach(field => {
+        if (field in req.body) {
+            updated[field] = req.body[field];
+        }
+    });
+
+    Event
+        .findByIdAndUpdate(req.params.id, { $set: updated }, { new: true })
+        .then(updatedEvent => res.status(204).end())
+        .catch(err => res.status(500).json({ message: 'Something went wrong' }));
+
+})
+
+app.delete('/:id', (req, res) => {
+    Event
+      .findByIdAndRemove(req.params.id)
+      .then(() => {
+        console.log(`Deleted blog post with id \`${req.params.id}\``);
+        res.status(204).end();
+      });
+  });
 
 
 module.exports = router;
