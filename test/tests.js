@@ -52,7 +52,46 @@ describe('Event API endpoint', function(){
         return closeServer();
     });
 
-    describe('Post endpoint', function(){
+    describe('Get endpoint', function(){
+        it ('should get all events', function(){
+            let res; 
+            return chai.request(app)
+                .get('/event')
+                .then(function(res_){
+                    res = _res;
+                    expect(res).to.have.status(200);
+                    expect(res).to.be.json;
+                    expect(res.body).to.be.an('array');
+                    expect(res.body).to.have.length.of.at.least(1);
+                    return Event.count()
+                    .then(function(count){
+                        expect(res.body).to.have.lengthOf(count);
+                    });
+                });
+        });
+
+        it('should return the correct post when called by id', function(){
+            let singleEvent;
+            return chai.request(app)
+                .get('/event')
+                .then(function(res){
+                    res.body.forEach(function(event){
+                        expect(event).to.be.an('object');
+                        expect(event).to.include.keys('id', 'name', 'dates', 'location', 'organizer');
+                    });
+                    singleEvent = res.body[0];
+                    return Event.findById(singleEvent.id);
+                })
+                .then(function(event){
+                    expect(singleEvent.id).to.equal(event.id);
+                    expect(singleEvent.name).to.equal(event.name);
+                    expect(singleEvent.location).to.equal(event.location);
+                    expect(singleEvent.organizer).to.equal(event.organizer);
+                });
+        });
+    });
+
+    describe('POST endpoint', function(){
         console.log('hey, is this working?');
 
         it('should add a new event', function(){
@@ -77,6 +116,54 @@ describe('Event API endpoint', function(){
                     expect(nEvent.event_location).to.equal(newEvent.event_location);
                     expect(nEvent.event_organizer).to.equal(newEvent.event_organizer);
                 });
+        });
+    });
+
+    describe('PUT endpoint', function(){
+        it('should update fields', function(){
+            const updateEvent = {
+                event_name: faker.random.words(),
+                event_location: faker.random.locale(), 
+            };
+            return Event
+                .findOne()
+                .then(function(event){
+                    updateEvent.id = event.id;
+
+                return chai.request(app)
+                    .put(`/event/${updateEvent.id}`)
+                    .send(updateEvent)
+                })
+            .then(function(res){
+                expect(res).to.have.status(204);
+                return Event.findById(updateEvent.id);
+            })
+            .then(function(uEvent){
+                expect(uEvent.name).to.equal(updateEvent.event_name);
+                expect(uEvent.location).to.equal(updateEvent.event_location);
+            })
+        });
+    });
+
+    describe('DELETE endpoint', function(){
+        it('should delete an event by id', function(){
+            const deleteEvent = {}
+
+            return Event
+                .findOne()
+                .then(function(post){
+                    deletePost.id = post.id;
+                })
+                return chai.request(app)
+                    .delete(`/event/{${deletePost.id}`)
+                    .then (function(res){
+                        expect(res).to.have.status(204);
+                        return Event.findById(deleteEvent.id)
+                    })
+                .then(function(dpost){
+                    expect(dpost).to.be.null;
+                })
+
         });
     });
 });
