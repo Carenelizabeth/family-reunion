@@ -57,7 +57,7 @@ describe('Event API endpoint', function(){
             let res; 
             return chai.request(app)
                 .get('/event')
-                .then(function(res_){
+                .then(function(_res){
                     res = _res;
                     expect(res).to.have.status(200);
                     expect(res).to.be.json;

@@ -32,6 +32,15 @@ router.get('/', (req,res) =>{
         });
     });
 
+router.get('/:id', (req, res) => {
+    Event   
+        .findById(req.params.id)
+        .then(event => res.json(event.serialize()))
+        .catch(err => {
+            res.status(500).json({error: 'This is embarassing...'});
+        });
+});
+
 router.post('/', jsonParser, (req, res) => {
     const requiredFields = ['event_name', 'event_location', 'event_dates', 'event_organizer']
     for (let i=0; i < requiredFields.length; i++){
