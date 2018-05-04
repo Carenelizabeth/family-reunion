@@ -1,8 +1,52 @@
-//these next functions display the event page
-//with all current activities listed
+//The next section handles user login and selecting the event
+function handleLogin(){
+    $('.js-login').submit(e =>{
+        e.preventDefault();
+        let email = $(e.currentTarget).find('#login-email').val();
+        console.log(email);
+        let password = $(e.currentTarget).find('#user-password').val();
+        console.log(password);
+        showWelcomePage();
+    });
+};
+
+//once user logs on, they can choose an event or make a new one
+function showWelcomePage(){
+    console.log('show welcome page ran');
+    $('.js-landing-page').addClass("hidden");
+    $('.js-welcome-page').removeClass("hidden");
+    const welcome = renderWelcome();
+    console.log(welcome);
+    $('.js-welcome-page').html(welcome);
+}   
+
+function renderWelcome(){
+    return`
+        <div class="wrapper">
+            <h2>Welcome ${userSTORE[0].user_name.firstName}!</h2>
+            <p>What would you like to do today?</p>
+            <div class="event-choices">
+                <button type="button" class="event-button">${eventSTORE[0].event_name}</button>
+                <button type="button" class="make-new-event">New Event</button>
+            </div>
+        </div>`
+}
+
+function handleEventButton(){
+    $('.event-button').click(e => showEventPage())
+}
+
+function handleNewEvent(){
+    $('.made-new-event').click(e => newEventForm())
+}
+
+function newEventForm(){
+    
+}
+
 function showEventPage(){
     console.log('show event page ran');
-    $('.js-landing-page').addClass("hidden");
+
     $('.js-activity-page').addClass("hidden");
     $('.js-event-page').removeClass("hidden");
     const event = renderEvent()
@@ -139,18 +183,6 @@ function closeModal(){
 }
 
 
-//event handlers
-function handleLogin(){
-    $('.js-login').submit(e =>{
-        e.preventDefault();
-        let email = $(e.currentTarget).find('#login-email').val();
-        console.log(email);
-        let password = $(e.currentTarget).find('#user-password').val();
-        console.log(password);
-        //validateLogin(email, password);
-        showEventPage();
-    });
-};
 
 function handleNewActivity(){
     $('.js-make-activity').click(e =>{
@@ -205,8 +237,5 @@ function returnToEvent(){
 }
 
 handleLogin();
-
-
 handleActivity();
 handleCloseModal();
-

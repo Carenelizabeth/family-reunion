@@ -95,7 +95,7 @@ label{
 
 button{
     background-color: #F4FFDD;
-    height: 50px;
+    min-height: 50px;
     min-width: 150px;
     max-width: 200px;
     border: solid 2px #0F4030;
