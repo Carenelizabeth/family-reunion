@@ -84,9 +84,9 @@ describe('Event API endpoint', function(){
                 })
                 .then(function(event){
                     expect(singleEvent.id).to.equal(event.id);
-                    expect(singleEvent.name).to.equal(event.name);
-                    expect(singleEvent.location).to.equal(event.location);
-                    expect(singleEvent.organizer).to.equal(event.organizer);
+                    expect(singleEvent.name).to.equal(event.event_name);
+                    expect(singleEvent.location).to.equal(event.event_location);
+                    expect(singleEvent.organizer).to.equal(event.event_organizer);
                 });
         });
     });
