@@ -18,6 +18,17 @@ const app = express();
 app.use(morgan('common'));
 app.use(express.json());
 
+router.get('/', (req,res) =>{
+    Event
+        .find()
+        .then(events => {res.json(events.map(event => event.serialize()));
+        })
+        .catch(err => {
+            console.error(err);
+            res.status(500).json({error: 'Whelp, something is not right here'});
+        });
+    });
+
 router.post('/', jsonParser, (req, res) => {
     const requiredFields = ['event_name', 'event_location', 'event_dates', 'event_organizer']
     for (let i=0; i < requiredFields.length; i++){

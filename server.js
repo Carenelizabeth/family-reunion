@@ -18,6 +18,8 @@ app.use(express.json());
 
 app.use('/event', eventRouter);
 
+let server;
+
 function runServer(databaseUrl, port = PORT){
     return new Promise((resolve, reject) => {
         mongoose.connect(databaseUrl, err =>{

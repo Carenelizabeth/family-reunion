@@ -7,10 +7,10 @@ const eventSchema = new mongoose.Schema({
     event_name: String,
     event_location: String,
     event_dates: {
-        start_date: Date,
-        end_date: Date
+        start_date: String,
+        end_date: String
     },
-    event_organizaer: String
+    event_organizer: String
 })
 
 eventSchema.virtual('dateRange').get(function(){
@@ -20,6 +20,7 @@ eventSchema.virtual('dateRange').get(function(){
 eventSchema.methods.serialize = function(){
     return{
         id: this._id,
+        name: this.event_name,
         location: this.event_location,
         dates: this.dateRange,
         organizer: this.event_organizer
