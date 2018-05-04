@@ -5,6 +5,8 @@ const morgan = require('morgan');
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
+const eventRouter = require('./eventRouter');
+
 const app = express();
 
 const {DATABASE_URL, PORT} = require('./config.js');
@@ -13,6 +15,8 @@ const {DATABASE_URL, PORT} = require('./config.js');
 app.use(express.static('public'));
 app.use(morgan('common'));
 app.use(express.json());
+
+app.use('/event', eventRouter);
 
 function runServer(databaseUrl, port = PORT){
     return new Promise((resolve, reject) => {

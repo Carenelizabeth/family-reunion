@@ -22,7 +22,7 @@ eventSchema.methods.serialize = function(){
         id: this._id,
         location: this.event_location,
         dates: this.dateRange,
-        organizer: this.event_organizaer
+        organizer: this.event_organizer
     };
 };
 
