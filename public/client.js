@@ -12,12 +12,14 @@ function handleLogin(){
 
 //once user logs on, they can choose an event or make a new one
 function showWelcomePage(){
-    console.log('show welcome page ran');
+    //console.log('show welcome page ran');
     $('.js-landing-page').addClass("hidden");
     $('.js-welcome-page').removeClass("hidden");
     const welcome = renderWelcome();
-    console.log(welcome);
+    //console.log(welcome);
     $('.js-welcome-page').html(welcome);
+    handleEventButton();
+    handleNewEventButton();
 }   
 
 function renderWelcome(){
@@ -36,22 +38,50 @@ function handleEventButton(){
     $('.event-button').click(e => showEventPage())
 }
 
-function handleNewEvent(){
-    $('.made-new-event').click(e => newEventForm())
+function handleNewEventButton(){
+    $('.make-new-event').click(e => newEventForm())
 }
 
 function newEventForm(){
-    
+    console.log('new event form ran');
+    openModal();
+    const event = renderNewEventForm();
+    $('.modal').html(event);
+}
+
+function renderNewEventForm(){
+    return`
+    <form class="new-event-form">
+        <h2>Create a new Event</h2>
+        <fieldset>
+            <legend>Give event detail</legend>
+            <label for="event-name">Name</label>
+            <input type="text" name="event-name" id="event-name">
+            <label for="event-location">Location</label>
+            <input type="text" name="event-location" id="event-location">
+            <label for="event-start-date">Start date</label>
+            <input type="date" name="event-start-date" id="event-start-date">
+            <label for="event-end-date">End date</label>
+            <input type="date" name="event-end-date" id="event-end-date">
+        </fieldset>
+        <button type="submit" class="submit-new-event">Submit</button> 
+    </form>`
+}
+
+function handleSubmitNewEvent(){
+    $('.new-event-form').submit(function(e){
+        e.preventDefault();
+    })
 }
 
 function showEventPage(){
-    console.log('show event page ran');
-
+    //console.log('show event page ran');
+    $('.js-welcome-page').addClass("hidden");
     $('.js-activity-page').addClass("hidden");
     $('.js-event-page').removeClass("hidden");
     const event = renderEvent()
     const activity = activitySTORE.map((item, index) => renderActivities(item));
-    console.log(activity);
+    //console.log(activity);
     $('.event-information').html(event);
     handleNewActivity();
     $('.all-activities').html(activity);
