@@ -19,9 +19,12 @@ app.use(morgan('common'));
 app.use(express.json());
 
 router.get('/', (req,res) =>{
+    //res.json({maybe: 'is this working?'});
     Event
         .find()
-        .then(events => {res.json(events.map(event => event.serialize()));
+        //.then(res.json({maybe: 'how about now?'}))
+        .then(events => 
+            {res.json(events.map(event => event.serialize()));
         })
         .catch(err => {
             console.error(err);
