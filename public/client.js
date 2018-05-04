@@ -1,11 +1,19 @@
+const CURRENT_SESSION = {
+    user: "user",
+    user_id: "12345",
+    event: "event",
+    event_id: "event id"
+};
+
 //The next section handles user login and selecting the event
 function handleLogin(){
     $('.js-login').submit(e =>{
         e.preventDefault();
         let email = $(e.currentTarget).find('#login-email').val();
-        console.log(email);
         let password = $(e.currentTarget).find('#user-password').val();
-        console.log(password);
+        let user = "Mary"
+        CURRENT_SESSION.user = user;
+        console.log(CURRENT_SESSION.user);
         showWelcomePage();
     });
 };
@@ -25,7 +33,7 @@ function showWelcomePage(){
 function renderWelcome(){
     return`
         <div class="wrapper">
-            <h2>Welcome ${userSTORE[0].user_name.firstName}!</h2>
+            <h2>Welcome ${CURRENT_SESSION.user}!</h2>
             <p>What would you like to do today?</p>
             <div class="event-choices">
                 <button type="button" class="event-button">${eventSTORE[0].event_name}</button>
@@ -47,6 +55,7 @@ function newEventForm(){
     openModal();
     const event = renderNewEventForm();
     $('.modal').html(event);
+    handleSubmitNewEvent();
 }
 
 function renderNewEventForm(){
@@ -71,7 +80,22 @@ function renderNewEventForm(){
 function handleSubmitNewEvent(){
     $('.new-event-form').submit(function(e){
         e.preventDefault();
+        let event = {
+            event_name: $(this).find('#event-name').val(),
+            event_location: $(this).find('#event-location').val(),
+            event_dates: {
+                start_date: $(this).find('#event-start-date').val(),
+                end_date: $(this).find('#event-end-date').val()
+            },
+            event_organizer: CURRENT_SESSION.user_id
+        }
+        console.log(event);
+        postNewEvent(event);
     })
+}
+
+function postNewEvent(){
+
 }
 
 function showEventPage(){
