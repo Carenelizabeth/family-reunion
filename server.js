@@ -10,11 +10,13 @@ const eventRouter = require('./eventRouter');
 const app = express();
 
 const {DATABASE_URL, PORT} = require('./config.js');
-//app.listen(process.env.PORT || 8080);
+const {PORT} = require('./config.js');
+
 
 app.use(express.static('public'));
 app.use(morgan('common'));
 app.use(express.json());
+
 
 app.use('/event', eventRouter);
 
@@ -59,3 +61,7 @@ if (require.main === module) {
   }
   
   module.exports = { runServer, app, closeServer };
+
+app.listen(PORT);
+module.exports = app
+
