@@ -2,7 +2,7 @@ const CURRENT_SESSION = {
     user: "user",
     user_id: "12345",
     event: "event",
-    event_id: "event id",
+    event_id: "5aece268a14d2d31547286f6",
     organizer_id: "host id"
 };
 
@@ -24,6 +24,7 @@ function showWelcomePage(){
     //console.log('show welcome page ran');
     $('.js-landing-page').addClass("hidden");
     $('.js-welcome-page').removeClass("hidden");
+    $('.js-event-page').addClass("hidden");
     const welcome = renderWelcome();
     //console.log(welcome);
     $('.welcome-page').html(welcome);
@@ -46,7 +47,7 @@ function renderWelcome(){
 }
 
 function handleEventButton(){
-    $('.event-button').click(e => showEventPage())
+    $('.event-button').click(e => getEventInformation())
 }
 
 function handleNewEventButton(){
@@ -97,12 +98,10 @@ function handleSubmitNewEvent(){
     })
 }
 
-function postNewEvent(data){
-    console.log('post new event ran');
+function getEventInformation(){
     $.ajax({
-        type: "POST",
-        url: "/event",
-        data: JSON.stringify(data),
+        type: "GET",
+        url: `/event/${CURRENT_SESSION.event_id}`,
         contentType: 'application/json',
         success: showEventPage,
         dataType: "json"
@@ -130,14 +129,55 @@ function showEventPage(data){
     $('.event-information').html(event);
     $('.all-activities').html(activity);
     handleEditEventButtons();
+    handleDeleteEvent();
     handleNewActivity();
     handleRSVP();
 }
 
+function postNewEvent(data){
+    console.log('post new event ran');
+    $.ajax({
+        type: "POST",
+        url: "/event",
+        data: JSON.stringify(data),
+        contentType: 'application/json',
+        success: showNewEventPage,
+        dataType: "json"
+    })
+}
+
+function showNewEventPage(data){
+    //console.log('show event page ran');
+    closeModal();
+    $('.js-welcome-page').addClass("hidden");
+    $('.js-activity-page').addClass("hidden");
+    $('.js-event-page').removeClass("hidden");
+
+    CURRENT_SESSION.event_id = data.id;
+    CURRENT_SESSION.organizer_id = data.organizer;
+
+    let name = data.name;
+    let location = data.location;
+    let dates = data.dates;
+
+
+    const event = renderEvent(name, location, dates)
+    const activity = activitySTORE.map((item, index) => renderActivities(item));
+    //console.log(activity);
+    $('.event-information').html(event);
+    $('.all-activities').html(activity);
+    handleEditEventButtons();
+    handleDeleteEvent();
+    handleNewActivity();
+    handleRSVP();
+}
+
+
+
 //displays main event as a banner
 function renderEvent(name, location, dates){
     return `
-        <div class-"info-section">
+        <div class="info-section">
             <div class="include-edit">
                 <h1 class="event-name">${name}</h1>
                 <button type="button" class="edit edit-event-name not-organizer">edit</button>
@@ -214,6 +254,11 @@ function editEventDates(){
 function handleEditNameButton(){
     $('.js-edit-event-name').submit(function(e){
         e.preventDefault();
+        const name = {
+            id: CURRENT_SESSION.event_id,
+            event_name: $(this).find('#edit-event-name').val()
+        }
+        updateEvent(name);
         closeModal();
     })
 }
@@ -221,6 +266,11 @@ function handleEditNameButton(){
 function handleEditLocationButton(){
     $('.js-edit-event-location').submit(function(e){
         e.preventDefault();
+        const location = {
+            id: CURRENT_SESSION.event_id,
+            event_location: $(this).find('#edit-event-location').val()
+        }
+        updateEvent(location);
         closeModal();
     })
 }
@@ -228,7 +278,42 @@ function handleEditLocationButton(){
 function handleEditDatesButton(){
     $('.js-edit-event-dates').submit(function(e){
         e.preventDefault();
+        const dates = {
+            id: CURRENT_SESSION.event_id,
+            event_dates: {
+                start_date: $(this).find('#edit-event-start').val(),
+                end_date: $(this).find('#edit-event-end').val()}
+        }
+        updateEvent(dates);
         closeModal();
+    })
+}
+
+
+function updateEvent(data){
+    console.log(data);
+    $.ajax({
+        type: "PUT",
+        url: `/event/${CURRENT_SESSION.event_id}`,
+        data: JSON.stringify(data),
+        contentType: 'application/json',
+        success: getEventInformation,
+        dataType: "json"
+    })
+    
+}
+
+function handleDeleteEvent(){
+    $('.js-delete-event').click(e => DeleteEvent())
+}
+
+function DeleteEvent(){
+    $.ajax({
+        type: "DELETE",
+        url: `/event/${CURRENT_SESSION.event_id}`,
+        contentType: 'application/json',
+        success: showWelcomePage,
+        dataType: "json"
     })
 }
 
@@ -243,23 +328,6 @@ function handleEditEventButton(){
         console.log(location);
         updateEvent(name, location, start, end);
     })
-}
-
-function updateEvent(name, location, start, end){
-    console.log('update event ran');
-    console.log(name);
-    console.log(location);
-    console.log(start);
-    console.log(end);
-    $.ajax({
-        type: "PUT",
-        url: "/event",
-        data: JSON.stringify(data),
-        contentType: 'application/json',
-        success: showEventPage,
-        dataType: "json"
-    })
-    
 }
 
 //displays activites that have been created under the event
@@ -427,7 +495,7 @@ function handleSubmitResponse(){
 }
 
 function returnToEvent(){
-    $('.back-to-event').click(e => showEventPage());
+    $('.back-to-event').click(e => getEventInformation());
 }
 
 handleLogin();
