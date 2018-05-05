@@ -2,7 +2,8 @@ const CURRENT_SESSION = {
     user: "user",
     user_id: "12345",
     event: "event",
-    event_id: "event id"
+    event_id: "event id",
+    organizer_id: "host id"
 };
 
 //The next section handles user login and selecting the event
@@ -112,7 +113,16 @@ function showEventPage(data){
     $('.js-welcome-page').addClass("hidden");
     $('.js-activity-page').addClass("hidden");
     $('.js-event-page').removeClass("hidden");
-    const event = renderEvent()
+
+    CURRENT_SESSION.event_id = data.id;
+    CURRENT_SESSION.organizer_id = data.organizer;
+
+    let name = data.name;
+    let location = data.location;
+    let dates = data.dates;
+
+
+    const event = renderEvent(name, location, dates)
     const activity = activitySTORE.map((item, index) => renderActivities(item));
     //console.log(activity);
     $('.event-information').html(event);
@@ -122,12 +132,13 @@ function showEventPage(data){
 }
 
 //displays main event as a banner
-function renderEvent(){
+function renderEvent(name, location, dates){
     return `
-        <h1 class="event-name">${eventSTORE[0].event_name}</h1>
-        <p>Where? <span class="fun-text">${eventSTORE[0].event_location}!</span></p>
-        <p>When? <span class="fun-text">${eventSTORE[0].event_dates}</span></p>
+        <h1 class="event-name">${name}</h1>
+        <p>Where? <span class="fun-text">${location}!</span></p>
+        <p>When? <span class="fun-text">${dates}</span></p>
         <p>Join a fun activity below or create your own!</p>
+        <button type="button" class="js-edit-event not-organizer">Edit Event</button> 
         <button type="button" class="js-make-activity">New Activity</button>`        
 }
 
