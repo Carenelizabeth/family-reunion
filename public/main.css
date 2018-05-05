@@ -60,7 +60,12 @@ main{
     height: 100vh;
     display: flex;
     justify-content: center;
-    background-color: #96BDB4;
+    background-color:#96BDB4;
+}
+
+section{
+    width: 100%;
+    height: 100vh;
 }
 
 h1, h2, legend{
@@ -106,13 +111,35 @@ fieldset{
 
 button{
     background-color: #F4FFDD;
-    min-height: 50px;
+    /*min-height: 50px;
     min-width: 150px;
-    max-width: 200px;
+    max-width: 200px;*/
     border: solid 2px #0F4030;
     border-radius: 5%;
     font-size: 24px;
     font-family: 'Pangolin', cursive;
+}
+
+button :hover{
+    background-color:  #0F4030;
+    color:  #F4FFDD;
+}
+
+.edit{
+    border: solid 1px #0F4030;
+    color: black;
+    font-size: 16px;
+    height: 20px;
+    width: 40px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+i{
+    color: black;
+    font-size: 20px;
+    margin: 2px;
+    padding: 2px;
 }
 
 .hidden{
@@ -120,8 +147,11 @@ button{
 }
 
 .content{
-    max-width: 980px;
+    background-color: rgba(255, 255, 255, .6);
+    width: 980px;
+    height: 100vh;
     padding: 40px;
+    margin: 0 auto;
     display: flex;
 }
 
@@ -180,6 +210,25 @@ textarea{
     flex-direction: column;
 }
 
+.info-section{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+.include-edit{
+    display: flex;
+    align-items: center;
+}
+
+.button-section{
+    padding: 20px;
+    display: flex;
+    justify-content: space-around;
+    border-top: solid 1px #0F402F; 
+}
+
 .js-make-activity{
     width: 200px;
     align-self: flex-end;
@@ -199,18 +248,22 @@ textarea{
 .activity, .event-information, .wrapper{
     min-height: 300px;
     min-width: 250px;
-    background-color: white;
-    padding: 20px;
+    background-color: rgba(255, 255, 255, .6);
     margin: 20px 5px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     flex: auto;
-    border: solid 2px #0F402F;
+    border: solid 1px #0F402F;
     border-radius: 2%;
-    -webkit-box-shadow: 10px 14px 21px 0px rgba(54,54,54,0.75);
-    -moz-box-shadow: 10px 14px 21px 0px rgba(54,54,54,0.75);
-    box-shadow: 10px 14px 21px 0px rgba(54,54,54,0.75);
+}
+
+.activity{
+    padding: 20px;
+}
+
+.wrapper{
+    max-height: 400px;
 }
 
 .contain-modal{

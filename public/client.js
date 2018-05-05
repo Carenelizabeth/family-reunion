@@ -26,7 +26,7 @@ function showWelcomePage(){
     $('.js-welcome-page').removeClass("hidden");
     const welcome = renderWelcome();
     //console.log(welcome);
-    $('.js-welcome-page').html(welcome);
+    $('.welcome-page').html(welcome);
     handleEventButton();
     handleNewEventButton();
 }   
@@ -34,9 +34,11 @@ function showWelcomePage(){
 function renderWelcome(){
     return`
         <div class="wrapper">
-            <h2>Welcome ${CURRENT_SESSION.user}!</h2>
-            <p>What would you like to do today?</p>
-            <div class="event-choices">
+            <div class="info-section">
+                <h2>Welcome ${CURRENT_SESSION.user}!</h2>
+                <p>What would you like to do today?</p>
+            </div>
+            <div class="button-section">
                 <button type="button" class="event-button">${eventSTORE[0].event_name}</button>
                 <button type="button" class="make-new-event">New Event</button>
             </div>
@@ -126,20 +128,138 @@ function showEventPage(data){
     const activity = activitySTORE.map((item, index) => renderActivities(item));
     //console.log(activity);
     $('.event-information').html(event);
-    handleNewActivity();
     $('.all-activities').html(activity);
+    handleEditEventButtons();
+    handleNewActivity();
     handleRSVP();
 }
 
 //displays main event as a banner
 function renderEvent(name, location, dates){
     return `
-        <h1 class="event-name">${name}</h1>
-        <p>Where? <span class="fun-text">${location}!</span></p>
-        <p>When? <span class="fun-text">${dates}</span></p>
-        <p>Join a fun activity below or create your own!</p>
-        <button type="button" class="js-edit-event not-organizer">Edit Event</button> 
-        <button type="button" class="js-make-activity">New Activity</button>`        
+        <div class-"info-section">
+            <div class="include-edit">
+                <h1 class="event-name">${name}</h1>
+                <button type="button" class="edit edit-event-name not-organizer">edit</button>
+            </div>
+            <div class="include-edit">
+                <p>Where? <span class="fun-text">${location}!</span></p>
+                <button type="button" class="edit edit-event-location not-organizer">edit</button>
+            </div>
+            <div class="include-edit">
+                <p>When? <span class="fun-text">${dates}</span></p>
+                <button type="button" class="edit edit-event-dates not-organizer">edit</button>
+            </div>
+            <p>Join a fun activity below or create your own!</p>
+        </div>
+        <div class="button-section">
+            <button type="button" class="js-delete-event not-organizer">Delete</button> 
+            <button type="button" class="js-make-activity">New Activity</button>    
+        </div>`    
+}
+
+function handleEditEventButtons(){
+    $('.edit-event-name').click(function(e){
+        const name = editEventName();
+        $('.modal').html(name);
+        openModal();
+        handleEditNameButton();
+    })
+    $('.edit-event-location').click(function(){
+        const location = editEventLocation();
+        $('.modal').html(location);
+        openModal();
+        handleEditLocationButton();
+    })
+    $('.edit-event-dates').click(function(){
+        const dates = editEventDates();
+        $('.modal').html(dates);
+        openModal();
+        handleEditDatesButton();
+    })
+}
+
+function editEventName(){
+    return `
+        <form class="js-edit-event-name">
+            <label for="edit-event-name">Enter new event name</label>
+            <input type="text" name="edit-event-name" id="edit-event-name">
+            <button type="submit">Submit</button>
+        </form>   
+    `
+}
+
+function editEventLocation(){
+    return `
+    <form class="js-edit-event-location">
+        <label for="edit-event-location">Enter new event location</label>
+        <input type="text" name="edit-event-location" id="edit-event-location">
+        <button type="submit">Submit</button>
+    </form>   
+`
+}
+
+function editEventDates(){
+    return `
+        <form class="js-edit-event-dates">
+            <label for="edit-event-dates">Enter new start date</label>
+            <input type="date" name="edit-event-start" id="edit-event-start">
+            <label for="edit-event-dates">Enter new end date</label>
+            <input type="date" name="edit-event-end" id="edit-event-end">
+            <button type="submit">Submit</button>
+        </form>   
+    `
+}
+
+function handleEditNameButton(){
+    $('.js-edit-event-name').submit(function(e){
+        e.preventDefault();
+        closeModal();
+    })
+}
+
+function handleEditLocationButton(){
+    $('.js-edit-event-location').submit(function(e){
+        e.preventDefault();
+        closeModal();
+    })
+}
+
+function handleEditDatesButton(){
+    $('.js-edit-event-dates').submit(function(e){
+        e.preventDefault();
+        closeModal();
+    })
+}
+
+function handleEditEventButton(){
+    $('.edit-event-form').submit(function(e){
+        e.preventDefault();
+        let name =  $(this).find('#event-name').val();
+        let location =  $(this).find('#event-location').val();
+        let start =  $(this).find('#event-start-date').val();
+        let end =  $(this).find('#event-end-date').val();
+        console.log(name);
+        console.log(location);
+        updateEvent(name, location, start, end);
+    })
+}
+
+function updateEvent(name, location, start, end){
+    console.log('update event ran');
+    console.log(name);
+    console.log(location);
+    console.log(start);
+    console.log(end);
+    $.ajax({
+        type: "PUT",
+        url: "/event",
+        data: JSON.stringify(data),
+        contentType: 'application/json',
+        success: showEventPage,
+        dataType: "json"
+    })
+    
 }
 
 //displays activites that have been created under the event
