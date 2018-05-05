@@ -10,7 +10,6 @@ const eventRouter = require('./eventRouter');
 const app = express();
 
 const {DATABASE_URL, PORT} = require('./config.js');
-const {PORT} = require('./config.js');
 
 
 app.use(express.static('public'));
