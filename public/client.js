@@ -98,15 +98,17 @@ function postNewEvent(data){
     console.log('post new event ran');
     $.ajax({
         type: "POST",
-        url: "localhost:8080/event",
-        data: data,
+        url: "/event",
+        data: JSON.stringify(data),
+        contentType: 'application/json',
         success: showEventPage,
         dataType: "json"
     })
 }
 
-function showEventPage(){
+function showEventPage(data){
     //console.log('show event page ran');
+    closeModal();
     $('.js-welcome-page').addClass("hidden");
     $('.js-activity-page').addClass("hidden");
     $('.js-event-page').removeClass("hidden");
