@@ -94,8 +94,15 @@ function handleSubmitNewEvent(){
     })
 }
 
-function postNewEvent(){
-
+function postNewEvent(data){
+    console.log('post new event ran');
+    $.ajax({
+        type: "POST",
+        url: "localhost:8080/event",
+        data: data,
+        success: showEventPage,
+        dataType: "json"
+    })
 }
 
 function showEventPage(){
