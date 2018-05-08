@@ -28,11 +28,11 @@ eventSchema.methods.serialize = function(){
     };
 };
 
-const userSchema = new.mongoose.Schema({
+const userSchema = new mongoose.Schema({
     user_name: String,
-    email: mongoose.SchemaTypes.Email,
-    password: String,
     event_id: [String],
+    email: String,
+    password: String,
     activity_host_id: [String],
     activity_attend_id: [String]
 })
@@ -43,9 +43,9 @@ userSchema.methods.serialize = function(){
         user: this.user_name,
         email: this.email,
         password: this.password,
-        events: [this.event_id],
-        hosting: [this.activity_host_id],
-        attending: [this.activity_attend_id]
+        events:this.event_id,        
+        hosting:this.activity_host_id,
+        attending: this.activity_attend_id
     }
 }
 
