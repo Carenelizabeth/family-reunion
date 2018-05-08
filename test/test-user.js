@@ -147,6 +147,24 @@ describe('User API endpoint', function(){
         });
     });
 
+    describe('DELETE endpoint', function(){
+        it('should delete a user by id', function(){
+            const deleteUser = {}
 
-
-})
+            return User
+                .findOne()
+                .then(function(user){
+                    deleteUser.id = user.id;
+                })
+            return chai.request(app)
+                .delete(`/user/${deleteUser.id}`)
+                .then (function(res){
+                    expect(res).to.have.status(204);
+                    return User.findById(deleteUser.id)
+                })
+            .then(function(dUser){
+                expect(dUser).to.be.null;
+            })
+        });
+    });
+});
