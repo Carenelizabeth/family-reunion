@@ -50,4 +50,5 @@ userSchema.methods.serialize = function(){
 }
 
 const Event = mongoose.model('event', eventSchema);
-module.exports = {Event};
+const User = mongoose.model('user', userSchema);
+module.exports = {Event, User};
