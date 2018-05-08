@@ -32,10 +32,19 @@ router.get('/', (req,res) => {
 router.get('/:id', (req, res) => {
     User
         .findById(req.params.id)
-        .then(event => res.json(user.serialize()))
+        .then(user => res.json(user.serialize()))
         .catch(err => {
             console.error(err)
             res.status(500).json({error: "Internal server error"});
+        });
+});
+
+router.get(':/id', (req, res) => {
+    User
+        .findById(req.params.id)
+        .then(user => res.json(user.serialize()))
+        .catch(err => {
+            res.status(500).json({error: 'Internal server error'});
         });
 });
 

@@ -73,7 +73,7 @@ describe('User API endpoint', function(){
         it('should return the correct user when called by id', function(){
             let singleUser;
             return chai.request(app)
-                .get('/event')
+                .get('/user')
                 .then(function(res){
                     res.body.forEach(function(user){
                         expect(user).to.be.an('object');
