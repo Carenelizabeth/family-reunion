@@ -100,7 +100,7 @@ describe('User API endpoint', function(){
             console.log(newUser);
 
             return chai.request(app)
-                .post('/event')
+                .post('/user')
                 .send(newUser)
                 .then(function(res){
                     expect(res).to.have.status(201);
@@ -116,6 +116,7 @@ describe('User API endpoint', function(){
                     expect(nUser.user_name).to.equal(newUser.user_name);
                     expect(nUser.email).to.equal(newUser.email);
                     expect(nUser.event_id).to.equal(newUser.event_id);
+                    console.log(nUser)
                 });
         });      
     });
@@ -141,8 +142,8 @@ describe('User API endpoint', function(){
                 return User.findById(updateUser.id);
             })
             .then(function(uUser){
-                expect(uEvent.user_name).to.equal(updateUser.user_name);
-                expect(uEvent.email).to.equal(updateUser.email);
+                expect(uUser.user_name).to.equal(updateUser.user_name);
+                expect(uUser.email).to.equal(updateUser.email);
             })
         });
     });
@@ -155,6 +156,7 @@ describe('User API endpoint', function(){
                 .findOne()
                 .then(function(user){
                     deleteUser.id = user.id;
+                    console.log(`Something ${user}`);
                 })
             return chai.request(app)
                 .delete(`/user/${deleteUser.id}`)

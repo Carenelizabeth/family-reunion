@@ -66,7 +66,7 @@ router.post('/', (req, res) => {
             user_name: req.body.user_name,
             email: req.body.email,
             password: req.body.password,
-            event_id: req.body.password
+            event_id: req.body.event_id
         })
         .then(user => res.status(201).json(user.serialize()))
         .catch(err => {
