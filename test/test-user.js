@@ -52,7 +52,7 @@ describe('User API endpoint', function(){
         return closeServer();
     });
 
-    describe('Get endpoing', function(){
+    describe('GET endpoint', function(){
         it('should return all users', function(){
             let res;
             return chai.request(app)
@@ -80,6 +80,7 @@ describe('User API endpoint', function(){
                         expect(user).to.include.keys('id', 'user', 'email', 'password', 'events');
                     });
                     singleUser = res.body[0];
+                    console.log(singleUser);
                     return User.findById(singleUser.id);
                 })
                 .then(function(user){
@@ -90,8 +91,37 @@ describe('User API endpoint', function(){
                     expect(singleUser.event_id).to.equal(user.events);
                 });
         });
-
     });
+
+    describe('POST endpoint', function(){
+
+        it('should add a new user', function(){
+            const newUser = generateUserData();
+            console.log(newUser);
+
+            return chai.request(app)
+                .post('/event')
+                .send(newUser)
+                .then(function(res){
+                    expect(res).to.have.status(201);
+                    expect(res).to.be.json;
+                    expect(res.body).to.include.keys('id', 'user', 'email', 'password', 'events');
+                    expect(res.body.user).to.equal(newUser.user_name);
+                    expect(res.body.email).to.equal(newUser.email);
+                    expect(res.body.password).to.equal(newUser.password);
+                    expect(res.body.events).to.equal(newUser.event_id);
+                    return User.findById(res.body.id);
+                })
+                .then(function(nUser){
+                    expect(nUser.user_name).to.equal(newUser.user_name);
+                    expect(nUser.email).to.equal(newUser.email);
+                    expect(nUser.event_id).to.equal(newUser.event_id);
+                });
+        })
+
+        
+
+    })
 
 
 
