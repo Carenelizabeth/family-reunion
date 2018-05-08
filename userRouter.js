@@ -20,7 +20,9 @@ app.use(express.json());
 router.get('/', (req,res) => {
     User
         .find()
-        .then(user => res.json(users => users.serialize()))
+        .then(users => 
+            {res.json(users.map(user => user.serialize()));
+        })
         .catch(err => {
             console.error(err);
             res.status(500).json({error: 'Internal server error'})

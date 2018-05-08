@@ -6,7 +6,7 @@ const faker = require('faker');
 const mongoose = require('mongoose');
 
 const expect = chai.expect;
-const eventRouter = require('../eventRouter');
+const userRouter = require('../userRouter');
 
 const {User} = require('../models')
 const {app, runServer, closeServer} = require('../server.js');
@@ -20,7 +20,7 @@ function seedUserData(){
     for(let i=1; i<=10; i++){
         userData.push(generateUserData())
     }
-    return userData.insertMany(userData);
+    return User.insertMany(userData);
 }
 
 function generateUserData(){
@@ -52,10 +52,27 @@ describe('User API endpoint', function(){
         return closeServer();
     });
 
+    describe('Get endpoing', function(){
+        it('should return all users', function(){
+            let res;
+            return chai.request(app)
+                .get('/user')
+                .then(function(_res){
+                    res = _res;
+                    expect(res).to.have.status(200);
+                    expect(res).to.be.json;
+                    expect(res.body).to.be.an('array');
+                    expect(res.body).to.have.length.of.at.least(1);
+                    return User.count()
+                    .then(function(count){
+                        expect(res.body).to.have.lengthOf(count);
+                    });
+                });
+        });
+    });
 
 
 
 
 
-    
 })
