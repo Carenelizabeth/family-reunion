@@ -1,6 +1,7 @@
 'user strict';
 
 const mongoose = require('mongoose');
+require('mongoose-type-email');
 mongoose.Promise = global.Promise;
 
 const eventSchema = new mongoose.Schema({
@@ -26,6 +27,27 @@ eventSchema.methods.serialize = function(){
         organizer: this.event_organizer
     };
 };
+
+const userSchema = new.mongoose.Schema({
+    user_name: String,
+    email: mongoose.SchemaTypes.Email,
+    password: String,
+    event_id: [String],
+    activity_host_id: [String],
+    activity_attend_id: [String]
+})
+
+userSchema.methods.serialize = function(){
+    return{
+        id: this._id,
+        user: this.user_name,
+        email: this.email,
+        password: this.password,
+        events: [this.event_id],
+        hosting: [this.activity_host_id],
+        attending: [this.activity_attend_id]
+    }
+}
 
 const Event = mongoose.model('event', eventSchema);
 module.exports = {Event};
