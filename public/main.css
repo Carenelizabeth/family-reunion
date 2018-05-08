@@ -162,7 +162,7 @@ i{
     width: 100%;
 }
 
-.js-login{
+.js-login, .js-create-account{
     display: flex;
     flex-direction: column;
     background-color: white;
