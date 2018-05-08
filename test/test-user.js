@@ -107,14 +107,14 @@ describe('User API endpoint', function(){
                     expect(res).to.be.json;
                     expect(res.body).to.include.keys('id', 'user', 'email', 'password', 'events');
                     expect(res.body.user).to.equal(newUser.user_name);
-                    expect(res.body.email).to.equal(newUser.email);
+                    expect(res.body.email).to.equal(newUser.email.toLowerCase());
                     expect(res.body.password).to.equal(newUser.password);
                     expect(res.body.events).to.equal(newUser.event_id);
                     return User.findById(res.body.id);
                 })
                 .then(function(nUser){
                     expect(nUser.user_name).to.equal(newUser.user_name);
-                    expect(nUser.email).to.equal(newUser.email);
+                    expect(nUser.email).to.equal(newUser.email.toLowerCase());
                     expect(nUser.event_id).to.equal(newUser.event_id);
                     console.log(nUser)
                 });
@@ -138,12 +138,12 @@ describe('User API endpoint', function(){
                 })
 
             .then(function(res){
-                expect(res).to.have.status(2004);
+                expect(res).to.have.status(204);
                 return User.findById(updateUser.id);
             })
             .then(function(uUser){
                 expect(uUser.user_name).to.equal(updateUser.user_name);
-                expect(uUser.email).to.equal(updateUser.email);
+                expect(uUser.email).to.equal(updateUser.email.toLowerCase());
             })
         });
     });
@@ -156,13 +156,16 @@ describe('User API endpoint', function(){
                 .findOne()
                 .then(function(user){
                     deleteUser.id = user.id;
-                    console.log(`Something ${user}`);
+                    console.log(`Something ${deleteUser.id}`);
                 })
             return chai.request(app)
+                console.log('Is this even running?')
                 .delete(`/user/${deleteUser.id}`)
                 .then (function(res){
                     expect(res).to.have.status(204);
-                    return User.findById(deleteUser.id)
+                    const deleted = User.findById(deleteUser.id);
+                    console.log(deleted);
+                    return deleted;
                 })
             .then(function(dUser){
                 expect(dUser).to.be.null;

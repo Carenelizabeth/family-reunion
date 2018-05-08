@@ -32,9 +32,7 @@ const userSchema = new mongoose.Schema({
     user_name: String,
     email: mongoose.SchemaTypes.Email,
     password: String,
-    event_id: [String],
-    activity_host_id: [String],
-    activity_attend_id: [String]
+    event_id: String,
 })
 
 userSchema.methods.serialize = function(){
@@ -44,8 +42,6 @@ userSchema.methods.serialize = function(){
         email: this.email,
         password: this.password,
         events: this.event_id,        
-        hosting:this.activity_host_id,
-        attending: this.activity_attend_id
     }
 }
 
