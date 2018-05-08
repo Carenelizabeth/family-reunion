@@ -17,6 +17,26 @@ const app = express();
 app.use(morgan('common'));
 app.use(express.json());
 
+router.get('/', (req,res) => {
+    User
+        .find()
+        .then(user => res.json(users => users.serialize()))
+        .catch(err => {
+            console.error(err);
+            res.status(500).json({error: 'Internal server error'})
+        });
+});
+
+router.get('/:id', (req, res) => {
+    User
+        .findById(req.params.id)
+        .then(event => res.json(user.serialize()))
+        .catch(err => {
+            console.error(err)
+            res.status(500).json({error: "Internal server error"});
+        });
+});
+
 router.post('/', (req, res) => {
     const requiredFields = ['user_name', 'email', 'password']
     for (let i=0; i<requiredFields.length; i++){
@@ -40,7 +60,7 @@ router.post('/', (req, res) => {
         .then(user => res.status(201).json(user.serialize()))
         .catch(err => {
             console.error(err);
-            res.status(500).json({error: 'Something went wrong on our end'})
+            res.status(500).json({error: 'Something went wrong on our end'});
         });
 });
 
