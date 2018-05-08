@@ -69,6 +69,28 @@ describe('User API endpoint', function(){
                     });
                 });
         });
+
+        it('should return the correct user when called by id', function(){
+            let singleUser;
+            return chai.request(app)
+                .get('/event')
+                .then(function(res){
+                    res.body.forEach(function(user){
+                        expect(user).to.be.an('object');
+                        expect(user).to.include.keys('id', 'user', 'email', 'password', 'events');
+                    });
+                    singleUser = res.body[0];
+                    return User.findById(singleUser.id);
+                })
+                .then(function(user){
+                    expect(singleUser.id).to.equal(user.id);
+                    expect(singleUser.user_name).to.equal(user.user);
+                    expect(singleUser.email).to.equal(user.email);
+                    expect(singleUser.password).to.equal(user.password);
+                    expect(singleUser.event_id).to.equal(user.events);
+                });
+        });
+
     });
 
 
