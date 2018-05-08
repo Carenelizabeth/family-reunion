@@ -117,13 +117,35 @@ describe('User API endpoint', function(){
                     expect(nUser.email).to.equal(newUser.email);
                     expect(nUser.event_id).to.equal(newUser.event_id);
                 });
-        })
+        });      
+    });
 
-        
+    describe('PUT endpoint, updating current fields', function(){
+        it('should update user fields', function(){
+            const updateUser = {
+                user_name: faker.internet.userName(),
+                email: faker.internet.email(),
+            };
+            return User
+                .findOne()
+                .then(function(user){
+                    updateUser.id = user.id;
+                
+                return chai.request(app)
+                    .put(`/user/${updateUser.id}`)
+                    .send(updateUser)
+                })
 
-    })
-
-
+            .then(function(res){
+                expect(res).to.have.status(2004);
+                return User.findById(updateUser.id);
+            })
+            .then(function(uUser){
+                expect(uEvent.user_name).to.equal(updateUser.user_name);
+                expect(uEvent.email).to.equal(updateUser.email);
+            })
+        });
+    });
 
 
 
