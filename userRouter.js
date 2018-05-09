@@ -40,17 +40,8 @@ router.get('/:id', (req, res) => {
         });
 });
 
-router.get('/:email', (req, res) => {
-    User
-        .find({email: req.params.email})
-        .then(user => res.json(user.serialize()))
-        .catch(err => {
-            res.status(500).json({error: 'Internal server error'});
-        });
-});
-
 router.post('/', (req, res) => {
-    const requiredFields = ['user_name', 'email', 'password']
+    const requiredFields = ['username', 'email', 'password']
     for (let i=0; i<requiredFields.length; i++){
         const field = requiredFields[i];
         if(!(field in req.body)){
@@ -60,19 +51,76 @@ router.post('/', (req, res) => {
         }
     }
 
-    console.log(req.body.event_id)
+    const explicitlyTrimmedFields = ['username', 'email', 'password'];
+    const nonTrimmedField = explicitlyTrimmedFields.find(field =>
+      req.body[field].trim() !== req.body[field]
+    );
 
-    User
-        .create({
-            user_name: req.body.user_name,
-            email: req.body.email,
-            password: req.body.password,
-            event_id: req.body.event_id
+    if(nonTrimmedField){
+        return res.status(422).json({
+            code: 422,
+            reason: 'ValidationError',
+            message: 'cannot start or end with whitespace',
+            location: nonTrimmedField
         })
-        .then(user => res.status(201).json(user.serialize()))
+    }
+
+    const sizedFields = {
+        username: {min: 1},
+        password: {min: 7, max: 72}
+    };
+
+    const tooShort = Object.keys(sizedFields).find(
+        field => 'min' in sizedFields[field] && 
+            req.body[field].trim().length  <sizedFields[field].min
+    );
+    const tooLong = Object.keys(sizedFields).find(
+        field => 'max' in sizedFields[field] &&
+            req.body[field].trim().length > sizedFields[field].max
+    );
+
+    if (tooShort || tooLong) {
+        return res.status(422).json({
+            code: 422,
+            reason: 'ValidationError',
+            message: tooShort 
+                ? `Must be at least ${sizedFields[tooSmall].min} characters long`
+                : `Must be at most ${sizedFields[tooLong].max} characters long`,
+            location: tooShort || tooLong
+        });
+    }
+
+    let{username, password, email} = req.body;
+    email = email.trim();
+
+    return User.find({username})
+        .count()
+        .then (count => {
+            if (count > 0) {
+                return Promise.reject({
+                    code: 422,
+                    reason: 'ValidationError',
+                    message: 'Username is already taken',
+                    location: 'username'
+                })
+            }
+        return User.hashPassword(password);
+        })
+        .then(hash => {
+            return User.create({
+                username,
+                password: hash,
+                email
+            });
+        })
+        .then(user => {
+            return res.status(201).json(user.serialize());
+        })
         .catch(err => {
-            console.error(err);
-            res.status(500).json({error: 'Something went wrong on our end'});
+            if (err.reason === 'ValidationError') {
+                return res.status(err.code).json(err);
+            }
+            res.status(500).json({code: 500, message: 'Internal serer error'});
         });
 });
 
@@ -84,7 +132,7 @@ router.put('/:id', (req, res) =>{
       }
 
     const toUpdate = {}
-    const updateableFields = ['user_name', 'email', 'password'];
+    const updateableFields = ['username', 'email', 'password'];
     updateableFields.forEach(field => {
         if (field in req.body) {
             toUpdate[field] = req.body[field];

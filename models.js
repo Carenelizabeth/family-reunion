@@ -31,7 +31,7 @@ eventSchema.methods.serialize = function(){
 };
 
 const userSchema = new Schema({
-    user_name: String,
+    username: String,
     email: Schema.Types.Email,
     password: String,
     //event_id:[{type: Schema.Types.ObjectId, ref: 'Event'}]
@@ -41,7 +41,7 @@ const userSchema = new Schema({
 userSchema.methods.serialize = function(){
     return{
         id: this._id,
-        user: this.user_name,
+        user: this.username,
         email: this.email,
         password: this.password,
         events: [this.event_id]       
