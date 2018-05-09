@@ -31,21 +31,29 @@ eventSchema.methods.serialize = function(){
 };
 
 const userSchema = new Schema({
-    username: String,
-    email: Schema.Types.Email,
-    password: String,
+    username: {type: String, required: true, unique: true },
+    email: {type: Schema.Types.Email, required: true},
+    password: {type: String, required: true},
     //event_id:[{type: Schema.Types.ObjectId, ref: 'Event'}]
-    event_id: [String]
+    event_id: {type: [String], default: ''}
 })
 
 userSchema.methods.serialize = function(){
     return{
         id: this._id,
-        user: this.username,
+        username: this.username,
         email: this.email,
         password: this.password,
         events: [this.event_id]       
     }
+}
+
+userSchema.methods.validatePassword = function(password){
+    return bcrypt.compare(password, this.password);
+};
+
+userSchema.statics.hashPassword = function(password){
+    return bcrypt.hash(password, 10)
 }
 
 const Event = mongoose.model('event', eventSchema);

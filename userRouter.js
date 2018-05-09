@@ -90,9 +90,9 @@ router.post('/', (req, res) => {
         });
     }
 
-    let{username, password, email} = req.body;
+    let{username, password, email, event_id = ''} = req.body;
     email = email.trim();
-
+    console.log(username);
     return User.find({username})
         .count()
         .then (count => {
@@ -104,23 +104,29 @@ router.post('/', (req, res) => {
                     location: 'username'
                 })
             }
-        return User.hashPassword(password);
+            console.log(password);
+            console.log(User.hashPassword(password));
+            //return User.hashPassword(password);
         })
-        .then(hash => {
+        .then(hash => (console.log(hash)))
+        /*.then(hash => {
+            console.log('something ran')
             return User.create({
                 username,
                 password: hash,
-                email
+                email, 
+                event_id
             });
-        })
+        })*/
         .then(user => {
+            console.log(user)
             return res.status(201).json(user.serialize());
         })
         .catch(err => {
             if (err.reason === 'ValidationError') {
                 return res.status(err.code).json(err);
             }
-            res.status(500).json({code: 500, message: 'Internal serer error'});
+            res.status(500).json({code: 500, message: 'Internal server error'});
         });
 });
 

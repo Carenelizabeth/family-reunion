@@ -25,7 +25,7 @@ function seedUserData(){
 
 function generateUserData(){
     return{
-       user_name: faker.internet.userName(),
+       username: faker.internet.userName(),
        email: faker.internet.email(),
        password: faker.internet.password(),
        event_id: faker.lorem.word() 
@@ -85,7 +85,7 @@ describe('User API endpoint', function(){
                 })
                 .then(function(user){
                     expect(singleUser.id).to.equal(user.id);
-                    expect(singleUser.user_name).to.equal(user.user);
+                    expect(singleUser.username).to.equal(user.username);
                     expect(singleUser.email).to.equal(user.email);
                     expect(singleUser.password).to.equal(user.password);
                     //expect(singleUser.event_id).to.equal(user.events);
@@ -106,14 +106,14 @@ describe('User API endpoint', function(){
                     expect(res).to.have.status(201);
                     expect(res).to.be.json;
                     expect(res.body).to.include.keys('id', 'user', 'email', 'password', 'events');
-                    expect(res.body.user).to.equal(newUser.user_name);
+                    expect(res.body.user).to.equal(newUser.username);
                     expect(res.body.email).to.equal(newUser.email.toLowerCase());
                     expect(res.body.password).to.equal(newUser.password);
                     //expect(res.body.events).to.equal(newUser.event_id);
                     return User.findById(res.body.id);
                 })
                 .then(function(nUser){
-                    expect(nUser.user_name).to.equal(newUser.user_name);
+                    expect(nUser.username).to.equal(newUser.username);
                     expect(nUser.email).to.equal(newUser.email.toLowerCase());
                    // expect(nUser.event_id).to.equal(newUser.event_id);
                     console.log(nUser)
@@ -124,7 +124,7 @@ describe('User API endpoint', function(){
     describe('PUT endpoint, updating current fields', function(){
         it('should update user fields', function(){
             const updateUser = {
-                user_name: faker.internet.userName(),
+                username: faker.internet.userName(),
                 email: faker.internet.email(),
             };
             return User
@@ -142,7 +142,7 @@ describe('User API endpoint', function(){
                 return User.findById(updateUser.id);
             })
             .then(function(uUser){
-                expect(uUser.user_name).to.equal(updateUser.user_name);
+                expect(uUser.username).to.equal(updateUser.username);
                 expect(uUser.email).to.equal(updateUser.email.toLowerCase());
             })
         });
