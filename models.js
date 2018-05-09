@@ -21,8 +21,8 @@ const eventSchema = new Schema({
         start_date: String,
         end_date: String
     },
-    event_organizer: String
-    //event_organizer: {type: Schema.Types.ObjectId, ref: 'User'}
+    //event_organizer: String
+    event_organizer: {type: Schema.Types.ObjectId, ref: 'User'}
 })
 
 eventSchema.virtual('dateRange').get(function(){

@@ -1,5 +1,5 @@
 const CURRENT_SESSION = {
-    user: "user",
+    username: "user",
     user_id: "12345",
     event: "event",
     event_id: "5aece268a14d2d31547286f6",
@@ -81,10 +81,9 @@ function handleNewAccount(){
         e.preventDefault();
         console.log('create Account clicked');
         const data = {
-            user_name: $(this).find('#create-user-name').val(),
+            username: $(this).find('#create-user-name').val(),
             email: $(this).find('#login-email').val(),
-            password: $(this).find('#user-password').val(),
-            event_id: "5aecfca515e1c85730540b84"
+            password: $(this).find('#user-password').val()
         }
         createAccount(data);
     })
@@ -109,10 +108,11 @@ function showWelcomePage(data){
     $('.js-welcome-page').removeClass("hidden");
     $('.js-event-page').addClass("hidden");
     console.log(data);
-    CURRENT_SESSION.user = data.user;
+    CURRENT_SESSION.username = data.username;
     CURRENT_SESSION.user_id = data.id;
-    CURRENT_SESSION.event = data.events[0];
-    CURRENT_SESSION.event_id = data.event_id;
+    //CURRENT_SESSION.event = data.events[0];
+    //CURRENT_SESSION.event_id = data.event_id;
+    console.log(CURRENT_SESSION.username);
     const welcome = renderWelcome();
     $('.welcome-page').html(welcome);
     handleEventButton();
@@ -123,7 +123,7 @@ function renderWelcome(){
     return`
         <div class="wrapper">
             <div class="info-section">
-                <h2>Welcome ${CURRENT_SESSION.user}!</h2>
+                <h2>Welcome ${CURRENT_SESSION.username}!</h2>
                 <p>What would you like to do today?</p>
             </div>
             <div class="button-section">
