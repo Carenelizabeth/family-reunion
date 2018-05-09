@@ -105,11 +105,10 @@ router.post('/', (req, res) => {
                 })
             }
             console.log(password);
-            console.log(User.hashPassword(password));
-            //return User.hashPassword(password);
+            //console.log(User.hashPassword(password));
+            return User.hashPassword(password);
         })
-        .then(hash => (console.log(hash)))
-        /*.then(hash => {
+        .then(hash => {
             console.log('something ran')
             return User.create({
                 username,
@@ -117,7 +116,7 @@ router.post('/', (req, res) => {
                 email, 
                 event_id
             });
-        })*/
+        })
         .then(user => {
             console.log(user)
             return res.status(201).json(user.serialize());

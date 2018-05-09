@@ -77,7 +77,7 @@ describe('User API endpoint', function(){
                 .then(function(res){
                     res.body.forEach(function(user){
                         expect(user).to.be.an('object');
-                        expect(user).to.include.keys('id', 'user', 'email', 'password', 'events');
+                        expect(user).to.include.keys('id', 'username', 'email', 'password', 'events');
                     });
                     singleUser = res.body[0];
                     console.log(singleUser);
@@ -105,10 +105,10 @@ describe('User API endpoint', function(){
                 .then(function(res){
                     expect(res).to.have.status(201);
                     expect(res).to.be.json;
-                    expect(res.body).to.include.keys('id', 'user', 'email', 'password', 'events');
-                    expect(res.body.user).to.equal(newUser.username);
+                    expect(res.body).to.include.keys('id', 'username', 'email', 'password', 'events');
+                    expect(res.body.username).to.equal(newUser.username);
                     expect(res.body.email).to.equal(newUser.email.toLowerCase());
-                    expect(res.body.password).to.equal(newUser.password);
+                    //expect(res.body.password).to.equal(newUser.password);
                     //expect(res.body.events).to.equal(newUser.event_id);
                     return User.findById(res.body.id);
                 })

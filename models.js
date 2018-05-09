@@ -1,10 +1,18 @@
 'user strict';
-
+const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
 require('mongoose-type-email');
 mongoose.Promise = global.Promise;
 
 const Schema = mongoose.Schema
+
+const userSchema = new Schema({
+    username: {type: String, required: true, unique: true },
+    email: {type: Schema.Types.Email, required: true},
+    password: {type: String, required: true},
+    //event_id:[{type: Schema.Types.ObjectId, ref: 'Event'}]
+    event_id: {type: [String], default: ''}
+})
 
 const eventSchema = new Schema({
     event_name: String,
@@ -13,7 +21,8 @@ const eventSchema = new Schema({
         start_date: String,
         end_date: String
     },
-    event_organizer: {type: Schema.Types.ObjectId, ref: 'User'}
+    event_organizer: String
+    //event_organizer: {type: Schema.Types.ObjectId, ref: 'User'}
 })
 
 eventSchema.virtual('dateRange').get(function(){
@@ -30,13 +39,7 @@ eventSchema.methods.serialize = function(){
     };
 };
 
-const userSchema = new Schema({
-    username: {type: String, required: true, unique: true },
-    email: {type: Schema.Types.Email, required: true},
-    password: {type: String, required: true},
-    //event_id:[{type: Schema.Types.ObjectId, ref: 'Event'}]
-    event_id: {type: [String], default: ''}
-})
+
 
 userSchema.methods.serialize = function(){
     return{
@@ -53,8 +56,8 @@ userSchema.methods.validatePassword = function(password){
 };
 
 userSchema.statics.hashPassword = function(password){
-    return bcrypt.hash(password, 10)
-}
+    return bcrypt.hash(password, 10);
+};
 
 const Event = mongoose.model('event', eventSchema);
 const User = mongoose.model('user', userSchema);
