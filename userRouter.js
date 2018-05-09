@@ -32,7 +32,7 @@ router.get('/', (req,res) => {
 router.get('/:id', (req, res) => {
     User
         .findById(req.params.id)
-        .populate('events')
+        //.populate('events')
         .then(user => res.json(user.serialize()))
         .catch(err => {
             console.error(err)
@@ -40,9 +40,9 @@ router.get('/:id', (req, res) => {
         });
 });
 
-router.get(':/id', (req, res) => {
+router.get('/:email', (req, res) => {
     User
-        .findById(req.params.id)
+        .find({email: req.params.email})
         .then(user => res.json(user.serialize()))
         .catch(err => {
             res.status(500).json({error: 'Internal server error'});
@@ -83,16 +83,21 @@ router.put('/:id', (req, res) =>{
         });
       }
 
-      const toUpdate = {}
-      const updateableFields = ['user_name', 'email', 'password'];
-      updateableFields.forEach(field => {
+    const toUpdate = {}
+    const updateableFields = ['user_name', 'email', 'password'];
+    updateableFields.forEach(field => {
         if (field in req.body) {
             toUpdate[field] = req.body[field];
         }
     });
 
+    const event = req.body.event_id;
+    console.log(event);
+
     User
-        .findByIdAndUpdate(req.params.id, {$set: toUpdate})
+        .findByIdAndUpdate(req.params.id, 
+            {$set: toUpdate}, 
+            {$push: {event_id: event}})
         .then(updatedEvent => res.status(204).end())
         .catch(err => res.status(500).json({message: 'Internal server error'}));
 })

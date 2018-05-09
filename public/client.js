@@ -57,14 +57,24 @@ function renderCreateAccount(){
 function handleLogin(){
     $('.js-login').submit(function(e){
         e.preventDefault();
-        let email = $(this).find('#login-email').val();
         let password = $(this).find('#user-password').val();
-        let user = "Mary"
-        CURRENT_SESSION.user = user;
-        console.log(CURRENT_SESSION.user);
-        showWelcomePage();
+        let email = $(this).find('#login-email').val();
+        getUserData(email)
     });
 };
+
+function getUserData(data){
+    console.log('get user data ran');
+    console.log(data);
+    $.ajax({
+        type: "GET",
+        url: "/user/",
+        //data: JSON.stringify(data),
+        contentType: 'application/json',
+        success: showWelcomePage,
+        dataType: "json"
+    })
+}
 
 function handleNewAccount(){
     $('.js-create-account').submit(function(e){
@@ -100,6 +110,8 @@ function showWelcomePage(data){
     $('.js-event-page').addClass("hidden");
     console.log(data);
     CURRENT_SESSION.user = data.user;
+    CURRENT_SESSION.user_id = data.id;
+    CURRENT_SESSION.event = data.events[0];
     CURRENT_SESSION.event_id = data.event_id;
     const welcome = renderWelcome();
     $('.welcome-page').html(welcome);
@@ -115,7 +127,7 @@ function renderWelcome(){
                 <p>What would you like to do today?</p>
             </div>
             <div class="button-section">
-                <button type="button" class="event-button">${eventSTORE[0].event_name}</button>
+                <button type="button" class="event-button">${CURRENT_SESSION.event}</button>
                 <button type="button" class="make-new-event">New Event</button>
             </div>
         </div>`
