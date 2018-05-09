@@ -4,14 +4,16 @@ const mongoose = require('mongoose');
 require('mongoose-type-email');
 mongoose.Promise = global.Promise;
 
-const eventSchema = new mongoose.Schema({
+const Schema = mongoose.Schema
+
+const eventSchema = new Schema({
     event_name: String,
     event_location: String,
     event_dates: {
         start_date: String,
         end_date: String
     },
-    event_organizer: String
+    event_organizer: {type: Schema.Types.ObjectId, ref: 'User'}
 })
 
 eventSchema.virtual('dateRange').get(function(){
@@ -28,11 +30,11 @@ eventSchema.methods.serialize = function(){
     };
 };
 
-const userSchema = new mongoose.Schema({
+const userSchema = new Schema({
     user_name: String,
-    email: mongoose.SchemaTypes.Email,
+    email: Schema.Types.Email,
     password: String,
-    event_id: String,
+    events:[{type: Schema.Types.ObjectId, ref: 'Event'}]
 })
 
 userSchema.methods.serialize = function(){
@@ -41,7 +43,7 @@ userSchema.methods.serialize = function(){
         user: this.user_name,
         email: this.email,
         password: this.password,
-        events: this.event_id,        
+        events: [this.events]       
     }
 }
 

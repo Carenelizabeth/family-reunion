@@ -10,7 +10,7 @@ const morgan = require('morgan');
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
-const {User} = require('./models');
+const {User, Event} = require('./models');
 
 const app = express();
 
@@ -32,6 +32,7 @@ router.get('/', (req,res) => {
 router.get('/:id', (req, res) => {
     User
         .findById(req.params.id)
+        .populate('events')
         .then(user => res.json(user.serialize()))
         .catch(err => {
             console.error(err)
