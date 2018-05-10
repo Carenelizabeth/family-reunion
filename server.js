@@ -1,5 +1,7 @@
 'use strict'
 
+require('dotenv').config();
+
 const express = require('express');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
@@ -7,19 +9,43 @@ mongoose.Promise = global.Promise;
 
 const eventRouter = require('./eventRouter');
 const userRouter = require('./userRouter');
+const authRouter = require('./auth/router');
+
+mongoose.Promise = global.Promise;
 
 const app = express();
 
 const {DATABASE_URL, PORT} = require('./config.js');
 
-
 app.use(express.static('public'));
 app.use(morgan('common'));
 app.use(express.json());
 
+app.use(function (req,res, next){
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
+    if(req.method === 'OPTIONS'){
+        return res.send(204);
+    }
+    next();
+});
 
 app.use('/event', eventRouter);
 app.use('/user', userRouter);
+app.use('/auth', authRouter);
+
+const jwtAuth = passport.authenticate('jwt', {session: false});
+
+app.get('/protected', jwtAuth, (req, res) => {
+    return res.json({
+        data: 'rosebud'
+    });
+});
+
+app.use('*', (req,res) => {
+    return res.status(404).json({message: 'Not Fount'});
+});
 
 let server;
 
