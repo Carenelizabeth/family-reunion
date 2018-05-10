@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
 const eventRouter = require('./eventRouter');
+const userRouter = require('./userRouter');
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.use(express.json());
 
 
 app.use('/event', eventRouter);
+app.use('/user', userRouter);
 
 let server;
 

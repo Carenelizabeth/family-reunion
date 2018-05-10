@@ -162,7 +162,7 @@ i{
     width: 100%;
 }
 
-.js-login{
+.js-login, .js-create-account{
     display: flex;
     flex-direction: column;
     background-color: white;
@@ -213,6 +213,7 @@ textarea{
 .info-section{
     display: flex;
     flex-direction: column;
+    flex: auto;
     justify-content: space-between;
     padding: 20px;
 }

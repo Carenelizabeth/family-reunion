@@ -1,9 +1,12 @@
 'user strict';
-
+const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
+require('mongoose-type-email');
 mongoose.Promise = global.Promise;
 
-const eventSchema = new mongoose.Schema({
+const Schema = mongoose.Schema
+
+const eventSchema = new Schema({
     event_name: String,
     event_location: String,
     event_dates: {
@@ -27,5 +30,28 @@ eventSchema.methods.serialize = function(){
     };
 };
 
+const userSchema = new Schema({
+    username: {type: String, required: true, unique: true },
+    email: {type: Schema.Types.Email, required: true},
+    password: {type: String, required: true},
+})
+
+userSchema.methods.serialize = function(){
+    return{
+        id: this._id,
+        username: this.username,
+        email: this.email    
+    }
+}
+
+userSchema.methods.validatePassword = function(password){
+    return bcrypt.compare(password, this.password);
+};
+
+userSchema.statics.hashPassword = function(password){
+    return bcrypt.hash(password, 10);
+};
+
 const Event = mongoose.model('event', eventSchema);
-module.exports = {Event};
+const User = mongoose.model('user', userSchema);
+module.exports = {Event, User};
