@@ -213,6 +213,7 @@ textarea{
 .info-section{
     display: flex;
     flex-direction: column;
+    flex: auto;
     justify-content: space-between;
     padding: 20px;
 }

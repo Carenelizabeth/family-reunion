@@ -1,8 +1,8 @@
 const CURRENT_SESSION = {
     username: "user",
     user_id: "12345",
-    event: "event",
-    event_id: "5aece268a14d2d31547286f6",
+    event: "Adventure with Giants",
+    event_id: "5af37b7a79c9af4480fa8d68",
     organizer_id: "host id"
 };
 
@@ -255,6 +255,7 @@ function showNewEventPage(data){
     $('.all-activities').html(activity);
     handleEditEventButtons();
     handleDeleteEvent();
+    handleViewProfile()
     handleNewActivity();
     handleRSVP();
 }
@@ -281,7 +282,8 @@ function renderEvent(name, location, dates){
         </div>
         <div class="button-section">
             <button type="button" class="js-delete-event not-organizer">Delete</button> 
-            <button type="button" class="js-make-activity">New Activity</button>    
+            <button type="button" class="js-make-activity">New Activity</button>
+            <button type="button" class="js-user-profile">View Profile</button>    
         </div>`    
 }
 
@@ -404,7 +406,7 @@ function DeleteEvent(){
     })
 }
 
-function handleEditEventButton(){
+/*function handleEditEventButton(){
     $('.edit-event-form').submit(function(e){
         e.preventDefault();
         let name =  $(this).find('#event-name').val();
@@ -415,6 +417,10 @@ function handleEditEventButton(){
         console.log(location);
         updateEvent(name, location, start, end);
     })
+}*/
+
+function handleViewProfile(){
+
 }
 
 //displays activites that have been created under the event

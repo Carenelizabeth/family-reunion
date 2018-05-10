@@ -10,8 +10,6 @@ const userSchema = new Schema({
     username: {type: String, required: true, unique: true },
     email: {type: Schema.Types.Email, required: true},
     password: {type: String, required: true},
-    //event_id:[{type: Schema.Types.ObjectId, ref: 'Event'}]
-    event_id: {type: [String], default: ''}
 })
 
 const eventSchema = new Schema({
