@@ -31,21 +31,14 @@ app.use(function (req,res, next){
     next();
 });
 
+passport.use(localStrategy);
+passport.use(jwtStrategy);
+
 app.use('/event', eventRouter);
 app.use('/user', userRouter);
 app.use('/auth', authRouter);
 
 const jwtAuth = passport.authenticate('jwt', {session: false});
-
-app.get('/protected', jwtAuth, (req, res) => {
-    return res.json({
-        data: 'rosebud'
-    });
-});
-
-app.use('*', (req,res) => {
-    return res.status(404).json({message: 'Not Fount'});
-});
 
 let server;
 
