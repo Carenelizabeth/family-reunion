@@ -9,7 +9,7 @@ const jsonParser = bodyParser.json();
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
-;
+
 const {User, Event} = require('./models');
 
 const app = express();
@@ -38,6 +38,10 @@ router.get('/:id', (req, res) => {
             res.status(500).json({error: 'This is embarassing...'});
         });
 });
+
+router.get('byUserId/:id', ()=> {
+    Event.find({event_organizer: req.params.id})
+ })
 
 router.post('/', (req, res) => {
     const requiredFields = ['event_name', 'event_location', 'event_dates', 'event_organizer']

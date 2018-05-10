@@ -420,7 +420,18 @@ function DeleteEvent(){
 }*/
 
 function handleViewProfile(){
+    $('.js-user-profile').click(function(e){
+        console.log('view profile button clicked')
 
+    })
+}
+
+function showUserPage(){
+
+}
+
+function renderUserPage(){
+    
 }
 
 //displays activites that have been created under the event

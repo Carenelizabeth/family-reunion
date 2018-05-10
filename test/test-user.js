@@ -27,8 +27,7 @@ function generateUserData(){
     return{
        username: faker.internet.userName(),
        email: faker.internet.email(),
-       password: faker.internet.password(),
-       event_id: faker.lorem.word() 
+       password: faker.internet.password()
     }
 }
 
@@ -77,7 +76,7 @@ describe('User API endpoint', function(){
                 .then(function(res){
                     res.body.forEach(function(user){
                         expect(user).to.be.an('object');
-                        expect(user).to.include.keys('id', 'username', 'email', 'password', 'events');
+                        expect(user).to.include.keys('id', 'username', 'email');
                     });
                     singleUser = res.body[0];
                     console.log(singleUser);
@@ -87,8 +86,6 @@ describe('User API endpoint', function(){
                     expect(singleUser.id).to.equal(user.id);
                     expect(singleUser.username).to.equal(user.username);
                     expect(singleUser.email).to.equal(user.email);
-                    expect(singleUser.password).to.equal(user.password);
-                    //expect(singleUser.event_id).to.equal(user.events);
                 });
         });
     });
@@ -105,17 +102,14 @@ describe('User API endpoint', function(){
                 .then(function(res){
                     expect(res).to.have.status(201);
                     expect(res).to.be.json;
-                    expect(res.body).to.include.keys('id', 'username', 'email', 'password', 'events');
+                    expect(res.body).to.include.keys('id', 'username', 'email');
                     expect(res.body.username).to.equal(newUser.username);
                     expect(res.body.email).to.equal(newUser.email.toLowerCase());
-                    //expect(res.body.password).to.equal(newUser.password);
-                    //expect(res.body.events).to.equal(newUser.event_id);
                     return User.findById(res.body.id);
                 })
                 .then(function(nUser){
                     expect(nUser.username).to.equal(newUser.username);
                     expect(nUser.email).to.equal(newUser.email.toLowerCase());
-                   // expect(nUser.event_id).to.equal(newUser.event_id);
                     console.log(nUser)
                 });
         });      

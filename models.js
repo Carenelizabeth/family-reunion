@@ -6,12 +6,6 @@ mongoose.Promise = global.Promise;
 
 const Schema = mongoose.Schema
 
-const userSchema = new Schema({
-    username: {type: String, required: true, unique: true },
-    email: {type: Schema.Types.Email, required: true},
-    password: {type: String, required: true},
-})
-
 const eventSchema = new Schema({
     event_name: String,
     event_location: String,
@@ -19,8 +13,7 @@ const eventSchema = new Schema({
         start_date: String,
         end_date: String
     },
-    //event_organizer: String
-    event_organizer: {type: Schema.Types.ObjectId, ref: 'User'}
+    event_organizer: String
 })
 
 eventSchema.virtual('dateRange').get(function(){
@@ -37,15 +30,17 @@ eventSchema.methods.serialize = function(){
     };
 };
 
-
+const userSchema = new Schema({
+    username: {type: String, required: true, unique: true },
+    email: {type: Schema.Types.Email, required: true},
+    password: {type: String, required: true},
+})
 
 userSchema.methods.serialize = function(){
     return{
         id: this._id,
         username: this.username,
-        email: this.email,
-        password: this.password,
-        events: [this.event_id]       
+        email: this.email    
     }
 }
 

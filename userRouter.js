@@ -51,7 +51,7 @@ router.post('/', (req, res) => {
         }
     }
 
-    const explicitlyTrimmedFields = ['username', 'email', 'password'];
+    const explicitlyTrimmedFields = ['username', 'password'];
     const nonTrimmedField = explicitlyTrimmedFields.find(field =>
       req.body[field].trim() !== req.body[field]
     );
@@ -72,7 +72,7 @@ router.post('/', (req, res) => {
 
     const tooShort = Object.keys(sizedFields).find(
         field => 'min' in sizedFields[field] && 
-            req.body[field].trim().length  <sizedFields[field].min
+            req.body[field].trim().length < sizedFields[field].min
     );
     const tooLong = Object.keys(sizedFields).find(
         field => 'max' in sizedFields[field] &&
@@ -90,7 +90,7 @@ router.post('/', (req, res) => {
         });
     }
 
-    let{username, password, email, event_id = ''} = req.body;
+    let{username, password, email} = req.body;
     email = email.trim();
     console.log(username);
     return User.find({username})
@@ -105,7 +105,6 @@ router.post('/', (req, res) => {
                 })
             }
             console.log(password);
-            //console.log(User.hashPassword(password));
             return User.hashPassword(password);
         })
         .then(hash => {
@@ -113,8 +112,7 @@ router.post('/', (req, res) => {
             return User.create({
                 username,
                 password: hash,
-                email, 
-                event_id
+                email
             });
         })
         .then(user => {
