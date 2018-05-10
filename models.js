@@ -41,7 +41,7 @@ const activitySchema = new mongoose.Schema({
     activity_time: String,
     activity_cost: costSchema,
     activity_host: String,
-    attendees: [new mongoose.Schema({name: String})]
+    attendees: [String]
 })
 
 activitySchema.methods.serialize = function(){
