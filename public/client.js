@@ -1,9 +1,10 @@
 const CURRENT_SESSION = {
-    username: "user",
-    user_id: "12345",
-    event: "Adventure with Giants",
-    event_id: "5af37b7a79c9af4480fa8d68",
-    organizer_id: "host id"
+    username: "",
+    user_id: "",
+    user_events: "",
+    event: "",
+    event_id: "",
+    organizer_id: ""
 };
 
 function handleStartButtons(){
@@ -14,7 +15,7 @@ function handleStartButtons(){
 function displayLogin(){
     const login = renderLoginForm();
     $('.landing-page').html(login);
-    handleLogin();
+    handleLoginButton();
 }
 
 function displayCreateAccount(){
@@ -28,8 +29,8 @@ function renderLoginForm(){
         <form class="js-login">
             <fieldset>
                 <legend>Log In</legend>
-                <label for="login-email">Email</label>
-                <input type="text" name="login-email" id="login-email" class="user-email">
+                <label for="login-username">username</label>
+                <input type="text" name="login-username" id="login-username" class="login-username">
                 <label for="user-password">Password</label>
                 <input type="text" name="user-password" id="user-password">
             </fieldset>
@@ -54,26 +55,55 @@ function renderCreateAccount(){
 }
 
 //The next section handles user login and selecting the event
-function handleLogin(){
+function handleLoginButton(){
     $('.js-login').submit(function(e){
         e.preventDefault();
+        let username = $(this).find('#login-username').val();
         let password = $(this).find('#user-password').val();
-        let email = $(this).find('#login-email').val();
-        getUserData(email)
+        CURRENT_SESSION.username = username;
+        handleLogin(username, password);
     });
 };
 
-function getUserData(data){
-    console.log('get user data ran');
+function handleLogin(username, password){
+    const data = {username: username,
+                password: password}
     console.log(data);
     $.ajax({
-        type: "GET",
-        url: "/user/",
-        //data: JSON.stringify(data),
-        contentType: 'application/json',
-        success: showWelcomePage,
+        type: "POST",
+        url: "/auth/login",
+        data: JSON.stringify(data),
+        contentType: "application/json",
+        success: getUserData,
         dataType: "json"
     })
+}
+
+function getUserData(token){
+    console.log('get user data ran');
+    let authToken = token.authToken;
+    //console.log(authToken);
+    $.ajax({
+        /*beforeSend: function(xhr){
+            xhr.setRequestHeader(`Authorization, Bearer: ${authToken}`)
+        },*/
+        type: "GET",
+        url: `/user/userdata/${CURRENT_SESSION.username}`,
+        contentType: "application/json",
+        success: updateSessionInformation,
+        dataType: "json"
+    })
+}
+
+function updateSessionInformation(data){
+    CURRENT_SESSION.username = data.username;
+    CURRENT_SESSION.user_id = data.id;
+    console.log(CURRENT_SESSION.username);
+    getUserEvents()
+}
+
+function doSomething(){
+    console.log('I did something');
 }
 
 function handleNewAccount(){
@@ -103,23 +133,24 @@ function createAccount(data){
 
 //once user logs on, they can choose an event or make a new one
 function showWelcomePage(data){
-    //console.log('show welcome page ran');
+    console.log('show welcome page');
+
     $('.js-landing-page').addClass("hidden");
     $('.js-welcome-page').removeClass("hidden");
     $('.js-event-page').addClass("hidden");
-    console.log(data);
-    CURRENT_SESSION.username = data.username;
-    CURRENT_SESSION.user_id = data.id;
-    //CURRENT_SESSION.event = data.events[0];
-    //CURRENT_SESSION.event_id = data.event_id;
-    console.log(CURRENT_SESSION.username);
+
     const welcome = renderWelcome();
     $('.welcome-page').html(welcome);
+
     handleEventButton();
     handleNewEventButton();
 }   
 
+
+
 function renderWelcome(){
+    let button = generateEventButtons()
+    console.log(button);
     return`
         <div class="wrapper">
             <div class="info-section">
@@ -127,14 +158,61 @@ function renderWelcome(){
                 <p>What would you like to do today?</p>
             </div>
             <div class="button-section">
-                <button type="button" class="event-button">${CURRENT_SESSION.event}</button>
+                ${button}
                 <button type="button" class="make-new-event">New Event</button>
             </div>
         </div>`
 }
 
+function getUserEvents(){
+    console.log('get user events ran');
+    const events = $.ajax({
+        type: "GET",
+        url: `/event/byUserId/${CURRENT_SESSION.user_id}`,
+        contentType: 'application/json',
+        dataType: "json",
+        success: updateUserEvents
+    })
+}
+
+function updateUserEvents(data){
+    console.log('update user events')
+    //console.log(data);
+    if (!(data === undefined || data.length === 0)){
+        const events = data.map((item, index) => renderUserEvents(item))
+    CURRENT_SESSION.user_events = events;
+    console.log(CURRENT_SESSION.user_events);
+    showWelcomePage();
+    }
+}
+
+function renderUserEvents(event){
+    console.log('render user events')
+    const data = {name: event.name,
+                  id: event.id}
+    //console.log(data)
+    return data;
+}
+
+function generateEventButtons(){
+    console.log('generate event buttons ran')
+    console.log(CURRENT_SESSION.user_events[0].name);
+    let button = []
+    for(let i=0; i<CURRENT_SESSION.user_events.length; i++){
+        console.log(i);
+        console.log(`console.log(Event: ${CURRENT_SESSION.user_events[i].name}`);
+        button.push(`<button type="button" class="event-button" id="${CURRENT_SESSION.user_events[i].name}">${CURRENT_SESSION.user_events[i].name}</button>`)
+    }
+    console.log(button)
+    return button;
+}
+
 function handleEventButton(){
-    $('.event-button').click(e => getEventInformation())
+    $('.event-button').click(function(e){
+        let name = this.id;
+        console.log(name)
+        getEventInformation(name)
+    }) 
 }
 
 function handleNewEventButton(){
@@ -185,10 +263,10 @@ function handleSubmitNewEvent(){
     })
 }
 
-function getEventInformation(){
+function getEventInformation(event){
     $.ajax({
         type: "GET",
-        url: `/event/${CURRENT_SESSION.event_id}`,
+        url: `/event/${event}`,
         contentType: 'application/json',
         success: showEventPage,
         dataType: "json"

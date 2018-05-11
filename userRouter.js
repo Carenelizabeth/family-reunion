@@ -8,6 +8,7 @@ const jsonParser = bodyParser.json();
 
 const morgan = require('morgan');
 const mongoose = require('mongoose');
+const passport = require('passport')
 mongoose.Promise = global.Promise;
 
 const {User, Event} = require('./models');
@@ -16,6 +17,8 @@ const app = express();
 
 app.use(morgan('common'));
 app.use(express.json());
+
+const jwtAuth = passport.authenticate('jwt', { session: false });
 
 router.get('/', (req,res) => {
     User
@@ -39,6 +42,17 @@ router.get('/:id', (req, res) => {
             res.status(500).json({error: "Internal server error"});
         });
 });
+
+router.get('/userdata/:username',(req, res) => {
+    console.log(req.params.username);
+    User
+        .findOne({username: req.params.username})
+        .then(user => res.json(user.serialize()))
+        .catch(err => {
+            console.error(err)
+            res.status(500).json({error: "Internal server error"})
+        })
+})
 
 router.post('/', (req, res) => {
     const requiredFields = ['username', 'email', 'password']
