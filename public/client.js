@@ -201,14 +201,18 @@ function generateEventButtons(){
     for(let i=0; i<CURRENT_SESSION.user_events.length; i++){
         console.log(i);
         console.log(`console.log(Event: ${CURRENT_SESSION.user_events[i].name}`);
-        button.push(`<button type="button" class="event-button">${CURRENT_SESSION.user_events[i].name}</button>`)
+        button.push(`<button type="button" class="event-button" id="${CURRENT_SESSION.user_events[i].name}">${CURRENT_SESSION.user_events[i].name}</button>`)
     }
     console.log(button)
     return button;
 }
 
 function handleEventButton(){
-    $('.event-button').click(e => getEventInformation())
+    $('.event-button').click(function(e){
+        let name = this.id;
+        console.log(name)
+        getEventInformation(name)
+    }) 
 }
 
 function handleNewEventButton(){
@@ -259,10 +263,10 @@ function handleSubmitNewEvent(){
     })
 }
 
-function getEventInformation(){
+function getEventInformation(event){
     $.ajax({
         type: "GET",
-        url: `/event/${CURRENT_SESSION.event_id}`,
+        url: `/event/${event}`,
         contentType: 'application/json',
         success: showEventPage,
         dataType: "json"

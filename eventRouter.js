@@ -30,9 +30,9 @@ router.get('/', (req,res) =>{
         });
 });
 
-router.get('/:id', (req, res) => {
+router.get('/:name', (req, res) => {
     Event   
-        .findById(req.params.id)
+        .findOne({event_name: req.params.name})
         .then(event => res.json(event.serialize()))
         .catch(err => {
             res.status(500).json({error: 'This is embarassing...'});
