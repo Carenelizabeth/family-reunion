@@ -39,9 +39,17 @@ router.get('/:id', (req, res) => {
         });
 });
 
-router.get('byUserId/:id', ()=> {
-    Event.find({event_organizer: req.params.id})
- })
+router.get('/byUserId/:id', (req, res) => {
+    console.log(req.params.id);
+    Event
+        .find({event_organizer: req.params.id})
+        .then(events =>{
+            res.json(events.map(event => event.serialize()));
+        })
+        .catch(err => {
+            res.status(500).json({error: 'Internal server error'});
+        });
+ });
 
 router.post('/', (req, res) => {
     const requiredFields = ['event_name', 'event_location', 'event_dates', 'event_organizer']

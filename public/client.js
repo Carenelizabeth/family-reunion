@@ -1,9 +1,10 @@
 const CURRENT_SESSION = {
-    username: "user",
-    user_id: "12345",
-    event: "Adventure with Giants",
-    event_id: "5af37b7a79c9af4480fa8d68",
-    organizer_id: "host id"
+    username: "",
+    user_id: "",
+    user_events: "",
+    event: "",
+    event_id: "",
+    organizer_id: ""
 };
 
 function handleStartButtons(){
@@ -81,7 +82,7 @@ function handleLogin(username, password){
 function getUserData(token){
     console.log('get user data ran');
     let authToken = token.authToken;
-    console.log(authToken);
+    //console.log(authToken);
     $.ajax({
         /*beforeSend: function(xhr){
             xhr.setRequestHeader(`Authorization, Bearer: ${authToken}`)
@@ -89,9 +90,16 @@ function getUserData(token){
         type: "GET",
         url: `/user/userdata/${CURRENT_SESSION.username}`,
         contentType: "application/json",
-        success: showWelcomePage,
+        success: updateSessionInformation,
         dataType: "json"
     })
+}
+
+function updateSessionInformation(data){
+    CURRENT_SESSION.username = data.username;
+    CURRENT_SESSION.user_id = data.id;
+    console.log(CURRENT_SESSION.username);
+    getUserEvents()
 }
 
 function doSomething(){
@@ -125,21 +133,24 @@ function createAccount(data){
 
 //once user logs on, they can choose an event or make a new one
 function showWelcomePage(data){
-    console.log('show welcome page ran');
+    console.log('show welcome page');
+
     $('.js-landing-page').addClass("hidden");
     $('.js-welcome-page').removeClass("hidden");
     $('.js-event-page').addClass("hidden");
-    console.log(data);
-    CURRENT_SESSION.username = data.username;
-    CURRENT_SESSION.user_id = data.id;
-    console.log(CURRENT_SESSION.username);
+
     const welcome = renderWelcome();
     $('.welcome-page').html(welcome);
+
     handleEventButton();
     handleNewEventButton();
 }   
 
+
+
 function renderWelcome(){
+    let button = generateEventButtons()
+    console.log(button);
     return`
         <div class="wrapper">
             <div class="info-section">
@@ -147,10 +158,53 @@ function renderWelcome(){
                 <p>What would you like to do today?</p>
             </div>
             <div class="button-section">
-                <button type="button" class="event-button">${CURRENT_SESSION.event}</button>
+                ${button}
                 <button type="button" class="make-new-event">New Event</button>
             </div>
         </div>`
+}
+
+function getUserEvents(){
+    console.log('get user events ran');
+    const events = $.ajax({
+        type: "GET",
+        url: `/event/byUserId/${CURRENT_SESSION.user_id}`,
+        contentType: 'application/json',
+        dataType: "json",
+        success: updateUserEvents
+    })
+}
+
+function updateUserEvents(data){
+    console.log('update user events')
+    //console.log(data);
+    if (!(data === undefined || data.length === 0)){
+        const events = data.map((item, index) => renderUserEvents(item))
+    CURRENT_SESSION.user_events = events;
+    console.log(CURRENT_SESSION.user_events);
+    showWelcomePage();
+    }
+}
+
+function renderUserEvents(event){
+    console.log('render user events')
+    const data = {name: event.name,
+                  id: event.id}
+    //console.log(data)
+    return data;
+}
+
+function generateEventButtons(){
+    console.log('generate event buttons ran')
+    console.log(CURRENT_SESSION.user_events[0].name);
+    let button = []
+    for(let i=0; i<CURRENT_SESSION.user_events.length; i++){
+        console.log(i);
+        console.log(`console.log(Event: ${CURRENT_SESSION.user_events[i].name}`);
+        button.push(`<button type="button" class="event-button">${CURRENT_SESSION.user_events[i].name}</button>`)
+    }
+    console.log(button)
+    return button;
 }
 
 function handleEventButton(){
