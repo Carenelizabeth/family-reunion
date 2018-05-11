@@ -14,7 +14,7 @@ function handleStartButtons(){
 function displayLogin(){
     const login = renderLoginForm();
     $('.landing-page').html(login);
-    handleLogin();
+    handleLoginButton();
 }
 
 function displayCreateAccount(){
@@ -28,8 +28,8 @@ function renderLoginForm(){
         <form class="js-login">
             <fieldset>
                 <legend>Log In</legend>
-                <label for="login-email">Email</label>
-                <input type="text" name="login-email" id="login-email" class="user-email">
+                <label for="login-username">username</label>
+                <input type="text" name="login-username" id="login-username" class="login-username">
                 <label for="user-password">Password</label>
                 <input type="text" name="user-password" id="user-password">
             </fieldset>
@@ -54,26 +54,48 @@ function renderCreateAccount(){
 }
 
 //The next section handles user login and selecting the event
-function handleLogin(){
+function handleLoginButton(){
     $('.js-login').submit(function(e){
         e.preventDefault();
+        let username = $(this).find('#login-username').val();
         let password = $(this).find('#user-password').val();
-        let email = $(this).find('#login-email').val();
-        getUserData(email)
+        CURRENT_SESSION.username = username;
+        handleLogin(username, password);
     });
 };
 
-function getUserData(data){
-    console.log('get user data ran');
+function handleLogin(username, password){
+    const data = {username: username,
+                password: password}
     console.log(data);
     $.ajax({
+        type: "POST",
+        url: "/auth/login",
+        data: JSON.stringify(data),
+        contentType: "application/json",
+        success: getUserData,
+        dataType: "json"
+    })
+}
+
+function getUserData(token){
+    console.log('get user data ran');
+    let authToken = token.authToken;
+    console.log(authToken);
+    $.ajax({
+        /*beforeSend: function(xhr){
+            xhr.setRequestHeader(`Authorization, Bearer: ${authToken}`)
+        },*/
         type: "GET",
-        url: "/user/",
-        //data: JSON.stringify(data),
-        contentType: 'application/json',
+        url: `/user/userdata/${CURRENT_SESSION.username}`,
+        contentType: "application/json",
         success: showWelcomePage,
         dataType: "json"
     })
+}
+
+function doSomething(){
+    console.log('I did something');
 }
 
 function handleNewAccount(){
@@ -103,15 +125,13 @@ function createAccount(data){
 
 //once user logs on, they can choose an event or make a new one
 function showWelcomePage(data){
-    //console.log('show welcome page ran');
+    console.log('show welcome page ran');
     $('.js-landing-page').addClass("hidden");
     $('.js-welcome-page').removeClass("hidden");
     $('.js-event-page').addClass("hidden");
     console.log(data);
     CURRENT_SESSION.username = data.username;
     CURRENT_SESSION.user_id = data.id;
-    //CURRENT_SESSION.event = data.events[0];
-    //CURRENT_SESSION.event_id = data.event_id;
     console.log(CURRENT_SESSION.username);
     const welcome = renderWelcome();
     $('.welcome-page').html(welcome);
