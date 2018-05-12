@@ -93,13 +93,14 @@ function getUserData(token){
         success: updateSessionInformation,
         dataType: "json"
     })
+    .then(getUserEvents)
 }
 
 function updateSessionInformation(data){
+    console.log('update' + data);
     CURRENT_SESSION.username = data.username;
     CURRENT_SESSION.user_id = data.id;
     console.log(CURRENT_SESSION.username);
-    getUserEvents()
 }
 
 function doSomething(){
@@ -113,7 +114,7 @@ function handleNewAccount(){
         const data = {
             username: $(this).find('#create-user-name').val(),
             email: $(this).find('#login-email').val(),
-            password: $(this).find('#user-password').val()
+            password: $(this).find('#user-password').val(),
         }
         createAccount(data);
     })
@@ -121,14 +122,16 @@ function handleNewAccount(){
 
 function createAccount(data){
     console.log('create account ran');
+    console.log('data');
     $.ajax({
         type: "POST",
         url: "/user",
         data: JSON.stringify(data),
         contentType: 'application/json',
-        success: showWelcomePage,
+        success: updateSessionInformation,
         dataType: "json"
     })
+    .then(showWelcomePage)
 }
 
 //once user logs on, they can choose an event or make a new one
@@ -150,7 +153,7 @@ function showWelcomePage(data){
 
 function renderWelcome(){
     let button = generateEventButtons()
-    console.log(button);
+    //console.log(button);
     return`
         <div class="wrapper">
             <div class="info-section">
@@ -176,6 +179,7 @@ function getUserEvents(){
 }
 
 function updateUserEvents(data){
+    updateSessionInformation(data);
     console.log('update user events')
     //console.log(data);
     if (!(data === undefined || data.length === 0)){
@@ -196,14 +200,14 @@ function renderUserEvents(event){
 
 function generateEventButtons(){
     console.log('generate event buttons ran')
-    console.log(CURRENT_SESSION.user_events[0].name);
     let button = []
-    for(let i=0; i<CURRENT_SESSION.user_events.length; i++){
-        console.log(i);
-        console.log(`console.log(Event: ${CURRENT_SESSION.user_events[i].name}`);
-        button.push(`<button type="button" class="event-button" id="${CURRENT_SESSION.user_events[i].name}">${CURRENT_SESSION.user_events[i].name}</button>`)
-    }
-    console.log(button)
+    if(!(CURRENT_SESSION.user_events.name === undefined)){
+        for(let i=0; i<CURRENT_SESSION.user_events.length; i++){
+            //console.log(i);
+            //console.log(`console.log(Event: ${CURRENT_SESSION.user_events[i].name}`);
+            button.push(`<button type="button" class="event-button" id="${CURRENT_SESSION.user_events[i].name}">${CURRENT_SESSION.user_events[i].name}</button>`)
+        }}
+    //console.log(button)
     return button;
 }
 
