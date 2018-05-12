@@ -106,3 +106,14 @@ router.put('/', (res, req) => {
         .then(a => res.status(204).end())
         .catch(err => res.status(500).json({message: 'Internal server erro'}))
 })
+
+router.delete('/', (req, res) =>{
+    Activity
+        .findByIdAndRemove(req.params.id)
+        .then(() => {
+            console.log('Deleted post')
+            res.status(204).end();
+        });
+});
+
+module.exports = router;
