@@ -13,7 +13,8 @@ const eventSchema = new Schema({
         start_date: String,
         end_date: String
     },
-    event_organizer: String
+    event_organizer: String,
+    event_members: [String]
 })
 
 eventSchema.virtual('dateRange').get(function(){
@@ -26,7 +27,8 @@ eventSchema.methods.serialize = function(){
         name: this.event_name,
         location: this.event_location,
         dates: this.dateRange,
-        organizer: this.event_organizer
+        organizer: this.event_organizer,
+        event_members: [this.event_members]
     };
 };
 
