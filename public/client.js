@@ -1,53 +1,223 @@
 const CURRENT_SESSION = {
-    user: "user",
-    user_id: "12345",
-    event: "event",
-    event_id: "5aece268a14d2d31547286f6",
-    organizer_id: "host id"
+    username: "",
+    user_id: "",
+    user_events: "",
+    event: "",
+    event_id: "",
+    organizer_id: ""
 };
 
+function handleStartButtons(){
+    $('.js-log-in').click(e => displayLogin());
+    $('.js-make-account').click(e => displayCreateAccount());
+}
+
+function displayLogin(){
+    const login = renderLoginForm();
+    $('.landing-page').html(login);
+    handleLoginButton();
+}
+
+function displayCreateAccount(){
+    const createUser = renderCreateAccount();
+    $('.landing-page').html(createUser);
+    handleNewAccount();
+}
+
+function renderLoginForm(){
+    return`
+        <form class="js-login">
+            <fieldset>
+                <legend>Log In</legend>
+                <label for="login-username">username</label>
+                <input type="text" name="login-username" id="login-username" class="login-username">
+                <label for="user-password">Password</label>
+                <input type="text" name="user-password" id="user-password">
+            </fieldset>
+            <button type="submit" class="js-login-button">Submit</button>
+        </form>`
+}
+
+function renderCreateAccount(){
+    return`
+        <form class="js-create-account">
+            <fieldset>
+                <legend>Create New Account</legend>
+                <label for="create-user-name">Choose a public user name</label>
+                <input type="text" name="create-user-name" id="create-user-name">
+                <label for="login-email">Email</label>
+                <input type="text" name="login-email" id="login-email" class="user-email">
+                <label for="user-password">Password</label>
+                <input type="text" name="user-password" id="user-password">
+            </fieldset>
+            <button type="submit" class="js-create-account-button">Submit</button>
+        </form>`
+}
+
 //The next section handles user login and selecting the event
-function handleLogin(){
-    $('.js-login').submit(e =>{
+function handleLoginButton(){
+    $('.js-login').submit(function(e){
         e.preventDefault();
-        let email = $(e.currentTarget).find('#login-email').val();
-        let password = $(e.currentTarget).find('#user-password').val();
-        let user = "Mary"
-        CURRENT_SESSION.user = user;
-        console.log(CURRENT_SESSION.user);
-        showWelcomePage();
+        let username = $(this).find('#login-username').val();
+        let password = $(this).find('#user-password').val();
+        CURRENT_SESSION.username = username;
+        handleLogin(username, password);
     });
 };
 
+function handleLogin(username, password){
+    const data = {username: username,
+                password: password}
+    console.log(data);
+    $.ajax({
+        type: "POST",
+        url: "/auth/login",
+        data: JSON.stringify(data),
+        contentType: "application/json",
+        success: getUserData,
+        dataType: "json"
+    })
+}
+
+function getUserData(token){
+    console.log('get user data ran');
+    let authToken = token.authToken;
+    //console.log(authToken);
+    $.ajax({
+        /*beforeSend: function(xhr){
+            xhr.setRequestHeader(`Authorization, Bearer: ${authToken}`)
+        },*/
+        type: "GET",
+        url: `/user/userdata/${CURRENT_SESSION.username}`,
+        contentType: "application/json",
+        success: updateSessionInformation,
+        dataType: "json"
+    })
+    .then(getUserEvents)
+}
+
+function updateSessionInformation(data){
+    console.log(data);
+    CURRENT_SESSION.username = data.username;
+    CURRENT_SESSION.user_id = data.id;
+    console.log(CURRENT_SESSION.username);
+}
+
+function doSomething(){
+    console.log('I did something');
+}
+
+function handleNewAccount(){
+    $('.js-create-account').submit(function(e){
+        e.preventDefault();
+        console.log('create Account clicked');
+        const data = {
+            username: $(this).find('#create-user-name').val(),
+            email: $(this).find('#login-email').val(),
+            password: $(this).find('#user-password').val(),
+        }
+        createAccount(data);
+    })
+}
+
+function createAccount(data){
+    console.log('create account ran');
+    console.log('data');
+    $.ajax({
+        type: "POST",
+        url: "/user",
+        data: JSON.stringify(data),
+        contentType: 'application/json',
+        success: updateSessionInformation,
+        dataType: "json"
+    })
+    .then(showWelcomePage)
+}
+
 //once user logs on, they can choose an event or make a new one
-function showWelcomePage(){
-    //console.log('show welcome page ran');
+function showWelcomePage(data){
+    console.log('show welcome page');
+
     $('.js-landing-page').addClass("hidden");
     $('.js-welcome-page').removeClass("hidden");
     $('.js-event-page').addClass("hidden");
+
     const welcome = renderWelcome();
-    //console.log(welcome);
     $('.welcome-page').html(welcome);
+
     handleEventButton();
     handleNewEventButton();
 }   
 
+
+
 function renderWelcome(){
+    let button = generateEventButtons()
+    console.log(button);
     return`
         <div class="wrapper">
             <div class="info-section">
-                <h2>Welcome ${CURRENT_SESSION.user}!</h2>
+                <h2>Welcome ${CURRENT_SESSION.username}!</h2>
                 <p>What would you like to do today?</p>
             </div>
             <div class="button-section">
-                <button type="button" class="event-button">${eventSTORE[0].event_name}</button>
+                ${button}
                 <button type="button" class="make-new-event">New Event</button>
             </div>
         </div>`
 }
 
+function getUserEvents(){
+    console.log('get user events ran');
+    const events = $.ajax({
+        type: "GET",
+        url: `/event/byUserId/${CURRENT_SESSION.user_id}`,
+        contentType: 'application/json',
+        dataType: "json",
+        success: updateUserEvents
+    })
+}
+
+function updateUserEvents(data){
+    console.log('update user events')
+    console.log(data);
+    if (!(data === undefined || data.length === 0)){
+        const events = data.map((item, index) => renderUserEvents(item))
+    CURRENT_SESSION.user_events = events;
+    console.log(CURRENT_SESSION.user_events);
+    showWelcomePage();
+    }
+}
+
+function renderUserEvents(event){
+    console.log('render user events')
+
+    const data = {name: event.name,
+                  id: event.id}
+    //console.log(data)
+    return data;
+}
+
+function generateEventButtons(){
+    console.log('generate event buttons ran')
+    let button = []
+    console.log(CURRENT_SESSION.user_events);
+    if(!(CURRENT_SESSION.user_events[0].name === undefined)){
+        for(let i=0; i<CURRENT_SESSION.user_events.length; i++){
+            //console.log(i);
+            //console.log(`console.log(Event: ${CURRENT_SESSION.user_events[i].name}`);
+            button.push(`<button type="button" class="event-button" id="${CURRENT_SESSION.user_events[i].name}">${CURRENT_SESSION.user_events[i].name}</button>`)
+        }}
+    console.log(button)
+    return button;
+}
+
 function handleEventButton(){
-    $('.event-button').click(e => getEventInformation())
+    $('.event-button').click(function(e){
+        let name = this.id;
+        console.log(name)
+        getEventInformation(name)
+    }) 
 }
 
 function handleNewEventButton(){
@@ -91,17 +261,18 @@ function handleSubmitNewEvent(){
                 start_date: $(this).find('#event-start-date').val(),
                 end_date: $(this).find('#event-end-date').val()
             },
-            event_organizer: CURRENT_SESSION.user_id
+            event_organizer: CURRENT_SESSION.user_id,
+            event_members: CURRENT_SESSION.user_id
         }
         console.log(event);
         postNewEvent(event);
     })
 }
 
-function getEventInformation(){
+function getEventInformation(event){
     $.ajax({
         type: "GET",
-        url: `/event/${CURRENT_SESSION.event_id}`,
+        url: `/event/${event}`,
         contentType: 'application/json',
         success: showEventPage,
         dataType: "json"
@@ -168,6 +339,7 @@ function showNewEventPage(data){
     $('.all-activities').html(activity);
     handleEditEventButtons();
     handleDeleteEvent();
+    handleViewProfile()
     handleNewActivity();
     handleRSVP();
 }
@@ -194,7 +366,8 @@ function renderEvent(name, location, dates){
         </div>
         <div class="button-section">
             <button type="button" class="js-delete-event not-organizer">Delete</button> 
-            <button type="button" class="js-make-activity">New Activity</button>    
+            <button type="button" class="js-make-activity">New Activity</button>
+            <button type="button" class="js-user-profile">View Profile</button>    
         </div>`    
 }
 
@@ -317,7 +490,7 @@ function DeleteEvent(){
     })
 }
 
-function handleEditEventButton(){
+/*function handleEditEventButton(){
     $('.edit-event-form').submit(function(e){
         e.preventDefault();
         let name =  $(this).find('#event-name').val();
@@ -328,6 +501,21 @@ function handleEditEventButton(){
         console.log(location);
         updateEvent(name, location, start, end);
     })
+}*/
+
+function handleViewProfile(){
+    $('.js-user-profile').click(function(e){
+        console.log('view profile button clicked')
+
+    })
+}
+
+function showUserPage(){
+
+}
+
+function renderUserPage(){
+    
 }
 
 //displays activites that have been created under the event
@@ -498,6 +686,6 @@ function returnToEvent(){
     $('.back-to-event').click(e => getEventInformation());
 }
 
-handleLogin();
+handleStartButtons();
 handleActivity();
 handleCloseModal();
