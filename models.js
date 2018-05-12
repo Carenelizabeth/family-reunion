@@ -32,19 +32,15 @@ eventSchema.methods.serialize = function(){
     };
 };
 
-const costSchema = new Schema({
-    adults: Number,
-    kids: Number,
-    group: Number,
-    group_size: Number
-})
-
 const activitySchema = new Schema({
     activity_name: {type: String, required: true},
     activity_description: String,
     activity_date: String,
     activity_time: String,
-    activity_cost: costSchema,
+    kid_cost: Number,
+    adult_cost: Number,
+    group_cost: Number,
+    group_size: Number,
     activity_host: String,
     attendees: [String]
 })
@@ -55,10 +51,10 @@ activitySchema.methods.serialize = function(){
         description: this.activity_description,
         date: this.activity.date,
         time: this.activity_time,
-        kid_cost: this.activity_cost.kids,
-        adult_cost: this.activity_cost.adults,
-        group_cost: this.activity_cost.groups,
-        group_size: this.activity_cost.group_size,
+        kid_cost: this.kid_cost,
+        adult_cost: this.activity_cost,
+        group_cost: this.group_cost,
+        group_size: this.group_size,
         host: this.activity_host
     }
 }
