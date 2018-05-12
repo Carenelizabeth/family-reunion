@@ -153,7 +153,7 @@ function showWelcomePage(data){
 
 function renderWelcome(){
     let button = generateEventButtons()
-    //console.log(button);
+    console.log(button);
     return`
         <div class="wrapper">
             <div class="info-section">
@@ -201,13 +201,14 @@ function renderUserEvents(event){
 function generateEventButtons(){
     console.log('generate event buttons ran')
     let button = []
-    if(!(CURRENT_SESSION.user_events.name === undefined)){
+    console.log(CURRENT_SESSION.user_events);
+    if(!(CURRENT_SESSION.user_events[0].name === undefined)){
         for(let i=0; i<CURRENT_SESSION.user_events.length; i++){
             //console.log(i);
             //console.log(`console.log(Event: ${CURRENT_SESSION.user_events[i].name}`);
             button.push(`<button type="button" class="event-button" id="${CURRENT_SESSION.user_events[i].name}">${CURRENT_SESSION.user_events[i].name}</button>`)
         }}
-    //console.log(button)
+    console.log(button)
     return button;
 }
 
@@ -260,7 +261,8 @@ function handleSubmitNewEvent(){
                 start_date: $(this).find('#event-start-date').val(),
                 end_date: $(this).find('#event-end-date').val()
             },
-            event_organizer: CURRENT_SESSION.user_id
+            event_organizer: CURRENT_SESSION.user_id,
+            event_members: CURRENT_SESSION.user_id
         }
         console.log(event);
         postNewEvent(event);
