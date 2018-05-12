@@ -41,7 +41,7 @@ router.get('/:name', (req, res) => {
 router.get('/byUserId/:id', (req, res) => {
     console.log(req.params.id);
     Event
-        .find({event_organizer: req.params.id}, {event_members: req.params.id})
+        .find({event_organizer: req.params.id})
         .then(events =>{
             res.json(events.map(event => event.serialize()));
         })

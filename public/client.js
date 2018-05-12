@@ -97,7 +97,7 @@ function getUserData(token){
 }
 
 function updateSessionInformation(data){
-    console.log('update' + data);
+    console.log(data);
     CURRENT_SESSION.username = data.username;
     CURRENT_SESSION.user_id = data.id;
     console.log(CURRENT_SESSION.username);
@@ -179,9 +179,8 @@ function getUserEvents(){
 }
 
 function updateUserEvents(data){
-    updateSessionInformation(data);
     console.log('update user events')
-    //console.log(data);
+    console.log(data);
     if (!(data === undefined || data.length === 0)){
         const events = data.map((item, index) => renderUserEvents(item))
     CURRENT_SESSION.user_events = events;
@@ -192,6 +191,7 @@ function updateUserEvents(data){
 
 function renderUserEvents(event){
     console.log('render user events')
+
     const data = {name: event.name,
                   id: event.id}
     //console.log(data)
