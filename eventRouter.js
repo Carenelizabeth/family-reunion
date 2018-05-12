@@ -20,7 +20,6 @@ app.use(express.json());
 router.get('/', (req,res) =>{
     Event
         .find()
-        //.populate({path: 'event_organizer'})
         .then(events => 
             {res.json(events.map(event => event.serialize()));
         })
@@ -42,7 +41,7 @@ router.get('/:name', (req, res) => {
 router.get('/byUserId/:id', (req, res) => {
     console.log(req.params.id);
     Event
-        .find({event_organizer: req.params.id})
+        .find({event_organizer: req.params.id}, {event_members: req.params.id})
         .then(events =>{
             res.json(events.map(event => event.serialize()));
         })
@@ -98,6 +97,19 @@ router.put('/:id', (req, res) => {
         .then(updatedEvent => res.status(204).end())
         .catch(err => res.status(500).json({ message: 'Something went wrong' }));
 
+})
+
+router.put('/adduser/:id', (req, res) => {
+    if (!(req.params.id && req.body.id && req.params.id === req.body.id)) {
+        res.status(400).json({
+          error: 'Request path id and request body id values must match'
+        });
+      }
+
+    Event
+      .findByIdAndUpdate(req.params.id, {$push: {event_members: req.body.userId}})
+      .then(updatedEvent => res.status(204).end())
+      .catch(err => res.status(500).json({message: 'Internal server error'}));
 })
 
 router.delete('/:id', (req, res) => {
