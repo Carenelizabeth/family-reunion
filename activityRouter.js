@@ -17,10 +17,10 @@ const app = express();
 app.use(morgan('common'));
 app.use(express.json());
 
-router.get('/', (req, res) => {
+router.get('/event/:eventId', (req, res) => {    
     Activity
-        .find()
-        .then(activities => res.json(activites.map(a => a.serialize())))
+        .find({eventId: req.params.eventId})
+        .then(activities => {res.json(activities.map(a => a.serialize()));})
         .catch(err =>{
             console.error(err);
             res.status(500).json({error: 'Internal server error'})
@@ -29,13 +29,13 @@ router.get('/', (req, res) => {
 
 router.get('/:id', (req,res) =>{
     Activity
-        .findById({id: req.params.id})
+        .findById(req.params.id)
         .then(a => res.json(a.serialize()))
         .catch(err => res.status(500).json({error: 'Internal server error'}));
 })
 
 router.post('/', (req, res) =>{
-    const required = ['activity_name', 'activity_description']
+    const required = ['eventId', 'activity_name', 'activity_description', 'activity_host']
     for(let i=0; i<required.length; i++){
         const field = required[i];
         if(!(field in req.body)){
@@ -47,6 +47,7 @@ router.post('/', (req, res) =>{
 
     Activity
         .create({
+            eventId: req.body.eventId,
             activity_name: req.body.activity_name,
             activity_description: req.body.activity_description,
             activity_date: req.body.activity_date,

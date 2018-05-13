@@ -9,6 +9,7 @@ const expect = chai.expect;
 const activityRouter = require('../activityRouter');
 
 const {Activity} = require('../models')
+const {Event} = require('../models')
 const {app, runServer, closeServer} = require('../server.js');
 const {TEST_DATABASE_URL} = require('../config.js')
 
@@ -20,23 +21,24 @@ function seedActivityData(){
     for (let i=1; i<=10; i++){
         activityData.push(generateActivityData());
     }
-    return activityData.insertMany(activityData)
+    return Activity.insertMany(activityData)
 }
 
 function generateActivityData(){
     return{
+        eventId: "5af4c9c6f4266d148c2bc6ad",
         activity_name: faker.lorem.word(),
         activity_description: faker.lorem.sentence(),
-        activity_date: lorem.data.future(),
-        activity_time: lorem.random.number(),
-        kid_cost: lorem.finance.amount(),
-        adult_cost: lorem.finance.amount(),
-        group_cost: lorem.finance.amount(),
-        group_size: lorem.random.number(),
-        activity_host: lorem.internet.userName(),
-        attendees: lorem.random.arrayElement(),
-        kid_number: lorem.random.number(),
-        adult_number: lorem.random.number()
+        activity_date: faker.date.future(),
+        activity_time: faker.random.number(),
+        kid_cost: faker.finance.amount(),
+        adult_cost: faker.finance.amount(),
+        group_cost: faker.finance.amount(),
+        group_size: faker.random.number(),
+        activity_host: faker.internet.userName(),
+        attendees: faker.random.arrayElement(),
+        kid_number: faker.random.number(),
+        adult_number: faker.random.number()
     }
 }
 
@@ -58,5 +60,26 @@ describe('Activity API endpoint', function(){
     });
     after(function(){
         return closeServer();
-    })
+    });
+
+    describe('GET endpoint', function(){
+        it('should return all activities associated with an event', function(){
+            let eventId = "5af4c9c6f4266d148c2bc6ad"
+            let res;
+            
+            return chai.request(app)
+                .get(`/activity/event/${eventId}`)
+                .then(function(_res){
+                    res = _res;
+                    expect(res).to.have.status(200);
+                    expect(res).to.be.json;
+                    expect(res.body).to.be.an('array');
+                    expect(res.body).to.have.length.of.at.least(1)
+                    return Activity.count()
+                    .then(function(count){
+                        expect(res.body).to.have.lengthOf(count);
+                    });
+                });
+        });
+    });
 })

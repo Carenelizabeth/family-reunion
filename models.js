@@ -33,6 +33,7 @@ eventSchema.methods.serialize = function(){
 };
 
 const activitySchema = new Schema({
+    eventId: String,
     activity_name: {type: String, required: true},
     activity_description: String,
     activity_date: String,
@@ -42,14 +43,18 @@ const activitySchema = new Schema({
     group_cost: Number,
     group_size: Number,
     activity_host: String,
-    attendees: [String]
+    attendees: [String],
+    kid_number:Number,
+    adult_number: Number
 })
 
 activitySchema.methods.serialize = function(){
     return{
+        id: this.id,
+        eventId: this.eventId,
         name: this.activity_name,
         description: this.activity_description,
-        date: this.activity.date,
+        date: this.activity_date,
         time: this.activity_time,
         kid_cost: this.kid_cost,
         adult_cost: this.activity_cost,
