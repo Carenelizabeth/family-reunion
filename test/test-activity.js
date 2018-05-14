@@ -81,5 +81,30 @@ describe('Activity API endpoint', function(){
                     });
                 });
         });
+
+        it('should return the correct activity when called by Id', function(){
+            let singleAct;
+
+            return Activity
+                .findOne()
+                .then(function(a){
+                    singleAct = a.body;
+                })
+
+            return chai.request(app)
+                .get(`activity/${singleAct.id}`)
+                .then(function(res){
+                    expect(res).to.be.an('object');
+                    expect(res).to.include.keys('id', 'eventId', 'activity_name', 'activity_host');
+                    return res
+                })
+                .then(function(res){
+                    expect(singleAct.id).to.equal(res.id);
+                    expect(singleAct.activity_name).to.equal(res.activity_name);
+                    expect(singleAct.activity_description).to.equal(res.activity_description);
+                    expect(singleAct.eventId).to.equal(res.eventId);
+                    expect(singleAct.activity_host).to.equal(res.activity_host);
+                })
+        })
     });
 })
