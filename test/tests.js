@@ -15,7 +15,7 @@ const {TEST_DATABASE_URL} = require('../config.js')
 chai.use(chaitHttp);
 
 function seedEventData(){
-    console.info('seeding event data');
+    //console.info('seeding event data');
     const eventData = []
     for(let i=1; i<=10; i++){
         eventData.push(generateEventData());
@@ -33,7 +33,7 @@ function generateEventData(){
 }
 
 function tearDownDb(){
-    console.warn('Deleting database');
+    //console.warn('Deleting database');
     return mongoose.connection.dropDatabase();
 }
 
@@ -95,7 +95,7 @@ describe('Event API endpoint', function(){
 
         it('should add a new event', function(){
             const newEvent = generateEventData();
-            console.log(newEvent);
+            //console.log(newEvent);
 
             return chai.request(app)
                 .post('/event')

@@ -15,7 +15,7 @@ const {TEST_DATABASE_URL} = require('../config.js')
 chai.use(chaitHttp);
 
 function seedUserData(){
-    console.info('seeding user data');
+    //console.info('seeding user data');
     const userData = []
     for(let i=1; i<=10; i++){
         userData.push(generateUserData())
@@ -32,7 +32,7 @@ function generateUserData(){
 }
 
 function tearDownDb(){
-    console.warn('Deleting database');
+    //console.warn('Deleting database');
     return mongoose.connection.dropDatabase();
 }
 
@@ -79,7 +79,7 @@ describe('User API endpoint', function(){
                         expect(user).to.include.keys('id', 'username', 'email');
                     });
                     singleUser = res.body[0];
-                    console.log(singleUser);
+                    //console.log(singleUser);
                     return User.findById(singleUser.id);
                 })
                 .then(function(user){
@@ -94,7 +94,7 @@ describe('User API endpoint', function(){
 
         it('should add a new user', function(){
             const newUser = generateUserData();
-            console.log(newUser);
+            //console.log(newUser);
 
             return chai.request(app)
                 .post('/user')
@@ -110,7 +110,7 @@ describe('User API endpoint', function(){
                 .then(function(nUser){
                     expect(nUser.username).to.equal(newUser.username);
                     expect(nUser.email).to.equal(newUser.email.toLowerCase());
-                    console.log(nUser)
+                    //console.log(nUser)
                 });
         });      
     });
@@ -150,15 +150,15 @@ describe('User API endpoint', function(){
                 .findOne()
                 .then(function(user){
                     deleteUser.id = user.id;
-                    console.log(`Something ${deleteUser.id}`);
+                    //console.log(`Something ${deleteUser.id}`);
                 })
             return chai.request(app)
-                console.log('Is this even running?')                     
+                //console.log('Is this even running?')                     
                 .delete(`/user/${deleteUser.id}`)
                 .then (function(res){
                     expect(res).to.have.status(204);
                     const deleted = User.findById(deleteUser.id);
-                    console.log(deleted);
+                    //console.log(deleted);
                     return deleted;
                 })
             .then(function(dUser){

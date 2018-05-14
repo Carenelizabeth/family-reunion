@@ -104,7 +104,88 @@ describe('Activity API endpoint', function(){
                     expect(singleAct.activity_description).to.equal(res.activity_description);
                     expect(singleAct.eventId).to.equal(res.eventId);
                     expect(singleAct.activity_host).to.equal(res.activity_host);
-                })
-        })
+                });
+        });
     });
-})
+
+    describe('POST endpoint', function(){
+        it('should create a new activity', function(){
+            const newAct = generateActivityData()
+            console.log(newAct);
+
+            return chai.request(app)
+                .post('/activity')
+                .send(newAct)
+                .then(function(res){
+                    //console.log(res);
+                    expect(res).to.have.status(201);
+                    expect(res).to.be.json;
+                    expect(res).to.include.keys('id', 'eventId', 'name', 'host');
+                    expect(res.body.name).to.equal(newAct.activity_name);
+                    expect(res.body.eventId).to.equal(newAct.eventId);
+                    expect(res.body.host).to.equal(newAct.activity_host);
+                    //return Activity.findById(res.body.id);
+                })
+                /*.then(function(nAct){
+                    expect(nAct.name).to.equal(newAct.activity_name);
+                    expect(nAct.eventId).to.equal(newAct.eventId);
+                    expect(nAct.host).to.equal(newAct.activity_host);
+                });*/
+        });
+    });
+
+    describe('PUT endpoint', function(){
+        it('should update included fields', function(){
+            const updateAct = {
+                activity_name: faker.lorem.word(),
+                activity_description: faker.lorem.sentence(),
+            }
+
+            return Activity
+                .findOne()
+                .then(function(act){
+                    updateAct.id = act.id;
+                    console.log(act);
+                    console.log(updateAct);
+                    console.log(updateAct.id);
+                return chai.request(app)
+                    .put(`/activity/${updateAct.id}`)
+                    .send(updateAct)
+                })
+            
+            .then(function(res){
+                expect(res).to.have.status(204);
+                return Activity.findById(updateAct.id);
+            })
+            .then(function(uAct){
+                expect(uAct.activity_name).to.equal(updateAct.activity_name);
+                expect(uAct.activity_description).to.equal(updateAct.activity_description);
+            })
+        });
+
+
+
+    });
+
+    describe('DELETE endpoint', function(){
+        it('should delete an activity by id', function(){
+            const deleteAct = {}
+
+            return Activity
+                .findOne()
+                .then(function(act){
+                    deleteAct.id = act.id;
+                })
+            return chai.request(app)
+                .delete(`/activity/${deleteAct.id}`)
+                .then(function(res){
+                    expect(res).to.have.status(204);
+                    const deleted = Activity.findById(deleteAct.id);
+                    return deleted;
+                })
+            .then(function(dAct){
+                expect(dAct).to.be.null;
+            })
+        });
+    });
+});

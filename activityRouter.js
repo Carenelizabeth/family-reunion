@@ -35,7 +35,7 @@ router.get('/:id', (req,res) =>{
 })
 
 router.post('/', (req, res) =>{
-    const required = ['eventId', 'activity_name', 'activity_description', 'activity_host']
+    const required = ['eventId', 'activity_name', 'activity_host']
     for(let i=0; i<required.length; i++){
         const field = required[i];
         if(!(field in req.body)){
@@ -56,7 +56,7 @@ router.post('/', (req, res) =>{
             adult_cost: req.body.adult_cost,
             group_cost: req.body.group_cost,
             groupe_size: req.body.group_cost,
-            activity_host: req.body.hostId,
+            activity_host: req.body.userId,
             attendees: req.body.userId
         })
         .then(event => res.status(201).json(event.serialize()))
@@ -73,21 +73,15 @@ router.put('/join/:id', (req, res) => {
         });
     }
 
-    const update = {};
-    const updateable = ['kid_number', 'adult_number']
-     updateable.forEach(field =>{
-        if (field in req.body){
-            update[field] = req.body[field]
-        }
-    });
-
     Activity
-      .findByIdAndUpdate(req.params.id, {$set:update}, {$push: {attendees: req.body.user}})
+      .findByIdAndUpdate(req.params.id, {$push: {attendees: req.body.userId}})
       .then(a => res.status(204).end())
-      .catch(err => res.status(204).end())
+      .catch(err => res.status(500).json({message: 'Internal server error'}));
 });
 
-router.put('/', (res, req) => {
+router.put('/:id', (req, res) => {
+    console.log(req.params.id);
+    console.log(req.body.id);
     if (!(req.params.id && req.body.id && req.params.id === req.body.id)) {
         res.status(400).json({
           error: 'Request path id and request body id values must match'
@@ -95,7 +89,7 @@ router.put('/', (res, req) => {
     }
 
     const update = {}
-    const updateable = ['activity_name', 'activity_description', 'activity_date', 'activity_time', 'kid_cost', 'adult_cost', 'group_cost', 'group_size']
+    const updateable = ['activity_name', 'activity_description', 'activity_date', 'activity_time', 'kid_cost', 'adult_cost', 'group_cost', 'group_size', 'kid_number', 'adult_number']
     updateable.forEach(field =>{
         if (field in req.body){
             update[field] = req.body[field]

@@ -60,7 +60,8 @@ activitySchema.methods.serialize = function(){
         adult_cost: this.activity_cost,
         group_cost: this.group_cost,
         group_size: this.group_size,
-        host: this.activity_host
+        host: this.activity_host,
+        attendees: [this.attendees]
     }
 }
 
