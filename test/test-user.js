@@ -92,7 +92,7 @@ describe('User API endpoint', function(){
 
     describe('POST endpoint', function(){
 
-        it('should add a new user', function(){
+        xit('should add a new user', function(){
             const newUser = generateUserData();
             //console.log(newUser);
 

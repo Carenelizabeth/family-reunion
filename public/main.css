@@ -94,13 +94,21 @@ label{
 
 form{
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
+    max-width: 960px;
+    flex-wrap: wrap;
 }
 
 fieldset{
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+}
+
+.input-line{
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
 }
 
 .fun-text{
@@ -155,11 +163,36 @@ i{
     display: flex;
 }
 
+.js-landing-page{
+    background-image: url(images/summerCamp.jpg);
+    background-size: cover;
+}
+
 .landing-page{
+    background-image: url(images/paperStack.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    background-color: rgba(255, 255, 255, .6);
+    display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     width: 100%;
+    position: relative;
+}
+
+.intro-text{
+    display: flex;
+}
+
+.login-buttons{
+    position: absolute;
+    width: 280px;
+    right: 5%;
+    bottom: 5%;
+    display: flex;
+    justify-content: space-between;
 }
 
 .js-login, .js-create-account{
@@ -178,6 +211,7 @@ i{
 
 input, legend{
     margin-bottom: 20px; 
+    margin-right: 10px;
 }
 
 legend, h2{
