@@ -7,6 +7,7 @@ const CURRENT_SESSION = {
     organizer_id: ""
 };
 
+//Initial set up, allowing user to choose to log in or create a new account
 function handleStartButtons(){
     $('.js-log-in').click(e => displayLogin());
     $('.js-make-account').click(e => displayCreateAccount());
@@ -24,20 +25,26 @@ function displayCreateAccount(){
     handleNewAccount();
 }
 
+//form for loggin in
 function renderLoginForm(){
     return`
         <form class="js-login">
             <fieldset>
                 <legend>Log In</legend>
-                <label for="login-username">username</label>
-                <input type="text" name="login-username" id="login-username" class="login-username">
-                <label for="user-password">Password</label>
-                <input type="text" name="user-password" id="user-password">
+                <div class="input-line"> 
+                    <label for="login-username">Username</label>
+                    <input type="text" name="login-username" id="login-username" class="login-username">
+                </div>
+                <div class="input-line"> 
+                    <label for="user-password">Password</label>
+                    <input type="text" name="user-password" id="user-password">
+                </div>
             </fieldset>
-            <button type="submit" class="js-login-button">Submit</button>
+            <button type="submit" class="js-login-button sticker">Submit</button>
         </form>`
 }
 
+//form for creating a new account
 function renderCreateAccount(){
     return`
         <form class="js-create-account">
@@ -50,7 +57,7 @@ function renderCreateAccount(){
                 <label for="user-password">Password</label>
                 <input type="text" name="user-password" id="user-password">
             </fieldset>
-            <button type="submit" class="js-create-account-button">Submit</button>
+            <button type="submit sticker" class="js-create-account-button">Submit</button>
         </form>`
 }
 
@@ -79,14 +86,15 @@ function handleLogin(username, password){
     })
 }
 
+//user data is retrieved and then used to retrieve the events that they are registered for
 function getUserData(token){
     console.log('get user data ran');
     let authToken = token.authToken;
-    //console.log(authToken);
+    console.log(authToken);
     $.ajax({
-        /*beforeSend: function(xhr){
-            xhr.setRequestHeader(`Authorization, Bearer: ${authToken}`)
-        },*/
+        beforeSend: function(xhr){
+            xhr.setRequestHeader(`Authorization`, `Bearer ${authToken}`)
+        },
         type: "GET",
         url: `/user/userdata/${CURRENT_SESSION.username}`,
         contentType: "application/json",
@@ -103,10 +111,7 @@ function updateSessionInformation(data){
     console.log(CURRENT_SESSION.username);
 }
 
-function doSomething(){
-    console.log('I did something');
-}
-
+//these next function handle creating a new user account
 function handleNewAccount(){
     $('.js-create-account').submit(function(e){
         e.preventDefault();
@@ -149,8 +154,6 @@ function showWelcomePage(data){
     handleNewEventButton();
 }   
 
-
-
 function renderWelcome(){
     let button = generateEventButtons()
     console.log(button);
@@ -167,9 +170,11 @@ function renderWelcome(){
         </div>`
 }
 
+//the next section makes a call to get events for a registered user, adds them to the
+//CURRENT_SESSION object and generates a button for each event which are displayed on the Welcome page
 function getUserEvents(){
     console.log('get user events ran');
-    const events = $.ajax({
+    $.ajax({
         type: "GET",
         url: `/event/byUserId/${CURRENT_SESSION.user_id}`,
         contentType: 'application/json',
@@ -212,14 +217,8 @@ function generateEventButtons(){
     return button;
 }
 
-function handleEventButton(){
-    $('.event-button').click(function(e){
-        let name = this.id;
-        console.log(name)
-        getEventInformation(name)
-    }) 
-}
-
+//this sections handles making a new event, including displaying a form, retrieving information,
+//posting a new event and displaying the event page
 function handleNewEventButton(){
     $('.make-new-event').click(e => newEventForm())
 }
@@ -269,6 +268,26 @@ function handleSubmitNewEvent(){
     })
 }
 
+function postNewEvent(data){
+    console.log('post new event ran');
+    $.ajax({
+        type: "POST",
+        url: "/event",
+        data: JSON.stringify(data),
+        contentType: 'application/json',
+        success: showEventPage,
+        dataType: "json"
+    })
+}
+
+function handleEventButton(){
+    $('.event-button').click(function(e){
+        let name = this.id;
+        console.log(name)
+        getEventInformation(name)
+    }) 
+}
+
 function getEventInformation(event){
     $.ajax({
         type: "GET",
@@ -292,59 +311,19 @@ function showEventPage(data){
     let name = data.name;
     let location = data.location;
     let dates = data.dates;
+    let id = data.id;
 
 
     const event = renderEvent(name, location, dates)
-    const activity = activitySTORE.map((item, index) => renderActivities(item));
+    retrieveActivities(id);
     //console.log(activity);
     $('.event-information').html(event);
-    $('.all-activities').html(activity);
-    handleEditEventButtons();
-    handleDeleteEvent();
-    handleNewActivity();
-    handleRSVP();
-}
-
-function postNewEvent(data){
-    console.log('post new event ran');
-    $.ajax({
-        type: "POST",
-        url: "/event",
-        data: JSON.stringify(data),
-        contentType: 'application/json',
-        success: showNewEventPage,
-        dataType: "json"
-    })
-}
-
-function showNewEventPage(data){
-    //console.log('show event page ran');
-    closeModal();
-    $('.js-welcome-page').addClass("hidden");
-    $('.js-activity-page').addClass("hidden");
-    $('.js-event-page').removeClass("hidden");
-
-    CURRENT_SESSION.event_id = data.id;
-    CURRENT_SESSION.organizer_id = data.organizer;
-
-    let name = data.name;
-    let location = data.location;
-    let dates = data.dates;
-
-
-    const event = renderEvent(name, location, dates)
-    const activity = activitySTORE.map((item, index) => renderActivities(item));
-    //console.log(activity);
-    $('.event-information').html(event);
-    $('.all-activities').html(activity);
     handleEditEventButtons();
     handleDeleteEvent();
     handleViewProfile()
     handleNewActivity();
     handleRSVP();
 }
-
-
 
 //displays main event as a banner
 function renderEvent(name, location, dates){
@@ -371,6 +350,7 @@ function renderEvent(name, location, dates){
         </div>`    
 }
 
+//buttons for editing event: only the host of event can edit
 function handleEditEventButtons(){
     $('.edit-event-name').click(function(e){
         const name = editEventName();
@@ -392,6 +372,7 @@ function handleEditEventButtons(){
     })
 }
 
+//forms for editing individual aspects of the events
 function editEventName(){
     return `
         <form class="js-edit-event-name">
@@ -424,6 +405,7 @@ function editEventDates(){
     `
 }
 
+//handle submitting forms
 function handleEditNameButton(){
     $('.js-edit-event-name').submit(function(e){
         e.preventDefault();
@@ -462,7 +444,7 @@ function handleEditDatesButton(){
     })
 }
 
-
+//update function for all event update forms
 function updateEvent(data){
     console.log(data);
     $.ajax({
@@ -476,6 +458,7 @@ function updateEvent(data){
     
 }
 
+//delete event
 function handleDeleteEvent(){
     $('.js-delete-event').click(e => DeleteEvent())
 }
@@ -489,19 +472,6 @@ function DeleteEvent(){
         dataType: "json"
     })
 }
-
-/*function handleEditEventButton(){
-    $('.edit-event-form').submit(function(e){
-        e.preventDefault();
-        let name =  $(this).find('#event-name').val();
-        let location =  $(this).find('#event-location').val();
-        let start =  $(this).find('#event-start-date').val();
-        let end =  $(this).find('#event-end-date').val();
-        console.log(name);
-        console.log(location);
-        updateEvent(name, location, start, end);
-    })
-}*/
 
 function handleViewProfile(){
     $('.js-user-profile').click(function(e){
@@ -519,10 +489,31 @@ function renderUserPage(){
 }
 
 //displays activites that have been created under the event
+function retrieveActivities(eventId){
+    console.log('retrieve activities')
+    console.log(eventId)
+
+    $.ajax({
+        type: "GET",
+        url: `/activity/event/${eventId}`,
+        contentType: 'application/json',
+        dataType: "json",
+        success: displayActivities
+    })
+}
+
+function displayActivities(data){
+    console.log('display activities');
+    console.log(data);
+    const activity = data.map((item, index) =>renderActivities(item))
+    $('.all-activities').html(activity);
+}
+
 function renderActivities(results){
     console.log(results.activity_name)
     let price;
-    if(results.activity_cost == undefined || results.activity_cost == 0){
+    //if ((results.adult_cost || results.kid_cost) && (results.adult_cost > 0 || results.kid_cost > 0))
+    if(!results.adult_cost || results.adult_cost === 0){
         price = "free"
     }
     else{
@@ -531,108 +522,17 @@ function renderActivities(results){
     console.log(price);
     return `        
         <div class="activity">
-            <h2 class="activity-name">${results.activity_name}</h2>
-            <div>
-                <p>Host: <span class="fun-text">${results.host_name}</span></p>
-            </div>
+            <h2 class="activity-name">${results.name}</h2>
             <div class="attending">
                 <p>How many are going?</p>
-                <p class="fun-text">${results.adults_attending} adults   ${results.children_attending} kids</p>
+                <p class="fun-text">${results.adult_number} adults   ${results.kid_number} kids</p>
             </div>
             <div>
                 <p class="activity-cost">Cost: <span="fun-text">${price}</span></p>
             </div>
             <button type="button" class="js-RSVP">RSVP</button>
          </div>`;
-    }
-
-//form for creating a new activity; appears in modal
-function createActivity(){
-    return`
-        <section class="make-activity-page">
-            <form class="js-activity-form">
-                <fieldset>
-                    <legend>Required Fields</legend>
-                        <label for="activity-name">Activity name</label>
-                        <input type="text" name="activity-name" id="activity-name">
-                        <h3>Give a brief description</h3>
-                        <textarea class="text-input"></textarea>
-                </fieldset>
-                <fieldset>
-                    <legend>Optional Fields</legend>
-                        <label for="activity-date">Date</label>
-                        <input type="date" name="activity-date" id="activity-date" class="date">
-                        <label for="activity-time">Time</label>
-                        <input type="time" name="activity-time" id="activity-time">
-                        <label for="activity-cost">Price</label>
-                        <input type="number" step="0.01" name="activity-cost" id="activity-cost">
-                        <label for="kid-friendly">Suitable for chldren under 12?</label>
-                        <input type="checkbox" name="kid-friendly" id="kid-friendly">
-                </fieldset>
-                <button type="submit" class="submit-new-activity">Submit</button>
-            </form>
-        </section>`
 }
-
-//form for adding a response; appears in modal
-function respondActivity(){
-    return`        
-        <section class="rsvp-page">
-            <form class="js-rsvp-form">
-                <h2>${activitySTORE[0].activity_name}</h2>
-                <fieldset>
-                    <legend>Who's coming?</legend>
-                    <label for="kids-attending">Kids (under 12)</label>
-                    <input type="number" max="10" name="kids-attending" id="kids-attending">
-                    <label for="adults-attending"></label>
-                    <input type="number" max="10" name="adults-attending" id="adults-attending">
-                </fieldset>
-                <h3>Add additional comments</h3>
-                <textarea class="text-input"></textarea>
-                <button type="submit" class="submit-rsvp">Submit</button>
-            </form>
-        </section>`
-}
-
-function showActivityPage(){
-    $('.js-event-page').addClass("hidden");
-    $('.js-activity-page').removeClass("hidden");
-    const activity = renderActivityPage();
-    console.log(activity);
-    $('.activity-page').html(activity);
-    returnToEvent();
-    handleRSVP();
-}
-
-function renderActivityPage(){
-    return`            
-        <div class="activity-details wrapper">
-                <button type="button" class="back-to-event">Return to event</button>
-                <h2>${activitySTORE[0].activity_name}</h2>
-                <p>Optional date and time</p>
-                <p>Host: <span class="fun-text">${activitySTORE[0].host_name}</span></p>
-                <p>Email host, maybe</p>
-                <p>${activitySTORE[0].activity_description}</p>
-                <p class="activity-cost">Cost: <span="fun-text">$500</span></p>
-                <p class="fun-text">${activitySTORE[0].adults_attending} adults   ${activitySTORE[0].children_attending} kids</p>
-                <button type="button" class="js-RSVP">RSVP</button>
-        </div>
-        <div class="activity-discussion wrapper">
-            <p class="group-message">${activitySTORE[0].activity_notes}</p>
-            <textarea class="text-input"></textarea>
-            <button type="button">Post</button>
-        </div>`
-}
-
-function openModal(){
-    $('.contain-modal').removeClass("behind")
-}
-
-function closeModal(){
-    $('.contain-modal').addClass("behind")
-}
-
-
 
 function handleNewActivity(){
     $('.js-make-activity').click(e =>{
@@ -660,18 +560,155 @@ function handleActivity(){
     });
 };
 
-function handleCloseModal(){
-    $('.overlay').click(e => closeModal());
+//form for creating a new activity; appears in modal
+function createActivity(){
+    return`
+            <form class="js-activity-form">
+                <fieldset>
+                    <legend>Provide Activity Information</legend>
+                    <div class="input-line">    
+                        <label for="activity-name">Activity name</label>
+                        <input type="text" name="activity-name" id="activity-name">
+                    </div>
+                    <div class="input-line"> 
+                        <label>Additional information</label>
+                    </div>
+                        <textarea class="text-input comments"></textarea>
+                    <div class="input-line"> 
+                        <label for="activity-date">Date</label>
+                        <input type="date" name="activity-date" id="activity-date" class="date">
+                    </div>
+                    <div class="input-line"> 
+                        <label for="activity-time">Time</label>
+                        <input type="time" name="activity-time" id="activity-time">
+                    </div>
+                    <div class="input-line">                      
+                        <input type="checkbox" name="kid-friendly" id="kid-friendly">
+                        <label for="kid-friendly">Children under 12?</label>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>How much will it cost?</legend>
+                    <div class="input-line"> 
+                        <input type="number" step="0.01" name="adult-cost" id="adult-cost" placeholder="5.00">
+                        <label for="adult-cost">per adult</label>
+                    </div>
+                    <div class="input-line"> 
+                        <input type="number" step="0.01" name="kid-cost" id="kid-cost" placeholder="3.00">
+                        <label for="kid-cost">per child under 12</label>
+                    </div>
+                    <div class="input-line"> 
+                        <input type="number" step="0.01" name="group-cost" id="group-cost" placeholder="80.00">
+                        <label for="group-cost">per group of</label>
+                    </div>
+                    <div class="input-line"> 
+                        <input type="number" step="1" name="group-size" id="group-size" placeholder="10">
+                        <label for="group-size">people</label>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>Who else are you bringing?</legend>
+                    <div class="input-line">
+                        <label for="kids-attending">Kids (under 12)</label>
+                        <input type="number" max="10" name="kids-attending" id="kids-attending">
+                    </div>
+                    <div class="input-line">
+                        <label for="adults-attending">Adults</label>
+                        <input type="number" max="10" name="adults-attending" id="adults-attending">
+                    </div>    
+                <button type="submit" class="submit-new-activity">Submit</button>
+            </form>`
 }
 
 function handleSubmitNewActivity(){
-    $('.js-activity-form').on('submit', function(event){
-        event.preventDefault();
-        showActivityPage();
-        closeModal();
+    $('.js-activity-form').on('submit', function(e){
+        e.preventDefault();
+        let kids = $(this).find('#kids-attending') || 0;
+        let adults = 1 + $(this).find('#adults-attending').val()
+        let data = {
+            eventId: CURRENT_SESSION.event_id,
+            activity_name: $(this).find('#activity-name').val(),
+            activity_date: $(this).find('#activity-date').val(),
+            activity_time: $(this).find('#activity-time').val(),
+            kid_cost: $(this).find('#kid-cost').val(),
+            adult_cost: $(this).find('#adult-cost').val(),
+            group_cost: $(this).find('#group-cost').val(),
+            group_size: $(this).find('#group-size').val(),
+            activity_host: CURRENT_SESSION.user_id,
+            attendees: CURRENT_SESSION.user_id,
+            kid_number: kids,
+            adult_number: adults,
+            activity_comments: $(this).find('.comments').val()
+        }
         console.log('handle submit activity ran');
+        console.log(data);
+        console.log(CURRENT_SESSION.user_id);
+        postNewActivity(data);
+        //showActivityPage();
+        closeModal();
     });
 };
+
+function postNewActivity(data){
+    $.ajax({
+        type: "POST",
+        url: "/activity",
+        data: JSON.stringify(data),
+        contentType: "application/json",
+        success: showActivityPage,
+        dataType: "json"
+    })
+}
+
+function showActivityPage(){
+    $('.js-event-page').addClass("hidden");
+    $('.js-activity-page').removeClass("hidden");
+    const activity = renderActivityPage();
+    //console.log(activity);
+    $('.activity-page').html(activity);
+    returnToEvent();
+    handleRSVP();
+}
+
+function renderActivityPage(){
+    return`            
+        <div class="activity-details wrapper">
+                <button type="button" class="back-to-event">Return to event</button>
+                <h2>${activitySTORE[0].activity_name}</h2>
+                <p>Optional date and time</p>
+                <p>Host: <span class="fun-text">${activitySTORE[0].host_name}</span></p>
+                <p>Email host, maybe</p>
+                <p>${activitySTORE[0].activity_description}</p>
+                <p class="activity-cost">Cost: <span="fun-text">$500</span></p>
+                <p class="fun-text">${activitySTORE[0].adults_attending} adults   ${activitySTORE[0].children_attending} kids</p>
+                <button type="button" class="js-RSVP">RSVP</button>
+        </div>
+        <div class="activity-discussion wrapper">
+            <p class="group-message">${activitySTORE[0].activity_notes}</p>
+            <textarea class="text-input"></textarea>
+            <button type="button">Post</button>
+        </div>`
+}
+
+//form for adding a response; appears in modal
+function respondActivity(){
+    return`        
+        <section class="rsvp-page">
+            <form class="js-rsvp-form">
+                <h2>${activitySTORE[0].activity_name}</h2>
+                <fieldset>
+                    <legend>Who's coming?</legend>
+                    <label for="kids-attending">Kids (under 12)</label>
+                    <input type="number" max="10" name="kids-attending" id="kids-attending">
+                    <label for="adults-attending"></label>
+                    <input type="number" max="10" name="adults-attending" id="adults-attending">
+                </fieldset>
+                <h3>Add additional comments</h3>
+                <textarea class="text-input"></textarea>
+                <button type="submit" class="submit-rsvp">Submit</button>
+            </form>
+        </section>`
+}
 
 function handleSubmitResponse(){
     $('.js-rsvp-form').submit(e =>{
@@ -683,7 +720,21 @@ function handleSubmitResponse(){
 }
 
 function returnToEvent(){
-    $('.back-to-event').click(e => getEventInformation());
+    console.log('return to event')
+    let event = CURRENT_SESSION.event;
+    $('.back-to-event').click(e => getEventInformation(event));
+}
+
+function openModal(){
+    $('.contain-modal').removeClass("behind")
+}
+
+function closeModal(){
+    $('.contain-modal').addClass("behind")
+}
+
+function handleCloseModal(){
+    $('.overlay').click(e => closeModal());
 }
 
 handleStartButtons();

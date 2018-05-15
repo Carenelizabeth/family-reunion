@@ -52,15 +52,15 @@ table {
 *{box-sizing: border-box;}
 
 body{
-    background-color: #96BDB4;
+    background-image: url(images/cork.png);
 }
 
 main{
+    background-image: url(images/cork.png);
     width: 100%;
     height: 100vh;
     display: flex;
     justify-content: center;
-    background-color:#96BDB4;
 }
 
 section{
@@ -68,8 +68,8 @@ section{
     height: 100vh;
 }
 
-h1, h2, legend{
-    color: #7A1008;
+h2{
+    color: #021D59;
     font-size: 28px;
     font-family: 'Roboto', sans-serif;
     font-weight: bold;
@@ -77,12 +77,46 @@ h1, h2, legend{
 }
 
 h1{
+    color: #024C24;
     padding: 10px 0;
-    font-size: 40px;
-    font-family: 'Pangolin', cursive;
+    margin-bottom: 10px;
+    font-size: 50px;
+    font-family: 'Walter Turncoat', cursive;
 }
 
-p, label{
+button {
+    display: inline-block;
+    border: none;
+    padding: 1rem 2rem;
+    margin: 0;
+    text-decoration: none;
+    background-color: rgba(0,0,0,0);
+    font-family: sans-serif;
+    font-size: 1rem;
+    cursor: pointer;
+    text-align: center;
+    transition: background 250ms ease-in-out, 
+                transform 150ms ease;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+button:hover,
+button:focus {
+    box-shadow: 2px, 2px, 2px
+}
+
+button:focus {
+    outline: 1px solid #BF4B05;
+    outline-offset: -4px;
+}
+
+button:active {
+    transform: scale(0.99);
+}
+
+p,{
     line-height: 1.6em;
     font-size: 18px;
     font-family: 'Roboto', sans-serif;
@@ -90,6 +124,9 @@ p, label{
 
 label{
     font-weight: bold;
+    color: #021D59;
+    margin-right: 20px;
+    font-size: 22px;
 }
 
 form{
@@ -109,20 +146,39 @@ fieldset{
     color: #0F402F;
 }
 
-button{
-    background-color: #F4FFDD;
-    /*min-height: 50px;
-    min-width: 150px;
-    max-width: 200px;*/
-    border: solid 2px #0F4030;
-    border-radius: 5%;
+.sticker{
+    background-image: url(images/sticker-rectangle.png);
+    background-size: contain;
+    background-repeat: no-repeat;
     font-size: 24px;
-    font-family: 'Pangolin', cursive;
+    min-width: 150px;
+    max-width: 200px;
+    padding: 10px;
+    color: #FFF485;
 }
 
-button :hover{
-    background-color:  #0F4030;
-    color:  #F4FFDD;
+.intro-checklist{
+    padding-left: 20px;
+    color: #021D59;
+    font-weight: bold;
+    line-height: 1.6em;
+    max-width: 400px;
+    flex: auto;
+}
+
+.checklist{
+    font-size: 24px;
+    line-height: 2em;
+}
+
+.checklist::before{
+    content: url(images/checkmark.png)
+}
+
+.emphasis{
+    color: #0F4030;
+    font-size: 24px;
+    font-weight: bold;
 }
 
 .edit{
@@ -147,43 +203,115 @@ i{
 }
 
 .content{
-    background-color: rgba(255, 255, 255, .6);
-    width: 980px;
     height: 100vh;
     padding: 40px;
     margin: 0 auto;
     display: flex;
 }
 
+.js-landing-page{
+    background:
+        linear-gradient(
+            rgba(255, 255, 255, .6),
+            rgba(255, 255, 255, .6)
+        ),url(images/summerCamp.jpg);
+    background-color: rgba(255, 255, 255, .6);
+    background-size: cover;
+}
+
 .landing-page{
+    background-image: url(images/paperStack.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    width: 100%;
 }
 
-.js-login, .js-create-account{
+.intro-content{
+    display: flex;
+    margin: 25px 0;
+}
+
+.intro-text{
+    max-width: 960px;
+    margin: 0 auto;
+    padding-left: 5%;
+    -ms-transform: rotate(-2deg); /* IE 9 */
+    -webkit-transform: rotate(-2deg); /* Safari */
+    transform: rotate(-2deg);
     display: flex;
     flex-direction: column;
-    background-color: white;
-    border: solid 2px #47233F;
-    border-radius: 2%;
-    padding: 40px;
-    -webkit-box-shadow: 10px 14px 21px 0px rgba(54,54,54,0.75);
-    -moz-box-shadow: 10px 14px 21px 0px rgba(54,54,54,0.75);
-    box-shadow: 10px 14px 21px 0px rgba(54,54,54,0.75);
+    flex: auto;
 }
 
+.login-buttons{
+    display: flex;
+    justify-content: flex-start;
+}
 
+.js-make-account{
+    -ms-transform: rotate(-2deg); /* IE 9 */
+    -webkit-transform: rotate(-2deg); /* Safari */
+    transform: rotate(-2deg);
+    margin-left: 10px;
+}
+
+.js-log-in{
+    margin-left: 10px;
+    -ms-transform: rotate(3deg); /* IE 9 */
+    -webkit-transform: rotate(3deg); /* Safari */
+    transform: rotate(3deg);
+}
+
+.sample-buttons{
+    display: flex;
+    flex-wrap: wrap-reverse;
+    align-content: center;
+    width: 250px;
+    margin-left: -50px;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.sample-user{
+    background-image: url(images/sticker-circle.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 100px;
+    height: 100px;
+    font-weight: bold;
+    text-align: center;
+    color: #FFCC66;
+    line-height: 1.2em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.js-login{
+    -ms-transform: rotate(-2deg);
+    -webkit-transform: rotate(-2deg);
+    transform: rotate(-2deg);
+    min-height: 300px;
+}
+
+.js-login .sticker{
+    align-self: flex-end;
+}
+
+legend{
+    font-family: 'Walter Turncoat', cursive;
+    color: #0F4030;
+    font-size: 32px;
+
+}
 
 input, legend{
     margin-bottom: 20px; 
 }
 
-legend, h2{
-    font-size: 24px;
-    font-weight: bold;
-}
 
 input{
     height: 40px;
