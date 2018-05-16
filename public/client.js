@@ -25,36 +25,56 @@ function displayCreateAccount(){
     handleNewAccount();
 }
 
+<<<<<<< HEAD
 //form for loggin in
+=======
+//form for loggin ing
+>>>>>>> master
 function renderLoginForm(){
     return`
+    <div class="paper">
+        <div class="thumb-green"></div>
         <form class="js-login">
             <fieldset>
                 <legend>Log In</legend>
-                <label for="login-username">username</label>
-                <input type="text" name="login-username" id="login-username" class="login-username">
-                <label for="user-password">Password</label>
-                <input type="text" name="user-password" id="user-password">
+                <div class="input-line"> 
+                    <label for="login-username">Username</label>
+                    <input type="text" name="login-username" id="login-username" class="login-username">
+                </div>
+                <div class="input-line"> 
+                    <label for="user-password">Password</label>
+                    <input type="text" name="user-password" id="user-password">
+                </div>
             </fieldset>
-            <button type="submit" class="js-login-button">Submit</button>
-        </form>`
+            <button type="submit sticker" class="js-login-button sticker">Submit</button>
+        </form>
+    </div>`
 }
 
 //form for creating a new account
 function renderCreateAccount(){
     return`
+    <div class="paper">
+        <div class="thumb-green"></div>
         <form class="js-create-account">
             <fieldset>
                 <legend>Create New Account</legend>
-                <label for="create-user-name">Choose a public user name</label>
-                <input type="text" name="create-user-name" id="create-user-name">
-                <label for="login-email">Email</label>
-                <input type="text" name="login-email" id="login-email" class="user-email">
-                <label for="user-password">Password</label>
-                <input type="text" name="user-password" id="user-password">
+                <div class="input-line"> 
+                    <label for="create-user-name">Choose a public user name</label>
+                    <input type="text" name="create-user-name" id="create-user-name">
+                </div>
+                <div class="input-line"> 
+                    <label for="login-email">Email</label>
+                    <input type="text" name="login-email" id="login-email" class="user-email">
+                </div>
+                <div class="input-line"> 
+                    <label for="user-password">Password</label>
+                    <input type="text" name="user-password" id="user-password">
+                </div>
             </fieldset>
-            <button type="submit" class="js-create-account-button">Submit</button>
-        </form>`
+            <button type="submit" class="js-create-account-button sticker">Submit</button>
+        </form>
+    </div>`
 }
 
 //The next section handles user login and selecting the event
@@ -142,6 +162,7 @@ function showWelcomePage(data){
     $('.js-landing-page').addClass("hidden");
     $('.js-welcome-page').removeClass("hidden");
     $('.js-event-page').addClass("hidden");
+    $('.js-nav-bar').removeClass("hidden");
 
     const welcome = renderWelcome();
     $('.welcome-page').html(welcome);
@@ -154,14 +175,20 @@ function renderWelcome(){
     let button = generateEventButtons()
     console.log(button);
     return`
-        <div class="wrapper">
+        <div class="paper">
+            <div class="thumb-red"></div>
             <div class="info-section">
                 <h2>Welcome ${CURRENT_SESSION.username}!</h2>
-                <p>What would you like to do today?</p>
+                <p class="emphasis">What would you like to do today?</p>
             </div>
             <div class="button-section">
-                ${button}
-                <button type="button" class="make-new-event">New Event</button>
+                <div class="event-buttons">
+                    ${button}
+                </div>
+                <div class="task-buttons">
+                    <button type="button" class="invite-friends circle-sticker">Invite Friends</button>
+                    <button type="button" class="make-new-event red-sticker">New Event</button>
+                </div>
             </div>
         </div>`
 }
@@ -207,7 +234,7 @@ function generateEventButtons(){
         for(let i=0; i<CURRENT_SESSION.user_events.length; i++){
             //console.log(i);
             //console.log(`console.log(Event: ${CURRENT_SESSION.user_events[i].name}`);
-            button.push(`<button type="button" class="event-button" id="${CURRENT_SESSION.user_events[i].name}">${CURRENT_SESSION.user_events[i].name}</button>`)
+            button.push(`<button type="button" class="event-button generate-sticker" id="${CURRENT_SESSION.user_events[i].name}">${CURRENT_SESSION.user_events[i].name}</button>`)
         }}
     console.log(button)
     return button;
@@ -324,7 +351,8 @@ function showEventPage(data){
 //displays main event as a banner
 function renderEvent(name, location, dates){
     return `
-        <div class="info-section">
+        <div class="event-info-section">
+            <div class="thumb-red"></div>
             <div class="include-edit">
                 <h1 class="event-name">${name}</h1>
                 <button type="button" class="edit edit-event-name not-organizer">edit</button>
@@ -337,12 +365,11 @@ function renderEvent(name, location, dates){
                 <p>When? <span class="fun-text">${dates}</span></p>
                 <button type="button" class="edit edit-event-dates not-organizer">edit</button>
             </div>
-            <p>Join a fun activity below or create your own!</p>
+            <p class="emphasis">Join a fun activity below or create your own!</p>
         </div>
-        <div class="button-section">
-            <button type="button" class="js-delete-event not-organizer">Delete</button> 
-            <button type="button" class="js-make-activity">New Activity</button>
-            <button type="button" class="js-user-profile">View Profile</button>    
+        <div class="event-button-section">
+            <button type="button" class="js-delete-event not-organizer sticker">Delete</button> 
+            <button type="button" class="js-make-activity circle-sticker">New Activity</button>   
         </div>`    
 }
 
@@ -609,7 +636,11 @@ function createActivity(){
                         <input type="number" max="10" name="kids-attending" id="kids-attending">
                     </div>
                     <div class="input-line">
+<<<<<<< HEAD
                         <label for="adults-attending"></label>
+=======
+                        <label for="adults-attending">Adults</label>
+>>>>>>> master
                         <input type="number" max="10" name="adults-attending" id="adults-attending">
                     </div>    
                 <button type="submit" class="submit-new-activity">Submit</button>
