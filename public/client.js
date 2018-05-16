@@ -348,7 +348,7 @@ function showEventPage(data){
 function renderEvent(name, location, dates){
     return `
         <div class="event-info-section">
-            <div class="thumbtacks"><div class="thumb-green"></div><div class="thumb-red"></div></div>
+            <div class="thumb-red"></div>
             <div class="include-edit">
                 <h1 class="event-name">${name}</h1>
                 <button type="button" class="edit edit-event-name not-organizer">edit</button>
