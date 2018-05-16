@@ -7,6 +7,8 @@ const CURRENT_SESSION = {
     organizer_id: ""
 };
 
+
+
 //Initial set up, allowing user to choose to log in or create a new account
 function handleStartButtons(){
     $('.js-log-in').click(e => displayLogin());
@@ -14,22 +16,20 @@ function handleStartButtons(){
 }
 
 function displayLogin(){
+    $('.landing-page').addClass("hidden");
     const login = renderLoginForm();
-    $('.landing-page').html(login);
+    $('.login-page').html(login);
     handleLoginButton();
 }
 
 function displayCreateAccount(){
+    $('.landing-page').addClass("hidden");
     const createUser = renderCreateAccount();
-    $('.landing-page').html(createUser);
+    $('.login-page').html(createUser);
     handleNewAccount();
 }
 
-<<<<<<< HEAD
-//form for loggin in
-=======
 //form for loggin ing
->>>>>>> master
 function renderLoginForm(){
     return`
     <div class="paper">
@@ -85,6 +85,8 @@ function handleLoginButton(){
         let password = $(this).find('#user-password').val();
         CURRENT_SESSION.username = username;
         handleLogin(username, password);
+        $(this).find('#login-username').val("");
+        $(this).find('#user-password').val("");
     });
 };
 
@@ -155,6 +157,38 @@ function createAccount(data){
     .then(showWelcomePage)
 }
 
+//the nav bar is displayed for the first time on the welcome page
+function handleNavButtons(){
+    $('.nav-welcome').click(e => showWelcomePage());
+    $('.nav-event').click(e => handleNavEvent());
+    $('.nav-logout').click(e => Logout());
+    //handleInvite();
+    //handleProfile();
+    //handleLogout();    
+}
+
+function handleNavEvent(){
+    let event = CURRENT_SESSION.event;
+    console.log(event);
+    getEventInformation(event);
+}
+
+function Logout(){
+        CURRENT_SESSION.username = "";
+        CURRENT_SESSION.user_id = "";
+        CURRENT_SESSION.user_events = "";
+        CURRENT_SESSION.event = "";
+        CURRENT_SESSION.event_id = "";
+        CURRENT_SESSION.organizer_id = "";
+
+    $('.js-nav-bar').addClass("hidden")
+    $('.js-landing-page').removeClass("hidden")
+    $('.js-login-page').addClass("hidden")
+    $('.js-welcome-page').addClass("hidden")
+    $('.js-event-page').addClass("hidden")
+    $('.js-activity-page').addClass("hidden")
+}
+
 //once user logs on, they can choose an event or make a new one
 function showWelcomePage(data){
     console.log('show welcome page');
@@ -182,13 +216,14 @@ function renderWelcome(){
                 <p class="emphasis">What would you like to do today?</p>
             </div>
             <div class="button-section">
-                <div class="event-buttons">
-                    ${button}
-                </div>
                 <div class="task-buttons">
                     <button type="button" class="invite-friends circle-sticker">Invite Friends</button>
                     <button type="button" class="make-new-event red-sticker">New Event</button>
                 </div>
+                <p class="emphasis">Or choose one of your events</p>
+                <div class="event-buttons">
+                ${button}
+            </div>
             </div>
         </div>`
 }
@@ -312,6 +347,7 @@ function handleEventButton(){
 }
 
 function getEventInformation(event){
+    console.log('get event information');
     $.ajax({
         type: "GET",
         url: `/event/${event}`,
@@ -328,6 +364,7 @@ function showEventPage(data){
     $('.js-activity-page').addClass("hidden");
     $('.js-event-page').removeClass("hidden");
 
+    CURRENT_SESSION.event = data.name;
     CURRENT_SESSION.event_id = data.id;
     CURRENT_SESSION.organizer_id = data.organizer;
 
@@ -543,17 +580,30 @@ function renderActivities(results){
         price = `$${results.activity_cost}`
     }
     console.log(price);
+    
+    let kidNumber = 0;
+    let adultNumber = results.adult_number;
+    let number = kidNumber + adultNumber;
+
+    if(results.kid_number){
+        kidNumber = results.kid_number
+    }
+
+    console.log(kidNumber)
+    console.log(adultNumber)
+    console.log()
     return `        
-        <div class="activity">
+        <div class="activity wrapper">
+            <div class="thumb-yellow"></div>
             <h2 class="activity-name">${results.name}</h2>
             <div class="attending">
-                <p>How many are going?</p>
-                <p class="fun-text">${results.adult_number} adults   ${results.kid_number} kids</p>
+                <p class="fun-text">${number} people are going</p>
             </div>
+            <div class="js-kids-allowed"></div>
             <div>
                 <p class="activity-cost">Cost: <span="fun-text">${price}</span></p>
             </div>
-            <button type="button" class="js-RSVP">RSVP</button>
+            <button type="button" class="js-RSVP sticker-green-circle">Join!</button>
          </div>`;
 }
 
@@ -612,19 +662,19 @@ function createActivity(){
                 </fieldset>
                 <fieldset>
                     <legend>How much will it cost?</legend>
-                    <div class="input-line"> 
+                    <div class="input-line price-line"> 
                         <input type="number" step="0.01" name="adult-cost" id="adult-cost" placeholder="5.00">
                         <label for="adult-cost">per adult</label>
                     </div>
-                    <div class="input-line"> 
+                    <div class="input-line price-line"> 
                         <input type="number" step="0.01" name="kid-cost" id="kid-cost" placeholder="3.00">
                         <label for="kid-cost">per child under 12</label>
                     </div>
-                    <div class="input-line"> 
+                    <div class="input-line price-line"> 
                         <input type="number" step="0.01" name="group-cost" id="group-cost" placeholder="80.00">
                         <label for="group-cost">per group of</label>
                     </div>
-                    <div class="input-line"> 
+                    <div class="input-line price-line"> 
                         <input type="number" step="1" name="group-size" id="group-size" placeholder="10">
                         <label for="group-size">people</label>
                     </div>
@@ -636,11 +686,7 @@ function createActivity(){
                         <input type="number" max="10" name="kids-attending" id="kids-attending">
                     </div>
                     <div class="input-line">
-<<<<<<< HEAD
-                        <label for="adults-attending"></label>
-=======
                         <label for="adults-attending">Adults</label>
->>>>>>> master
                         <input type="number" max="10" name="adults-attending" id="adults-attending">
                     </div>    
                 <button type="submit" class="submit-new-activity">Submit</button>
@@ -699,7 +745,7 @@ function showActivityPage(){
 
 function renderActivityPage(){
     return`            
-        <div class="activity-details wrapper">
+        <div class="activity-details paper">
                 <button type="button" class="back-to-event">Return to event</button>
                 <h2>${activitySTORE[0].activity_name}</h2>
                 <p>Optional date and time</p>
@@ -746,12 +792,6 @@ function handleSubmitResponse(){
     })
 }
 
-function returnToEvent(){
-    console.log('return to event')
-    let event = CURRENT_SESSION.event;
-    $('.back-to-event').click(e => getEventInformation(event));
-}
-
 function openModal(){
     $('.contain-modal').removeClass("behind")
 }
@@ -765,5 +805,6 @@ function handleCloseModal(){
 }
 
 handleStartButtons();
+handleNavButtons();
 handleActivity();
 handleCloseModal();

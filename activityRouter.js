@@ -52,6 +52,7 @@ router.post('/', (req, res) =>{
             activity_description: req.body.activity_description,
             activity_date: req.body.activity_date,
             activity_time: req.body.activity_time,
+            kids_welcome: req.body.kids_welcome,
             kid_cost: req.body.kid_cost,
             adult_cost: req.body.adult_cost,
             group_cost: req.body.group_cost,
