@@ -17,6 +17,7 @@ function handleStartButtons(){
 
 function displayLogin(){
     $('.landing-page').addClass("hidden");
+    $('.login-page').removeClass("hidden");
     const login = renderLoginForm();
     $('.login-page').html(login);
     handleLoginButton();
@@ -24,6 +25,7 @@ function displayLogin(){
 
 function displayCreateAccount(){
     $('.landing-page').addClass("hidden");
+    $('.login-page').removeClass("hidden");
     const createUser = renderCreateAccount();
     $('.login-page').html(createUser);
     handleNewAccount();
@@ -32,22 +34,24 @@ function displayCreateAccount(){
 //form for loggin ing
 function renderLoginForm(){
     return`
-    <div class="paper">
-        <div class="thumb-green"></div>
-        <form class="js-login">
-            <fieldset>
-                <legend>Log In</legend>
-                <div class="input-line"> 
-                    <label for="login-username">Username</label>
-                    <input type="text" name="login-username" id="login-username" class="login-username">
-                </div>
-                <div class="input-line"> 
-                    <label for="user-password">Password</label>
-                    <input type="text" name="user-password" id="user-password">
-                </div>
-            </fieldset>
-            <button type="submit sticker" class="js-login-button sticker">Submit</button>
-        </form>
+    <div class="content">
+        <div class="paper">
+            <div class="thumb-green"></div>
+            <form class="js-login">
+                <fieldset>
+                    <legend>Log In</legend>
+                    <div class="input-line"> 
+                        <label for="login-username">Username</label>
+                        <input type="text" name="login-username" id="login-username" class="login-username">
+                    </div>
+                    <div class="input-line"> 
+                        <label for="user-password">Password</label>
+                        <input type="text" name="user-password" id="user-password">
+                    </div>
+                </fieldset>
+                <button type="submit sticker" class="js-login-button sticker">Submit</button>
+            </form>
+        </div>
     </div>`
 }
 
@@ -222,8 +226,8 @@ function renderWelcome(){
                 </div>
                 <p class="emphasis">Or choose one of your events</p>
                 <div class="event-buttons">
-                ${button}
-            </div>
+                    ${button}
+                </div>
             </div>
         </div>`
 }
@@ -648,16 +652,16 @@ function createActivity(){
                     </div>
                         <textarea class="text-input comments"></textarea>
                     <div class="input-line"> 
-                        <label for="activity-date">Date</label>
+                        <label for="activity-date">Date (optional)</label>
                         <input type="date" name="activity-date" id="activity-date" class="date">
                     </div>
                     <div class="input-line"> 
-                        <label for="activity-time">Time</label>
+                        <label for="activity-time">Time (optional)</label>
                         <input type="time" name="activity-time" id="activity-time">
                     </div>
-                    <div class="input-line">                      
-                        <input type="checkbox" name="kid-friendly" id="kid-friendly">
-                        <label for="kid-friendly">Children under 12?</label>
+                    <div class="input-line">    
+                        <label for="kid-friendly">Children under 12?</label>                  
+                        <input type="checkbox" name="kid-friendly" id="kid-friendly">                        
                     </div>
                 </fieldset>
                 <fieldset>
@@ -689,7 +693,7 @@ function createActivity(){
                         <label for="adults-attending">Adults</label>
                         <input type="number" max="10" name="adults-attending" id="adults-attending">
                     </div>    
-                <button type="submit" class="submit-new-activity">Submit</button>
+                <button type="submit" class="submit-new-activity sticker">Submit</button>
             </form>`
 }
 
@@ -739,7 +743,6 @@ function showActivityPage(){
     const activity = renderActivityPage();
     //console.log(activity);
     $('.activity-page').html(activity);
-    returnToEvent();
     handleRSVP();
 }
 

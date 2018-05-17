@@ -58,7 +58,9 @@ router.post('/', (req, res) =>{
             group_cost: req.body.group_cost,
             groupe_size: req.body.group_cost,
             activity_host: req.body.userId,
-            attendees: req.body.userId
+            attendees: req.body.userId,
+            kid_number: req.body.kid_number,
+            adult_number: req.body.kid_number
         })
         .then(event => res.status(201).json(event.serialize()))
         .catch(err => {

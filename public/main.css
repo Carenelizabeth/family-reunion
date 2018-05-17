@@ -70,6 +70,7 @@ nav{
     height: 100px;
     width: 100%;
     position: fixed;
+    z-index: 1;
     padding: 0 20px;
     display: flex;
     justify-content: space-between;
@@ -169,6 +170,7 @@ label{
 form{
     display: flex;
     justify-content: space-between;
+    align-items: flex-start;
     max-width: 960px;
     flex-wrap: wrap;
 }
@@ -270,10 +272,10 @@ i{
 }
 
 .content{
-    height: 100vh;
-    padding: 40px;
-    margin: 0 auto;
     display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
 
@@ -289,17 +291,6 @@ i{
             rgba(255, 255, 255, .4)
         ),url(images/summerCamp.jpg);
     background-size: cover;
-}
-
-.landing-page{
-    /*background-image: url(images/paperStack.png);
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center;*/
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    
 }
 
 .thumbtacks{
@@ -337,8 +328,9 @@ i{
 .paper{
     position: relative;
     max-width: 960px;
-    max-height: 80%;
     padding: 20px 50px;
+    min-height: 400px;
+    height: auto;
     margin: 0 auto;
     background-color: #F2ECE3;
     -webkit-box-shadow: 0 0 4px rgba(0, 0, 0, 0.2), inset 0 0 50px rgba(0, 0, 0, 0.1);
@@ -346,7 +338,7 @@ i{
 	box-shadow: 0 0 5px rgba(0, 0, 0, 0.2), inset 0 0 50px rgba(0, 0, 0, 0.1);
 }
 
-.paper:before, .paper:after{
+/*.paper:before, .paper:after{
     position: absolute;
 	width: 40%;
 	height: 10px;
@@ -373,7 +365,7 @@ i{
 	-ms-transform: skew(3deg) rotate(3deg);
 	-o-transform: skew(3deg) rotate(3deg);
 	transform: skew(deg) rotate(3deg);
-}
+}*/
 
 .intro-content{
     display: flex;
@@ -629,7 +621,7 @@ textarea{
     background-color: white;
     min-height: 300px;
     min-width: 200px;
-    z-index: 1;
+    z-index: 2;
     padding: 20px;
     display: flex;
     flex-direction: column;
