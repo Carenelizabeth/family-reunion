@@ -645,24 +645,22 @@ function handleNewActivity(){
 }
 
 function handleRSVP(){
-    console.log('handleRSVP ran')
     $('.js-RSVP').click(function(e){
-    console.log('handleRSVP clicked');
-    showActivityPage();
-    $('body, html').animate({scrollTop:0}, 0);
-    let activityId = this.id;
-    let activityName = this.name;
-    console.log(activityName)
-    openModal();
-    const rsvp = respondActivity(activityId, activityName);
-    $('.lined-paper').html(rsvp);
-    handleSubmitResponse();    
-})
+        let activityId = this.id;
+        let activityName = this.name;
+        showActivityPage(activityId);
+        $('body, html').animate({scrollTop:0}, 0);
+        openModal();
+        const rsvp = respondActivity(activityId, activityName);
+        $('.lined-paper').html(rsvp);
+        handleSubmitResponse();    
+    })
 }
 
 function handleActivity(){
     $('.js-event-page').on('click', '.activity-name', function(e){
-        showActivityPage();
+        let id = this.id
+        showActivityPage(id);
     });
 };
 
@@ -770,32 +768,42 @@ function postNewActivity(data){
     })
 }
 
-function showActivityPage(){
+function showActivityPage(id){
     $('.js-event-page').addClass("hidden");
     $('.js-activity-page').removeClass("hidden");
-    const activity = renderActivityPage();
-    //console.log(activity);
+    retrieveActivityData(id)
+}
+
+function retrieveActivityData(id){
+    $.ajax({
+        type: "GET",
+        url: `activity/${id}`,
+        contentType: "application/json",
+        success: displayActivityPage,
+        dataType: "json"
+    })
+}
+
+function displayActivityPage(results){
+    const activity = renderActivityPage(results);
     $('.activity-page').html(activity);
     handleRSVP();
 }
 
-function renderActivityPage(){
+function renderActivityPage(data){
     return`            
-        <div class="activity-details paper">
-                <button type="button" class="back-to-event">Return to event</button>
-                <h2>${activitySTORE[0].activity_name}</h2>
+        <div class="activity-details paper">>
+                <h2 class="title">${data.name}</h2>
                 <p>Optional date and time</p>
-                <p>Host: <span class="fun-text">${activitySTORE[0].host_name}</span></p>
-                <p>Email host, maybe</p>
-                <p>${activitySTORE[0].activity_description}</p>
+                <p>Host: <span class="fun-text">${data.host_name}</span></p>
                 <p class="activity-cost">Cost: <span="fun-text">$500</span></p>
                 <p class="fun-text">${activitySTORE[0].adults_attending} adults   ${activitySTORE[0].children_attending} kids</p>
                 <button type="button" class="js-RSVP">RSVP</button>
         </div>
-        <div class="activity-discussion wrapper">
+        <div class="activity-discussion paper">
             <p class="group-message">${activitySTORE[0].activity_notes}</p>
             <textarea class="text-input"></textarea>
-            <button type="button">Post</button>
+            <button type="button" name="${data.name}" class="js-RSVP sticker-green-circle" id="${data.id}">Join!</button>
         </div>`
 }
 
@@ -812,17 +820,18 @@ function respondActivity(id, name){
                     <label for="adults-attending">Adults (aside from you)</label>
                     <input type="number" max="10" min="0" name="adults-attending" id="adults-attending">
                 </fieldset>
-                <button type="submit" class="submit-rsvp sticker" id="id">Submit</button>
+                <button type="submit" class="submit-rsvp sticker" id="${id}">Submit</button>
             </form>
         </section>`
 }
 
 function handleSubmitResponse(){
-    $('.js-rsvp-form').submit(e =>{
+    $('.js-rsvp-form').submit(function(e){
         e.preventDefault();
-        showActivityPage();
-        closeModal();
         console.log('handle submit rsvp ran');
+        closeModal();
+        let kids = parseInt($(this).find('#kids-attending').val(), 10);
+        let adults = parseInt($(this).find('#adults-attending').val(), 10);
     })
 }
 
