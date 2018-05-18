@@ -587,24 +587,19 @@ function displayActivities(data){
 }
 
 function renderActivities(results){
-    console.log(results.activity_name)
-    let price;
-    //if ((results.adult_cost || results.kid_cost) && (results.adult_cost > 0 || results.kid_cost > 0))
-    if(!results.adult_cost || results.adult_cost === 0){
-        price = "free"
-    }
-    else{
-        price = `$${results.activity_cost}`
-    }
-    console.log(price);
+    console.log(results.name)
+    let price = calculateCost(results);
+
+    if(price === 0){price = `<div class="free"></div>`}else{price = `<div></div>`}
     
     let kidNumber = 0;
     let adultNumber = results.adult_number;
-    let number = kidNumber + adultNumber;
+    let number
 
     if(results.kid_number){
         kidNumber = results.kid_number
     }
+    number = kidNumber + adultNumber
 
     console.log(kidNumber)
     console.log(adultNumber)
@@ -627,9 +622,7 @@ function renderActivities(results){
                 <p class="fun-text">${number} people are going</p>
             </div>
             <div class="js-kids-allowed"></div>
-            <div>
-                <p class="activity-cost">Cost: <span="fun-text">${price}</span></p>
-            </div>
+            ${price}
             <button type="button" name="${results.name}" class="js-RSVP sticker-green-circle" id="${results.id}">Join!</button>
          </div>`;
 }
@@ -733,7 +726,6 @@ function handleSubmitNewActivity(){
         let kidCost = parseFloat($(this).find('#kid-cost').val(), 10);
         let adultCost = parseFloat($(this).find('#adult-cost').val(), 10);
         let groupCost = parseFloat($(this).find('#group-cost').val(), 10);
-        adults = adults+1;
         let data = {
             eventId: CURRENT_SESSION.event_id,
             activity_name: $(this).find('#activity-name').val(),
@@ -746,7 +738,7 @@ function handleSubmitNewActivity(){
             activity_host: CURRENT_SESSION.user_id,
             attendees: CURRENT_SESSION.user_id,
             kid_number: kids,
-            adult_number: adults,
+            adult_number: 1+adults,
             activity_comments: $(this).find('.comments').val()
         }
         console.log('handle submit activity ran');
@@ -791,6 +783,9 @@ function displayActivityPage(results){
 }
 
 function renderActivityPage(data){
+    let cost = calculateCost(data);
+    if(cost === 0){cost = `<div class="free"></div>`}
+    //mapComments(data);
     return`
         <h2 class="title activity-title">${data.name}</h2>
         <div class="activity-detail-section">            
@@ -799,7 +794,7 @@ function renderActivityPage(data){
                 <h3 class="handwrite">All the details</h3>
                 <p>Optional date and time</p>
                 <p>Host: <span class="fun-text">${data.host_name}</span></p>
-                <p class="activity-cost">Cost: <span="fun-text">$500</span></p>
+                ${cost}
                 <p class="fun-text">${activitySTORE[0].adults_attending} adults   ${activitySTORE[0].children_attending} kids</p>
                 <button type="button" name="${data.name}" class="js-RSVP sticker-green-circle" id="${data.id}">Join!</button>
             </div>
@@ -811,6 +806,48 @@ function renderActivityPage(data){
                 <button type="button" class="submit-comment text-area">Comment</button>
             </div>
         </div>`
+}
+
+function calculateCost(data){
+    let adultCost = 0;
+    let kidCost = 0;
+    let groupCost = 0;
+    let totalCost
+    console.log(data.name);
+    console.log(data.kid_cost);
+    console.log(data.adult_cost);
+    console.log(data.group_cost);
+    //if ((results.adult_cost || results.kid_cost) && (results.adult_cost > 0 || results.kid_cost > 0))
+    if(data.adult_cost && data.adult_cost > 0){adultCost = data.adult_cost;}
+    if(data.kid_cost && data.kid_cost > 0 ){kidCost = data.kid_cost}
+    if(data.group_cost && data.group_cost > 0){groupCost = data.group_cost}
+
+    console.log(groupCost);
+
+    if (adultCost === 0 && kidCost === 0 && groupCost === 0){
+        totalCost = 0;
+    }else if (adultCost === 0 && kidCost === 0 && groupCost > 0){
+        totalCost = `<div class="activity-cost"><p>Group Price: $${groupCost.toFixed([2])}/group of${data.group_size}</p></div>`
+    }else if (groupCost === 0 && kidCost > 0 && adultCost > 0){
+        adult = adultCost.toFixed([2]);
+        child = kidCost.toFixed([2]);
+        totalCost = `<div class="activity-cost">
+                        <p>Adult price: $${adultCost.toFixed([2])}</p>
+                        <p>Child price: $${kidCost.toFixed([2])}</p></div>`
+    }else if(groupCost === 0 && kidCost === 0 && adultCost > 0){
+        totalCost = `<div class="activity-cost">
+                        <p>Price: $${adultCost.toFixed([2])} per person </p>
+                    </div>`
+    }else{
+        totalCost = `
+            <div class="activity-cost">
+                <p>$${adultCost.toFixed([2])} /person</p>
+                <p>$${groupCost.toFixed([2])} /group of ${data.group_size}</p>
+            </div>`
+    }
+
+    console.log(totalCost);
+    return totalCost;
 }
 
 //form for adding a response; appears in modal
