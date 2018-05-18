@@ -387,7 +387,6 @@ function showEventPage(data){
     handleDeleteEvent();
     handleViewProfile()
     handleNewActivity();
-    handleRSVP();
 }
 
 //displays main event as a banner
@@ -584,6 +583,7 @@ function displayActivities(data){
     console.log(data);
     const activity = data.map((item, index) =>renderActivities(item))
     $('.all-activities').html(activity);
+    handleRSVP();
 }
 
 function renderActivities(results){
@@ -630,7 +630,7 @@ function renderActivities(results){
             <div>
                 <p class="activity-cost">Cost: <span="fun-text">${price}</span></p>
             </div>
-            <button type="button" class="js-RSVP sticker-green-circle">Join!</button>
+            <button type="button" name="${results.name}" class="js-RSVP sticker-green-circle" id="${results.id}">Join!</button>
          </div>`;
 }
 
@@ -645,10 +645,16 @@ function handleNewActivity(){
 }
 
 function handleRSVP(){
-    $('.js-RSVP').click(e =>{
-    console.log('handleRSVP ran');
+    console.log('handleRSVP ran')
+    $('.js-RSVP').click(function(e){
+    console.log('handleRSVP clicked');
+    showActivityPage();
+    $('body, html').animate({scrollTop:0}, 0);
+    let activityId = this.id;
+    let activityName = this.name;
+    console.log(activityName)
     openModal();
-    const rsvp = respondActivity();
+    const rsvp = respondActivity(activityId, activityName);
     $('.lined-paper').html(rsvp);
     handleSubmitResponse();    
 })
@@ -794,21 +800,19 @@ function renderActivityPage(){
 }
 
 //form for adding a response; appears in modal
-function respondActivity(){
+function respondActivity(id, name){
     return`        
         <section class="rsvp-page">
             <form class="js-rsvp-form">
-                <h2>${activitySTORE[0].activity_name}</h2>
+                <h2 class="handwrite">${name}</h2>
                 <fieldset>
                     <legend>Who's coming?</legend>
                     <label for="kids-attending">Kids (under 12)</label>
-                    <input type="number" max="10" name="kids-attending" id="kids-attending">
-                    <label for="adults-attending"></label>
-                    <input type="number" max="10" name="adults-attending" id="adults-attending">
+                    <input type="number" max="10" min="0"name="kids-attending" id="kids-attending">
+                    <label for="adults-attending">Adults (aside from you)</label>
+                    <input type="number" max="10" min="0" name="adults-attending" id="adults-attending">
                 </fieldset>
-                <h3>Add additional comments</h3>
-                <textarea class="text-input"></textarea>
-                <button type="submit" class="submit-rsvp sticker">Submit</button>
+                <button type="submit" class="submit-rsvp sticker" id="id">Submit</button>
             </form>
         </section>`
 }

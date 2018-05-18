@@ -125,7 +125,6 @@ h1{
 button {
     display: inline-block;
     border: none;
-    margin: 1.6em;
     text-decoration: none;
     background-color: rgba(0,0,0,0);
     font-size: 1.1rem;
@@ -165,6 +164,7 @@ label{
 
 form{
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
     align-items: flex-start;
     max-width: 960px;
@@ -198,7 +198,7 @@ fieldset{
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-    margin: 20px;
+    margin: 10px;
     font-size: 24px;
     width: 150px;
     padding: 10px;
@@ -693,6 +693,7 @@ textarea{
     padding: 20px;
     margin: 10px;
     min-height: 350px;
+    max-width: 450px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -741,10 +742,10 @@ textarea{
   
   .lined-paper{
     background-image: url("images/notebook-paper.png");
-    overflow: hide;
     height: calc(100% - 40px);
     width: 100%;
     padding-left: 70px;
+    padding-right: 20px;
   }
   
   .right-margin{
