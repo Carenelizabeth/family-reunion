@@ -253,7 +253,7 @@ fieldset{
     font-size: 16px;
     height: 40px;
     width: 40px;
-    padding-bottom: 15px;
+    padding-bottom: 10px;
     text-align: center;
     border-radius: 50%;
     border: dashed 2px #021D59;
@@ -414,6 +414,10 @@ i{
     1px -1px 0 #fff, 
     -1px 1px 0 #fff,
     6px 6px 0 black;
+}
+
+.activity-title{
+    font-size: 10vh;
 }
 
 .handwrite{
@@ -768,9 +772,16 @@ textarea{
 }
 
 .activity-details, .activity-discussion{
-    width: 100%
+    width: 100%;
+    margin: 0 10px;
 }
 
 .activity-page{
     flex-direction: column;
+    justify-content: flex-start;
+}
+
+.activity-detail-section{
+    display: flex;
+    justify-content: space-between;
 }

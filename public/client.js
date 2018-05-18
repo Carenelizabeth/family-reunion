@@ -791,19 +791,25 @@ function displayActivityPage(results){
 }
 
 function renderActivityPage(data){
-    return`            
-        <div class="activity-details paper">>
-                <h2 class="title">${data.name}</h2>
+    return`
+        <h2 class="title activity-title">${data.name}</h2>
+        <div class="activity-detail-section">            
+            <div class="activity-details paper light-blue-border">
+                <div class="thumb-green"></div>
+                <h3 class="handwrite">All the details</h3>
                 <p>Optional date and time</p>
                 <p>Host: <span class="fun-text">${data.host_name}</span></p>
                 <p class="activity-cost">Cost: <span="fun-text">$500</span></p>
                 <p class="fun-text">${activitySTORE[0].adults_attending} adults   ${activitySTORE[0].children_attending} kids</p>
-                <button type="button" class="js-RSVP">RSVP</button>
-        </div>
-        <div class="activity-discussion paper">
-            <p class="group-message">${activitySTORE[0].activity_notes}</p>
-            <textarea class="text-input"></textarea>
-            <button type="button" name="${data.name}" class="js-RSVP sticker-green-circle" id="${data.id}">Join!</button>
+                <button type="button" name="${data.name}" class="js-RSVP sticker-green-circle" id="${data.id}">Join!</button>
+            </div>
+            <div class="activity-discussion paper green-border">
+                <div class="thumb-yellow"></div>
+                <h3 class="handwrite">Join the discussion!</h3>
+                <p class="group-message">${activitySTORE[0].activity_notes}</p>
+                <textarea class="text-input"></textarea>
+                <button type="button" class="submit-comment text-area">Comment</button>
+            </div>
         </div>`
 }
 
