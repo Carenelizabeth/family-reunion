@@ -1,7 +1,7 @@
 const CURRENT_SESSION = {
     username: "",
     user_id: "",
-    user_events: "",
+    user_events: [],
     event: "",
     event_id: "",
     organizer_id: ""
@@ -35,7 +35,7 @@ function displayCreateAccount(){
 function renderLoginForm(){
     return`
     <div class="content">
-        <div class="paper">
+        <div class="paper yellow-border">
             <div class="thumb-green"></div>
             <form class="js-login">
                 <fieldset>
@@ -58,26 +58,28 @@ function renderLoginForm(){
 //form for creating a new account
 function renderCreateAccount(){
     return`
-    <div class="paper">
-        <div class="thumb-green"></div>
-        <form class="js-create-account">
-            <fieldset>
-                <legend>Create New Account</legend>
-                <div class="input-line"> 
-                    <label for="create-user-name">Choose a public user name</label>
-                    <input type="text" name="create-user-name" id="create-user-name">
-                </div>
-                <div class="input-line"> 
-                    <label for="login-email">Email</label>
-                    <input type="text" name="login-email" id="login-email" class="user-email">
-                </div>
-                <div class="input-line"> 
-                    <label for="user-password">Password</label>
-                    <input type="text" name="user-password" id="user-password">
-                </div>
-            </fieldset>
-            <button type="submit" class="js-create-account-button sticker">Submit</button>
-        </form>
+    <div class="content">
+        <div class="paper yellow-border">
+            <div class="thumb-green"></div>
+            <form class="js-create-account">
+                <fieldset>
+                    <legend>Create New Account</legend>
+                    <div class="input-line"> 
+                        <label for="create-user-name">Choose a public user name</label>
+                        <input type="text" name="create-user-name" id="create-user-name">
+                    </div>
+                    <div class="input-line"> 
+                        <label for="login-email">Email</label>
+                        <input type="text" name="login-email" id="login-email" class="user-email">
+                    </div>
+                    <div class="input-line"> 
+                        <label for="user-password">Password</label>
+                        <input type="text" name="user-password" id="user-password">
+                    </div>
+                </fieldset>
+                <button type="submit" class="js-create-account-button sticker">Submit</button>
+            </form>
+        </div>
     </div>`
 }
 
@@ -163,7 +165,7 @@ function createAccount(data){
 
 //the nav bar is displayed for the first time on the welcome page
 function handleNavButtons(){
-    $('.nav-welcome').click(e => showWelcomePage());
+    $('.nav-welcome').click(e => getUserEvents());
     $('.nav-event').click(e => handleNavEvent());
     $('.nav-logout').click(e => Logout());
     //handleInvite();
@@ -180,7 +182,7 @@ function handleNavEvent(){
 function Logout(){
         CURRENT_SESSION.username = "";
         CURRENT_SESSION.user_id = "";
-        CURRENT_SESSION.user_events = "";
+        CURRENT_SESSION.user_events = [];
         CURRENT_SESSION.event = "";
         CURRENT_SESSION.event_id = "";
         CURRENT_SESSION.organizer_id = "";
@@ -213,24 +215,24 @@ function renderWelcome(){
     let button = generateEventButtons()
     console.log(button);
     return`
-        <div class="paper">
-            <div class="thumb-red"></div>
-            <div class="info-section">
-                <h2>Welcome ${CURRENT_SESSION.username}!</h2>
-                <p class="emphasis">What would you like to do today?</p>
-            </div>
+        <h3 class="title">WELCOME</h3>
+        <div class="paper blue-border">
+            <div class="thumb-yellow"></div>
             <div class="button-section">
-                <div class="task-buttons">
-                    <button type="button" class="invite-friends circle-sticker">Invite Friends</button>
-                    <button type="button" class="make-new-event red-sticker">New Event</button>
-                </div>
-                <p class="emphasis">Or choose one of your events</p>
+
+                <p class="handwrite">My events</p>
                 <div class="event-buttons">
                     ${button}
                 </div>
+                <button type="button" class="make-new-event red-sticker">New Event</button>
             </div>
         </div>`
 }
+
+/* <div class="task-buttons">
+    <button type="button" class="invite-friends circle-sticker">Invite Friends</button>
+    <button type="button" class="make-new-event red-sticker">New Event</button>
+</div>*/
 
 //the next section makes a call to get events for a registered user, adds them to the
 //CURRENT_SESSION object and generates a button for each event which are displayed on the Welcome page
@@ -252,8 +254,8 @@ function updateUserEvents(data){
         const events = data.map((item, index) => renderUserEvents(item))
     CURRENT_SESSION.user_events = events;
     console.log(CURRENT_SESSION.user_events);
-    showWelcomePage();
     }
+    showWelcomePage();
 }
 
 function renderUserEvents(event){
@@ -268,8 +270,8 @@ function renderUserEvents(event){
 function generateEventButtons(){
     console.log('generate event buttons ran')
     let button = []
-    console.log(CURRENT_SESSION.user_events);
-    if(!(CURRENT_SESSION.user_events[0].name === undefined)){
+    console.log(CURRENT_SESSION.user_events.length);
+    if(!(CURRENT_SESSION.user_events.length === 0)){
         for(let i=0; i<CURRENT_SESSION.user_events.length; i++){
             //console.log(i);
             //console.log(`console.log(Event: ${CURRENT_SESSION.user_events[i].name}`);
@@ -289,16 +291,15 @@ function newEventForm(){
     console.log('new event form ran');
     openModal();
     const event = renderNewEventForm();
-    $('.modal').html(event);
+    $('.lined-paper').html(event);
     handleSubmitNewEvent();
 }
 
 function renderNewEventForm(){
     return`
     <form class="new-event-form">
-        <h2>Create a new Event</h2>
         <fieldset>
-            <legend>Give event detail</legend>
+            <legend class="handwrite">Create Your Event</legend>
             <label for="event-name">Name</label>
             <input type="text" name="event-name" id="event-name">
             <label for="event-location">Location</label>
@@ -308,7 +309,7 @@ function renderNewEventForm(){
             <label for="event-end-date">End date</label>
             <input type="date" name="event-end-date" id="event-end-date">
         </fieldset>
-        <button type="submit" class="submit-new-event">Submit</button> 
+        <button type="submit" class="submit-new-event sticker">Submit</button> 
     </form>`
 }
 
@@ -390,12 +391,12 @@ function showEventPage(data){
 }
 
 //displays main event as a banner
-function renderEvent(name, location, dates){
+/*function renderEvent(name, location, dates){
     return `
         <div class="event-info-section">
             <div class="thumb-red"></div>
             <div class="include-edit">
-                <h1 class="event-name">${name}</h1>
+                <h1 class="event-name handwrite">${name}</h1>
                 <button type="button" class="edit edit-event-name not-organizer">edit</button>
             </div>
             <div class="include-edit">
@@ -411,26 +412,38 @@ function renderEvent(name, location, dates){
         <div class="event-button-section">
             <button type="button" class="js-delete-event not-organizer sticker">Delete</button> 
             <button type="button" class="js-make-activity circle-sticker">New Activity</button>   
-        </div>`    
+        </div>`   
+}*/
+
+function renderEvent(name, location, dates){
+    return`
+        <div class="include-edit">
+            <h2 class="event-name title">${name}</h2>
+            <button type="button" class="edit edit-event-name not-organizer">edit</button>
+        </div>
+        <div class="event-button-section">
+            <button type="button" class="js-delete-event not-organizer sticker">Delete</button> 
+            <button type="button" class="js-make-activity circle-sticker">New Activity</button>   
+        </div>` 
 }
 
 //buttons for editing event: only the host of event can edit
 function handleEditEventButtons(){
     $('.edit-event-name').click(function(e){
         const name = editEventName();
-        $('.modal').html(name);
+        $('.lined-paper').html(name);
         openModal();
         handleEditNameButton();
     })
     $('.edit-event-location').click(function(){
         const location = editEventLocation();
-        $('.modal').html(location);
+        $('.lined-paper').html(location);
         openModal();
         handleEditLocationButton();
     })
     $('.edit-event-dates').click(function(){
         const dates = editEventDates();
-        $('.modal').html(dates);
+        $('.lined-paper').html(dates);
         openModal();
         handleEditDatesButton();
     })
@@ -439,32 +452,32 @@ function handleEditEventButtons(){
 //forms for editing individual aspects of the events
 function editEventName(){
     return `
-        <form class="js-edit-event-name">
+        <form class="js-edit-event-name js-edit">
             <label for="edit-event-name">Enter new event name</label>
             <input type="text" name="edit-event-name" id="edit-event-name">
-            <button type="submit">Submit</button>
+            <button type="submit" class="sticker">Submit</button>
         </form>   
     `
 }
 
 function editEventLocation(){
     return `
-    <form class="js-edit-event-location">
+    <form class="js-edit-event-location js-edit">
         <label for="edit-event-location">Enter new event location</label>
         <input type="text" name="edit-event-location" id="edit-event-location">
-        <button type="submit">Submit</button>
+        <button type="submit" class="sticker">Submit</button>
     </form>   
 `
 }
 
 function editEventDates(){
     return `
-        <form class="js-edit-event-dates">
+        <form class="js-edit-event-dates js-edit">
             <label for="edit-event-dates">Enter new start date</label>
             <input type="date" name="edit-event-start" id="edit-event-start">
             <label for="edit-event-dates">Enter new end date</label>
             <input type="date" name="edit-event-end" id="edit-event-end">
-            <button type="submit">Submit</button>
+            <button type="submit" class="sticker">Submit</button>
         </form>   
     `
 }
@@ -596,10 +609,20 @@ function renderActivities(results){
     console.log(kidNumber)
     console.log(adultNumber)
     console.log()
+
+    let thumbColorArray = ["thumb-yellow", "thumb-green", "thumb-red"]
+    let borderColorArray = ["blue-border","light-blue-border", "yellow-border", "green-border", "orange-border"]
+    let rotateArray = ["rotate-right", "rotate-left"]
+    let thumbColor = thumbColorArray[Math.floor(Math.random()*thumbColorArray.length)]
+    let borderColor = borderColorArray[Math.floor(Math.random()*borderColorArray.length)]
+    let rotate = rotateArray[Math.floor(Math.random()*rotateArray.length)]
+    console.log(thumbColor);
+    console.log(borderColor);
+
     return `        
-        <div class="activity wrapper">
-            <div class="thumb-yellow"></div>
-            <h2 class="activity-name">${results.name}</h2>
+        <div class="activity wrapper ${borderColor} ${rotate}">
+            <div class="${thumbColor}"></div>
+            <h3 class="activity-name handwrite">${results.name}</h3>
             <div class="attending">
                 <p class="fun-text">${number} people are going</p>
             </div>
@@ -616,7 +639,7 @@ function handleNewActivity(){
         console.log('handle new activity ran');
         openModal();
         const activity = createActivity();
-        $('.modal').html(activity);
+        $('.lined-paper').html(activity);
         handleSubmitNewActivity();
     })
 }
@@ -626,7 +649,7 @@ function handleRSVP(){
     console.log('handleRSVP ran');
     openModal();
     const rsvp = respondActivity();
-    $('.modal').html(rsvp);
+    $('.lined-paper').html(rsvp);
     handleSubmitResponse();    
 })
 }
@@ -781,7 +804,7 @@ function respondActivity(){
                 </fieldset>
                 <h3>Add additional comments</h3>
                 <textarea class="text-input"></textarea>
-                <button type="submit" class="submit-rsvp">Submit</button>
+                <button type="submit" class="submit-rsvp sticker">Submit</button>
             </form>
         </section>`
 }

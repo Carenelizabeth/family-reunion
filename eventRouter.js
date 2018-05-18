@@ -67,7 +67,8 @@ router.post('/', (req, res) => {
             event_name: req.body.event_name,
             event_location: req.body.event_location,
             event_dates: req.body.event_dates,
-            event_organizer: req.body.event_organizer
+            event_organizer: req.body.event_organizer,
+            event_members: req.body.event_members
         })
         .then(event => res.status(201).json(event.serialize()))
         .catch(err => {
