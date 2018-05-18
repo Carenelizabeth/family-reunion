@@ -622,7 +622,7 @@ function renderActivities(results){
     return `        
         <div class="activity wrapper ${borderColor} ${rotate}">
             <div class="${thumbColor}"></div>
-            <h3 class="activity-name handwrite">${results.name}</h3>
+            <button type="button" class="activity-name handwrite" id="${results.id}">${results.name}</button>
             <div class="attending">
                 <p class="fun-text">${number} people are going</p>
             </div>
@@ -655,7 +655,7 @@ function handleRSVP(){
 }
 
 function handleActivity(){
-    $('.js-event-page').on('click', '.activity', e =>{
+    $('.js-event-page').on('click', '.activity-name', function(e){
         showActivityPage();
     });
 };
@@ -690,19 +690,19 @@ function createActivity(){
                 <fieldset>
                     <legend>How much will it cost?</legend>
                     <div class="input-line price-line"> 
-                        <input type="number" step="0.01" name="adult-cost" id="adult-cost" placeholder="5.00">
+                        <input type="number" step="0.01" name="adult-cost" id="adult-cost" placeholder="e.g. 5.00">
                         <label for="adult-cost">per adult</label>
                     </div>
                     <div class="input-line price-line"> 
-                        <input type="number" step="0.01" name="kid-cost" id="kid-cost" placeholder="3.00">
+                        <input type="number" step="0.01" name="kid-cost" id="kid-cost" placeholder="e.g. 3.00">
                         <label for="kid-cost">per child under 12</label>
                     </div>
                     <div class="input-line price-line"> 
-                        <input type="number" step="0.01" name="group-cost" id="group-cost" placeholder="80.00">
+                        <input type="number" step="0.01" name="group-cost" id="group-cost" placeholder="e.g. 80.00">
                         <label for="group-cost">per group of</label>
                     </div>
                     <div class="input-line price-line"> 
-                        <input type="number" step="1" name="group-size" id="group-size" placeholder="10">
+                        <input type="number" name="group-size" id="group-size" placeholder="e.g. 10">
                         <label for="group-size">people</label>
                     </div>
                 </fieldset>
@@ -710,12 +710,13 @@ function createActivity(){
                     <legend>Who else are you bringing?</legend>
                     <div class="input-line">
                         <label for="kids-attending">Kids (under 12)</label>
-                        <input type="number" max="10" name="kids-attending" id="kids-attending">
+                        <input type="number" max="10" min="1" name="kids-attending" id="kids-attending">
                     </div>
                     <div class="input-line">
                         <label for="adults-attending">Adults</label>
-                        <input type="number" max="10" name="adults-attending" id="adults-attending">
-                    </div>    
+                        <input type="number" max="10" min="1" name="adults-attending" id="adults-attending">
+                    </div>
+                </fieldset>     
                 <button type="submit" class="submit-new-activity sticker">Submit</button>
             </form>`
 }
@@ -723,16 +724,20 @@ function createActivity(){
 function handleSubmitNewActivity(){
     $('.js-activity-form').on('submit', function(e){
         e.preventDefault();
-        let kids = 0 + $(this).find('#kids-attending').val();
-        let adults = 1 + $(this).find('#adults-attending').val();
+        let kids = parseInt($(this).find('#kids-attending').val(), 10);
+        let adults = parseInt($(this).find('#adults-attending').val(), 10);
+        let kidCost = parseFloat($(this).find('#kid-cost').val(), 10);
+        let adultCost = parseFloat($(this).find('#adult-cost').val(), 10);
+        let groupCost = parseFloat($(this).find('#group-cost').val(), 10);
+        adults = adults+1;
         let data = {
             eventId: CURRENT_SESSION.event_id,
             activity_name: $(this).find('#activity-name').val(),
             activity_date: $(this).find('#activity-date').val(),
             activity_time: $(this).find('#activity-time').val(),
-            kid_cost: $(this).find('#kid-cost').val(),
-            adult_cost: $(this).find('#adult-cost').val(),
-            group_cost: $(this).find('#group-cost').val(),
+            kid_cost: kidCost,
+            adult_cost: adultCost,
+            group_cost: groupCost,
             group_size: $(this).find('#group-size').val(),
             activity_host: CURRENT_SESSION.user_id,
             attendees: CURRENT_SESSION.user_id,
@@ -744,7 +749,6 @@ function handleSubmitNewActivity(){
         console.log(data);
         console.log(CURRENT_SESSION.user_id);
         postNewActivity(data);
-        //showActivityPage();
         closeModal();
     });
 };
