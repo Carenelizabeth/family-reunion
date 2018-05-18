@@ -723,8 +723,8 @@ function createActivity(){
 function handleSubmitNewActivity(){
     $('.js-activity-form').on('submit', function(e){
         e.preventDefault();
-        let kids = $(this).find('#kids-attending') || 0;
-        let adults = 1 + $(this).find('#adults-attending').val()
+        let kids = 0 + $(this).find('#kids-attending').val();
+        let adults = 1 + $(this).find('#adults-attending').val();
         let data = {
             eventId: CURRENT_SESSION.event_id,
             activity_name: $(this).find('#activity-name').val(),
