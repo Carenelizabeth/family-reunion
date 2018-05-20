@@ -49,7 +49,7 @@ router.post('/', (req, res) =>{
         .create({
             eventId: req.body.eventId,
             activity_name: req.body.activity_name,
-            activity_description: req.body.activity_description,
+            activity_comments: req.body.activity_comments,
             activity_date: req.body.activity_date,
             activity_time: req.body.activity_time,
             kids_welcome: req.body.kids_welcome,
@@ -76,12 +76,6 @@ router.put('/join/:id', (req, res) => {
           error: 'Request path id and request body id values must match'
         });
     }
-    
-    console.log(req.body.kid_number);
-    console.log(req.body.adult_number);
-
-    Activity
-        .findByIdAndUpdate(req.params.id, {$push: {attendees: req.body.userId}})
 
     Activity
         .findByIdAndUpdate(req.params.id, 
@@ -101,7 +95,7 @@ router.put('/:id', (req, res) => {
     }
 
     const update = {}
-    const updateable = ['activity_name', 'activity_description', 'activity_date', 'activity_time', 'kid_cost', 'adult_cost', 'group_cost', 'group_size', 'kid_number', 'adult_number']
+    const updateable = ['activity_name', 'activity_comments', 'activity_date', 'activity_time', 'kid_cost', 'adult_cost', 'group_cost', 'group_size', 'kid_number', 'adult_number']
     updateable.forEach(field =>{
         if (field in req.body){
             update[field] = req.body[field]

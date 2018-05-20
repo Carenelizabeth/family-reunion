@@ -28,7 +28,7 @@ function generateActivityData(){
     return{
         eventId: "5af4c9c6f4266d148c2bc6ad",
         activity_name: faker.lorem.word(),
-        activity_description: faker.lorem.sentence(),
+        activity_comments: faker.lorem.sentence(),
         //activity_date: faker.date.future(),
         //activity_time: faker.random.number(),
         kid_cost: faker.finance.amount(),
@@ -101,7 +101,7 @@ describe('Activity API endpoint', function(){
                 .then(function(res){
                     expect(singleAct.id).to.equal(res.id);
                     expect(singleAct.activity_name).to.equal(res.activity_name);
-                    expect(singleAct.activity_description).to.equal(res.activity_description);
+                    expect(singleAct.activity_comments).to.equal(res.activity_comments);
                     expect(singleAct.eventId).to.equal(res.eventId);
                     expect(singleAct.activity_host).to.equal(res.activity_host);
                 });
@@ -138,7 +138,7 @@ describe('Activity API endpoint', function(){
         it('should update included fields', function(){
             const updateAct = {
                 activity_name: faker.lorem.word(),
-                activity_description: faker.lorem.sentence(),
+                group_size: faker.random.number(),
             }
 
             return Activity
@@ -159,7 +159,7 @@ describe('Activity API endpoint', function(){
             })
             .then(function(uAct){
                 expect(uAct.activity_name).to.equal(updateAct.activity_name);
-                expect(uAct.activity_description).to.equal(updateAct.activity_description);
+                expect(uAct.group_size).to.equal(updateAct.group_size);
             })
         });
 
