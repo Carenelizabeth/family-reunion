@@ -777,15 +777,17 @@ function displayActivityPage(results){
     handleRSVP();
 }
 
-//let kidNumber;
-//let adultNumber;
-
 function renderActivityPage(data){
-    //kidNumber = data.kid_number;
-    //adultNumber = data.adult_number
     let cost = calculateCost(data);
     if(cost === 0){cost = `<div class="free"></div>`}
-    //mapComments(data);
+    const comments = []
+
+    for (i=0; i<data.activity_comments.length; i++){
+        let eachComment = `
+            <div class="comment"><blockquote>${data.activity_comments[i]}</blockquote></div>`
+        comments.push(eachComment);
+    }
+
     return`
         <h2 class="title activity-title">${data.name}</h2>
         <div class="activity-detail-section">            
@@ -801,9 +803,9 @@ function renderActivityPage(data){
             <div class="activity-discussion paper green-border">
                 <div class="thumb-yellow"></div>
                 <h3 class="handwrite">Join the discussion!</h3>
-                <p class="group-message">${activitySTORE[0].activity_notes}</p>
+                ${comments}
                 <textarea class="text-input"></textarea>
-                <button type="button" class="submit-comment text-area">Comment</button>
+                <button type="button" class="submit-comment text-area sticker">Comment</button>
             </div>
         </div>`
 }
