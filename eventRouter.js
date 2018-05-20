@@ -18,6 +18,7 @@ app.use(morgan('common'));
 app.use(express.json());
 
 router.get('/', (req,res) =>{
+    
     Event
         .find()
         .then(events => 
@@ -66,7 +67,8 @@ router.post('/', (req, res) => {
             event_name: req.body.event_name,
             event_location: req.body.event_location,
             event_dates: req.body.event_dates,
-            event_organizer: req.body.event_organizer
+            event_organizer: req.body.event_organizer,
+            event_members: req.body.event_members
         })
         .then(event => res.status(201).json(event.serialize()))
         .catch(err => {
@@ -82,7 +84,7 @@ router.put('/:id', (req, res) => {
         res.status(400).json({
           error: 'Request path id and request body id values must match'
         });
-      }
+    }
     
     const toUpdate = {};
     const updateableFields = ['event_location', 'event_dates', 'event_name'];

@@ -11,6 +11,7 @@ mongoose.Promise = global.Promise;
 
 const eventRouter = require('./eventRouter');
 const userRouter = require('./userRouter');
+const activityRouter = require('./activityRouter');
 const {router: authRouter, localStrategy, jwtStrategy} = require('./auth')
 
 mongoose.Promise = global.Promise;
@@ -39,6 +40,7 @@ passport.use(jwtStrategy);
 app.use('/event', eventRouter);
 app.use('/user', userRouter);
 app.use('/auth', authRouter);
+app.use('/activity', activityRouter);
 
 const jwtAuth = passport.authenticate('jwt', {session: false});
 
