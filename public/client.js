@@ -167,10 +167,10 @@ function createAccount(data){
 function handleNavButtons(){
     $('.nav-welcome').click(e => getUserEvents());
     $('.nav-event').click(e => handleNavEvent());
-    $('.nav-logout').click(e => Logout());
+    $('.nav-logout').click(e => location.reload());
+    $('.nav-invite').click(e => handleInvite());
     //handleInvite();
-    //handleProfile();
-    //handleLogout();    
+    //handleProfile();  
 }
 
 function handleNavEvent(){
@@ -179,7 +179,7 @@ function handleNavEvent(){
     getEventInformation(event);
 }
 
-function Logout(){
+/*function Logout(){
         CURRENT_SESSION.username = "";
         CURRENT_SESSION.user_id = "";
         CURRENT_SESSION.user_events = [];
@@ -193,6 +193,35 @@ function Logout(){
     $('.js-welcome-page').addClass("hidden")
     $('.js-event-page').addClass("hidden")
     $('.js-activity-page').addClass("hidden")
+}*/
+
+function handleInvite(){
+    if(CURRENT_SESSION.event_id === ""){
+        alert('You must create or select an event first!')
+    }else{
+    openModal()
+    let link = renderInvite()
+    $('.lined-paper').html(link)
+    handleCloseInvite()}
+}
+
+function renderInvite(){
+    let inviteURL = getInviteURL()
+    return`
+        <h3 class="handwrite handwrite-small">Copy this link to invite friends and family!</h3>
+        <div class="link-box"><p>${inviteURL}</p></div>
+        <button type="button" class="sticker-green js-close-invite">Got it!</button>`
+}
+
+function getInviteURL(){
+    let query = CURRENT_SESSION.event_id;
+    console.log(CURRENT_SESSION.event_id);
+    let inviteURL = `${window.location.protocol}//${window.location.host}/invite.html?eventId=${query}`
+    return inviteURL
+}
+
+function handleCloseInvite(){
+    $('.js-close-invite').click(e => closeModal())
 }
 
 //once user logs on, they can choose an event or make a new one
@@ -909,9 +938,7 @@ function updateJoinActivity(kids, adults, id){
         dataType: "json"})
 }
 
-function UpdateActivityNumber(kids, adults, id){
 
-}
 
 function openModal(){
     $('.contain-modal').removeClass("behind")
