@@ -53,7 +53,7 @@ describe('Event API endpoint', function(){
     });
 
     describe('Get endpoint', function(){
-        it ('should get all events', function(){
+        xit ('should get all events', function(){
             let res; 
             return chai.request(app)
                 .get('/event')
@@ -70,7 +70,7 @@ describe('Event API endpoint', function(){
                 });
         });
 
-        it('should return the correct post when called by id', function(){
+        xit('should return the correct post when called by id', function(){
             let singleEvent;
             return chai.request(app)
                 .get('/event')
@@ -93,7 +93,7 @@ describe('Event API endpoint', function(){
 
     describe('POST endpoint', function(){
 
-        it('should add a new event', function(){
+        xit('should add a new event', function(){
             const newEvent = generateEventData();
             //console.log(newEvent);
 
@@ -119,7 +119,7 @@ describe('Event API endpoint', function(){
     });
 
     describe('PUT endpoint', function(){
-        it('should update fields', function(){
+        xit('should update fields', function(){
             const updateEvent = {
                 event_name: faker.random.words(),
                 event_location: faker.random.locale(), 
@@ -145,7 +145,7 @@ describe('Event API endpoint', function(){
     });
 
     describe('DELETE endpoint', function(){
-        it('should delete an event by id', function(){
+        xit('should delete an event by id', function(){
             const deleteEvent = {}
 
             return Event
@@ -168,7 +168,7 @@ describe('Event API endpoint', function(){
 });
 
 describe('Event planning API', function(){
-    it('should answer a request to root with html', function(){
+    xit('should answer a request to root with html', function(){
         let res;
         return chai.request(app)
             .get('/')

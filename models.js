@@ -45,7 +45,7 @@ const activitySchema = new Schema({
     activity_host: String,
     host_name: String,
     attendees: [String],
-    kid_number:Number,
+    kid_number: Number,
     adult_number: Number,
     activity_comments: [String]
 })

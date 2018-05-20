@@ -56,11 +56,12 @@ router.post('/', (req, res) =>{
             kid_cost: req.body.kid_cost,
             adult_cost: req.body.adult_cost,
             group_cost: req.body.group_cost,
-            groupe_size: req.body.group_cost,
-            activity_host: req.body.userId,
-            attendees: req.body.userId,
+            group_size: req.body.group_cost,
+            activity_host: req.body.activity_host,
+            host_name: req.body.host_name,
+            attendees: req.body.attendees,
             kid_number: req.body.kid_number,
-            adult_number: req.body.kid_number
+            adult_number: req.body.adult_number
         })
         .then(event => res.status(201).json(event.serialize()))
         .catch(err => {
@@ -75,11 +76,19 @@ router.put('/join/:id', (req, res) => {
           error: 'Request path id and request body id values must match'
         });
     }
+    
+    console.log(req.body.kid_number);
+    console.log(req.body.adult_number);
 
     Activity
-      .findByIdAndUpdate(req.params.id, {$push: {attendees: req.body.userId}})
-      .then(a => res.status(204).end())
-      .catch(err => res.status(500).json({message: 'Internal server error'}));
+        .findByIdAndUpdate(req.params.id, {$push: {attendees: req.body.userId}})
+
+    Activity
+        .findByIdAndUpdate(req.params.id, 
+            {$inc: {kid_number: req.body.kid_number, adult_number: req.body.adult_number},
+            $push: {attendees: req.body.userId}})
+        .then(a => res.status(204).end())
+        .catch(err => res.status(500).json({message: 'Internal server error'}));
 });
 
 router.put('/:id', (req, res) => {
@@ -102,7 +111,7 @@ router.put('/:id', (req, res) => {
     Activity
         .findByIdAndUpdate(req.params.id, {$set: update})
         .then(a => res.status(204).end())
-        .catch(err => res.status(500).json({message: 'Internal server erro'}))
+        .catch(err => res.status(500).json({message: 'Internal server error'}))
 })
 
 router.delete('/', (req, res) =>{

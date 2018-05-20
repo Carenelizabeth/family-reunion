@@ -642,7 +642,6 @@ function handleRSVP(){
         let activityId = this.id;
         let activityName = this.name;
         showActivityPage(activityId);
-        $('body, html').animate({scrollTop:0}, 0);
         openModal();
         const rsvp = respondActivity(activityId, activityName);
         $('.lined-paper').html(rsvp);
@@ -721,6 +720,7 @@ function createActivity(){
 function handleSubmitNewActivity(){
     $('.js-activity-form').on('submit', function(e){
         e.preventDefault();
+        console.log($(this).find(`#kid-friendly`.checked))
         let kids = parseInt($(this).find('#kids-attending').val(), 10);
         let adults = parseInt($(this).find('#adults-attending').val(), 10);
         let kidCost = parseFloat($(this).find('#kid-cost').val(), 10);
@@ -731,6 +731,7 @@ function handleSubmitNewActivity(){
             activity_name: $(this).find('#activity-name').val(),
             activity_date: $(this).find('#activity-date').val(),
             activity_time: $(this).find('#activity-time').val(),
+            kids_welcome: $(this).find(`#kid-friendly`).checked,
             kid_cost: kidCost,
             adult_cost: adultCost,
             group_cost: groupCost,
@@ -755,14 +756,20 @@ function postNewActivity(data){
         url: "/activity",
         data: JSON.stringify(data),
         contentType: "application/json",
-        success: showActivityPage,
+        success: retrieveActivityId,
         dataType: "json"
     })
+}
+
+function retrieveActivityId(results){
+    let id = results.id
+    showActivityPage(id)
 }
 
 function showActivityPage(id){
     $('.js-event-page').addClass("hidden");
     $('.js-activity-page').removeClass("hidden");
+    $('body, html').animate({scrollTop:0}, 0);
     retrieveActivityData(id)
 }
 

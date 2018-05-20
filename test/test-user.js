@@ -52,7 +52,7 @@ describe('User API endpoint', function(){
     });
 
     describe('GET endpoint', function(){
-        it('should return all users', function(){
+        xit('should return all users', function(){
             let res;
             return chai.request(app)
                 .get('/user')
@@ -69,7 +69,7 @@ describe('User API endpoint', function(){
                 });
         });
 
-        it('should return the correct user when called by id', function(){
+        xit('should return the correct user when called by id', function(){
             let singleUser;
             return chai.request(app)
                 .get('/user')
@@ -116,7 +116,7 @@ describe('User API endpoint', function(){
     });
 
     describe('PUT endpoint, updating current fields', function(){
-        it('should update user fields', function(){
+        xit('should update user fields', function(){
             const updateUser = {
                 username: faker.internet.userName(),
                 email: faker.internet.email(),
@@ -143,7 +143,7 @@ describe('User API endpoint', function(){
     });
 
     describe('DELETE endpoint', function(){
-        it('should delete a user by id', function(){
+        xit('should delete a user by id', function(){
             const deleteUser = {}
 
             return User
