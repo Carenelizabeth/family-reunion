@@ -637,18 +637,6 @@ function handleNewActivity(){
     })
 }
 
-function handleRSVP(){
-    $('.js-RSVP').click(function(e){
-        let activityId = this.id;
-        let activityName = this.name;
-        showActivityPage(activityId);
-        openModal();
-        const rsvp = respondActivity(activityId, activityName);
-        $('.lined-paper').html(rsvp);
-        handleSubmitResponse();    
-    })
-}
-
 function handleActivity(){
     $('.js-event-page').on('click', '.activity-name', function(e){
         let id = this.id
@@ -789,7 +777,12 @@ function displayActivityPage(results){
     handleRSVP();
 }
 
+//let kidNumber;
+//let adultNumber;
+
 function renderActivityPage(data){
+    //kidNumber = data.kid_number;
+    //adultNumber = data.adult_number
     let cost = calculateCost(data);
     if(cost === 0){cost = `<div class="free"></div>`}
     //mapComments(data);
@@ -802,7 +795,7 @@ function renderActivityPage(data){
                 <p>Optional date and time</p>
                 <p>Host: <span class="fun-text">${data.host_name}</span></p>
                 ${cost}
-                <p class="fun-text">${activitySTORE[0].adults_attending} adults   ${activitySTORE[0].children_attending} kids</p>
+                <p class="fun-text">${data.adult_number} adults ${data.kid_number} kids</p>
                 <button type="button" name="${data.name}" class="js-RSVP sticker-green-circle" id="${data.id}">Join!</button>
             </div>
             <div class="activity-discussion paper green-border">
@@ -857,12 +850,24 @@ function calculateCost(data){
     return totalCost;
 }
 
+function handleRSVP(){
+    $('.js-RSVP').click(function(e){
+        let activityId = this.id;
+        let activityName = this.name;
+        showActivityPage(activityId);
+        openModal();
+        const rsvp = respondActivity(activityId, activityName);
+        $('.lined-paper').html(rsvp);
+        handleSubmitResponse();    
+    })
+}
+
 //form for adding a response; appears in modal
 function respondActivity(id, name){
     return`        
         <section class="rsvp-page">
             <form class="js-rsvp-form">
-                <h2 class="handwrite">${name}</h2>
+                <h3 class="handwrite">${name}</h3>
                 <fieldset>
                     <legend>Who's coming?</legend>
                     <label for="kids-attending">Kids (under 12)</label>
@@ -882,7 +887,28 @@ function handleSubmitResponse(){
         closeModal();
         let kids = parseInt($(this).find('#kids-attending').val(), 10);
         let adults = parseInt($(this).find('#adults-attending').val(), 10);
+        let id = $('.submit-rsvp').id
+        UpdateActivityNumber(kids, adults, id)
     })
+}
+
+function updateJoinActivity(kids, adults, id){
+    $.ajax({
+        type: "PUT",
+        url: `activity/join/${id}`,
+        data: {
+            id: id,
+            adult_number: adults,
+            kid_number: kids,
+            userId: CURRENT_SESSION.user_id
+        },
+        contentType: "application/json",
+        success: closeModal,
+        dataType: "json"})
+}
+
+function UpdateActivityNumber(kids, adults, id){
+
 }
 
 function openModal(){
