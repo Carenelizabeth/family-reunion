@@ -11,7 +11,7 @@
         <link href="https://fonts.googleapis.com/css?family=Passion+One" rel="stylesheet">
     </head>
 </html>
-<body>
+<body onload="handleInviteLink()">
     <main>
         <section class="js-landing-page">
             <div class="landing-page">
@@ -20,8 +20,15 @@
                         <div class="thumb-yellow"></div>
                         <div class="intro-text">
                             <h1>Family Reunion Planner</h1>
-                            <h2>Make organizing your group a breeze!</h2>
-                            <div class="welcome-content"></div>                    
+                            <h2 class="invite-welcome">!</h2>
+                            <div class="intro-content-invite">
+                                <div class="intro-checklist">
+                                    <p class="checklist login-buttons"><button class="js-make-account sticker">Sign Up</button> or <button class="js-log-in sticker">Log In</button></p>
+                                    <p class="checklist">Plan activities</p>
+                                    <p class="checklist">Join other activities</p>
+                                    <p class="checklist">Have a blast!</p>
+                                </div>   
+                            </div>                 
                         </div>
                     </div>
                 </div>
@@ -29,4 +36,8 @@
             <div class="login-page hidden"></div>
         </section>
     </main>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="client.js"></script>
+
 </body>

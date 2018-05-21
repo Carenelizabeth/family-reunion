@@ -469,6 +469,12 @@ i{
     margin: 25px 0;
 }
 
+.intro-content-invite{
+    display: flex;
+    justify-content: flex-start;
+    margin: 25px 0;
+}
+
 .intro-text{
     max-width: 960px;
     margin: 0 auto;

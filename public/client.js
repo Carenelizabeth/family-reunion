@@ -146,6 +146,7 @@ function handleNewAccount(){
             password: $(this).find('#user-password').val(),
         }
         createAccount(data);
+        window.location("index.html");
     })
 }
 
@@ -214,9 +215,8 @@ function renderInvite(){
 }
 
 function getInviteURL(){
-    let query = CURRENT_SESSION.event_id;
-    console.log(CURRENT_SESSION.event_id);
-    let inviteURL = `${window.location.protocol}//${window.location.host}/invite.html?eventId=${query}`
+    let query=`eventId=${CURRENT_SESSION.event_id}&name=${CURRENT_SESSION.event}`
+    let inviteURL = `${window.location.protocol}//${window.location.host}/invite.html?${query}`
     return inviteURL
 }
 
@@ -938,6 +938,26 @@ function updateJoinActivity(kids, adults, id){
         dataType: "json"})
 }
 
+function handleInviteLink(){
+    console.log('handle invite link ran');
+    let eventId = getQueryVariable("eventId")
+    let event = getQueryVariable("name")
+    console.log(eventId);
+    console.log(event);
+    if(!event){$('.welcome-message').html(`You are joining the ${event}`))
+            console.log(event)}
+}
+
+function getQueryVariable(variable){
+    let query = window.location.search.substring(1);
+    const querypart = query.split("&");
+    console.log(querypart);
+    for(let i=0; i<querypart.length; i++){;
+        let querypair = querypart[i].split("=");
+        if (querypair[0] == variable){return querypair[1]}
+    }
+    return (false);
+}
 
 
 function openModal(){
