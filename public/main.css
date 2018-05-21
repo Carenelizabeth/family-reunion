@@ -77,7 +77,6 @@ nav{
 }
 
 .nav-button{
-    padding-top: 6px;
     font-family: 'Pangolin', cursive;
     font-size: 32px;
     color: #021D59;
@@ -209,10 +208,10 @@ fieldset{
     background-image: url(images/sticker-green.png);
     background-size: contain;
     background-repeat: no-repeat;
-    background-position-x: center;
+    background-position: center;
+    margin: 10px;
     font-size: 24px;
-    flex-basis: 200px;
-    flex: auto;
+    width: 150px;
     padding: 10px;
     color: #FFF485;
 }
@@ -425,6 +424,10 @@ i{
     font-size: 5vh;
 }
 
+.handwrite-small{
+    font-size: 2.5vh;
+}
+
 .welcome-page{
     height: 80%;
     flex-direction: column;
@@ -463,6 +466,12 @@ i{
 .intro-content{
     display: flex;
     justify-content: space-around;
+    margin: 25px 0;
+}
+
+.intro-content-invite{
+    display: flex;
+    justify-content: flex-start;
     margin: 25px 0;
 }
 
@@ -796,4 +805,10 @@ textarea{
     background-color: white;
     border: solid 1px black;
     border-radius: 2%;
+}
+
+.link-box{
+    border: solid 1px black;
+    padding: 10px 20px;
+    margin: 20px 0;
 }

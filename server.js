@@ -42,7 +42,7 @@ app.use('/user', userRouter);
 app.use('/auth', authRouter);
 app.use('/activity', activityRouter);
 
-const jwtAuth = passport.authenticate('jwt', {session: false});
+//const jwtAuth = passport.authenticate('jwt', {session: false});
 
 let server;
 
@@ -50,17 +50,17 @@ function runServer(databaseUrl, port = PORT){
     return new Promise((resolve, reject) => {
         mongoose.connect(databaseUrl, err =>{
             if (err) {
-                return reject(err);
+                return Promise.reject(err);
             }
             server = app.listen(port, () =>{
                 console.log(`Your app is listening on port ${port}`);
                 resolve();
             })
         
-                .on('error', err => {
-                    mongoose.disconnect();
-                    reject(err);
-                });
+            .on('error', err => {
+                mongoose.disconnect();
+                reject(err);
+            });
         });
     });
 }

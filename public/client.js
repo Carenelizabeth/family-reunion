@@ -125,6 +125,7 @@ function getUserData(token){
         success: updateSessionInformation,
         dataType: "json"
     })
+    .then(pushNewUser)
     .then(getUserEvents)
 }
 
@@ -133,6 +134,23 @@ function updateSessionInformation(data){
     CURRENT_SESSION.username = data.username;
     CURRENT_SESSION.user_id = data.id;
     console.log(CURRENT_SESSION.username);
+}
+
+function pushNewUser(){
+    let eventId = CURRENT_SESSION.event_id
+    const data = {
+        id: eventId,
+        userId: CURRENT_SESSION.user_id
+    }
+    console.log(data)
+    if (!eventId == ""){
+    $.ajax({
+        type: "PUT",
+        url: `/event/adduser/${eventId}`,
+        data: JSON.stringify(data),
+        contentType: "application/json",
+        dataType: "json"
+    })}
 }
 
 //these next function handle creating a new user account
@@ -160,17 +178,18 @@ function createAccount(data){
         success: updateSessionInformation,
         dataType: "json"
     })
-    .then(showWelcomePage)
+    .then(pushNewUser)
+    .then(getUserEvents)
 }
 
 //the nav bar is displayed for the first time on the welcome page
 function handleNavButtons(){
     $('.nav-welcome').click(e => getUserEvents());
     $('.nav-event').click(e => handleNavEvent());
-    $('.nav-logout').click(e => Logout());
+    $('.nav-logout').click(e => location.reload());
+    $('.nav-invite').click(e => handleInvite());
     //handleInvite();
-    //handleProfile();
-    //handleLogout();    
+    //handleProfile();  
 }
 
 function handleNavEvent(){
@@ -179,7 +198,7 @@ function handleNavEvent(){
     getEventInformation(event);
 }
 
-function Logout(){
+/*function Logout(){
         CURRENT_SESSION.username = "";
         CURRENT_SESSION.user_id = "";
         CURRENT_SESSION.user_events = [];
@@ -193,6 +212,35 @@ function Logout(){
     $('.js-welcome-page').addClass("hidden")
     $('.js-event-page').addClass("hidden")
     $('.js-activity-page').addClass("hidden")
+}*/
+
+function handleInvite(){
+    if(CURRENT_SESSION.event_id === ""){
+        alert('You must create or select an event first!')
+    }else{
+    openModal()
+    let link = renderInvite()
+    $('.lined-paper').html(link)
+    handleCloseInvite()}
+}
+
+function renderInvite(){
+    let inviteURL = getInviteURL()
+    return`
+        <h3 class="handwrite handwrite-small">Copy this link to invite friends and family!</h3>
+        <div class="link-box"><p>${inviteURL}</p></div>
+        <button type="button" class="sticker-green js-close-invite">Got it!</button>`
+}
+
+function getInviteURL(){
+    let eventName=CURRENT_SESSION.event.split(" ").join("+");
+    let query=`eventId=${CURRENT_SESSION.event_id}&name=${eventName}`
+    let inviteURL = `${window.location.protocol}//${window.location.host}?${query}`
+    return inviteURL
+}
+
+function handleCloseInvite(){
+    $('.js-close-invite').click(e => closeModal())
 }
 
 //once user logs on, they can choose an event or make a new one
@@ -909,9 +957,32 @@ function updateJoinActivity(kids, adults, id){
         dataType: "json"})
 }
 
-function UpdateActivityNumber(kids, adults, id){
-
+function handleInviteLink(){
+    console.log('handle invite link ran');
+    let eventId = getQueryVariable("eventId")
+    let event = getQueryVariable("name")
+    console.log(eventId);
+    console.log(name);
+    CURRENT_SESSION.event_id = eventId;
+    if(!event==false){
+        let eventName = event.split("+").join(" ")
+        $('.welcome-message').html(`You have been invited to join <span class="invite-name">${eventName}</span>`)
+        console.log(eventName)
+        $('.js-not-invite').remove();
+        $('.intro-content').addClass("intro-content-invite")}
 }
+
+function getQueryVariable(variable){
+    let query = window.location.search.substring(1);
+    const querypart = query.split("&");
+    console.log(querypart);
+    for(let i=0; i<querypart.length; i++){;
+        let querypair = querypart[i].split("=");
+        if (querypair[0] == variable){return querypair[1]}
+    }
+    return (false);
+}
+
 
 function openModal(){
     $('.contain-modal').removeClass("behind")
@@ -925,6 +996,7 @@ function handleCloseModal(){
     $('.overlay').click(e => closeModal());
 }
 
+handleInviteLink();
 handleStartButtons();
 handleNavButtons();
 handleActivity();
