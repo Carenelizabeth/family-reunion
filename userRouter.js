@@ -18,7 +18,7 @@ const app = express();
 app.use(morgan('common'));
 app.use(express.json());
 
-const jwtAuth = passport.authenticate('jwt', { session: false });
+//const jwtAuth = passport.authenticate('jwt', { session: false });
 
 router.get('/', (req,res) => {
     User
