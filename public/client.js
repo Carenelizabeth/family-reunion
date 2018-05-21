@@ -125,6 +125,7 @@ function getUserData(token){
         success: updateSessionInformation,
         dataType: "json"
     })
+    .then(pushNewUser)
     .then(getUserEvents)
 }
 
@@ -133,6 +134,23 @@ function updateSessionInformation(data){
     CURRENT_SESSION.username = data.username;
     CURRENT_SESSION.user_id = data.id;
     console.log(CURRENT_SESSION.username);
+}
+
+function pushNewUser(){
+    let eventId = CURRENT_SESSION.event_id
+    const data = {
+        id: eventId,
+        userId: CURRENT_SESSION.user_id
+    }
+    console.log(data)
+    if (!eventId == ""){
+    $.ajax({
+        type: "PUT",
+        url: `/event/adduser/${eventId}`,
+        data: JSON.stringify(data),
+        contentType: "application/json",
+        dataType: "json"
+    })}
 }
 
 //these next function handle creating a new user account
@@ -146,7 +164,6 @@ function handleNewAccount(){
             password: $(this).find('#user-password').val(),
         }
         createAccount(data);
-        window.location("index.html");
     })
 }
 
@@ -161,7 +178,8 @@ function createAccount(data){
         success: updateSessionInformation,
         dataType: "json"
     })
-    .then(showWelcomePage)
+    .then(pushNewUser)
+    .then(getUserEvents)
 }
 
 //the nav bar is displayed for the first time on the welcome page
@@ -215,8 +233,9 @@ function renderInvite(){
 }
 
 function getInviteURL(){
-    let query=`eventId=${CURRENT_SESSION.event_id}&name=${CURRENT_SESSION.event}`
-    let inviteURL = `${window.location.protocol}//${window.location.host}/invite.html?${query}`
+    let eventName=CURRENT_SESSION.event.split(" ").join("+");
+    let query=`eventId=${CURRENT_SESSION.event_id}&name=${eventName}`
+    let inviteURL = `${window.location.protocol}//${window.location.host}?${query}`
     return inviteURL
 }
 
@@ -943,9 +962,14 @@ function handleInviteLink(){
     let eventId = getQueryVariable("eventId")
     let event = getQueryVariable("name")
     console.log(eventId);
-    console.log(event);
-    if(!event){$('.welcome-message').html(`You are joining the ${event}`))
-            console.log(event)}
+    console.log(name);
+    CURRENT_SESSION.event_id = eventId;
+    if(!event==false){
+        let eventName = event.split("+").join(" ")
+        $('.welcome-message').html(`You have been invited to join <span class="invite-name">${eventName}</span>`)
+        console.log(eventName)
+        $('.js-not-invite').remove();
+        $('.intro-content').addClass("intro-content-invite")}
 }
 
 function getQueryVariable(variable){
@@ -972,6 +996,7 @@ function handleCloseModal(){
     $('.overlay').click(e => closeModal());
 }
 
+handleInviteLink();
 handleStartButtons();
 handleNavButtons();
 handleActivity();

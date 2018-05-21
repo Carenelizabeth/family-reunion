@@ -109,7 +109,7 @@ router.put('/adduser/:id', (req, res) => {
       }
 
     Event
-      .findByIdAndUpdate(req.params.id, {$push: {event_members: req.body.userId}})
+      .findByIdAndUpdate(req.params.id, {$addToSet: {event_members: req.body.userId}})
       .then(updatedEvent => res.status(204).end())
       .catch(err => res.status(500).json({message: 'Internal server error'}));
 })

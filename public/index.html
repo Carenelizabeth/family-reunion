@@ -11,7 +11,7 @@
         <link href="https://fonts.googleapis.com/css?family=Passion+One" rel="stylesheet">
     </head>
 </html>
-<body onload="handleInviteLink()">
+<body>
     <nav class="js-nav-bar hidden">
         <button class="nav-button nav-welcome">Welcome</button>
         <button class="nav-button nav-event">Event</button>
@@ -27,23 +27,23 @@
                         <div class="thumb-yellow"></div>
                         <div class="intro-text">
                             <h1>Family Reunion Planner</h1>
-                            <h2>Make organizing your group a breeze!</h2>
+                            <h2 class="welcome-message">Make organizing your group a breeze!</h2>
                             <div class="intro-content">
                                 <div class="intro-checklist">
                                     <p class="checklist login-buttons"><button class="js-make-account sticker">Sign Up</button> or <button class="js-log-in sticker">Log In</button></p>
-                                    <p class="checklist">Create an event </p>
-                                    <p class="checklist">Invite other people</p>
+                                    <p class="checklist js-not-invite">Create an event </p>
+                                    <p class="checklist js-not-invite">Invite other people</p>
                                     <p class="checklist">Plan activities</p>
                                     <p class="checklist">Join other activities</p>
                                     <p class="checklist">Have a blast!</p>
                                 </div>
-                                <div class="sample-buttons">
+                                <div class="sample-buttons js-not-invite">
                                     <button class="sample-user circle-sticker"><p>Grandma Joe</p></button>
                                     <button class="sample-user circle-sticker"><p>Cousin Bob</p></button>
                                     <button class="sample-user circle-sticker"><p>Aunt Judy</p></button>
                                 </div>
                             </div>                    
-                            <p class="emphasis">Not ready to commit? Try it out with an honorary family member</p>
+                            <p class="emphasis js-not-invite">Not ready to commit? Try it out with an honorary family member</p>
                         </div>
                     </div>
                 </div>
