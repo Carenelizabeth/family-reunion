@@ -116,9 +116,9 @@ function getUserData(token){
     let authToken = token.authToken;
     console.log(authToken);
     $.ajax({
-        beforeSend: function(xhr){
+        /*beforeSend: function(xhr){
             xhr.setRequestHeader(`Authorization`, `Bearer ${authToken}`)
-        },
+        },*/
         type: "GET",
         url: `/user/userdata/${CURRENT_SESSION.username}`,
         contentType: "application/json",
