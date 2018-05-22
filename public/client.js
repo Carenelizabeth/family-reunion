@@ -99,7 +99,7 @@ function handleLoginButton(){
 function handleLogin(username, password){
     const data = {username: username,
                 password: password}
-    console.log(data);
+    //console.log(data);
     $.ajax({
         type: "POST",
         url: "/auth/login",
@@ -112,9 +112,9 @@ function handleLogin(username, password){
 
 //user data is retrieved and then used to retrieve the events that they are registered for
 function getUserData(token){
-    console.log('get user data ran');
+    //console.log('get user data ran');
     let authToken = token.authToken;
-    console.log(authToken);
+    //console.log(authToken);
     $.ajax({
         beforeSend: function(xhr){
             xhr.setRequestHeader(`Authorization`, `Bearer ${authToken}`)
@@ -130,10 +130,10 @@ function getUserData(token){
 }
 
 function updateSessionInformation(data){
-    console.log(data);
+    //console.log(data);
     CURRENT_SESSION.username = data.username;
     CURRENT_SESSION.user_id = data.id;
-    console.log(CURRENT_SESSION.username);
+    //console.log(CURRENT_SESSION.username);
 }
 
 function pushNewUser(){
@@ -142,7 +142,7 @@ function pushNewUser(){
         id: eventId,
         userId: CURRENT_SESSION.user_id
     }
-    console.log(data)
+    //console.log(data)
     if (!eventId == ""){
     $.ajax({
         type: "PUT",
@@ -168,8 +168,8 @@ function handleNewAccount(){
 }
 
 function createAccount(data){
-    console.log('create account ran');
-    console.log('data');
+    //console.log('create account ran');
+    //console.log('data');
     $.ajax({
         type: "POST",
         url: "/user",
@@ -193,29 +193,24 @@ function handleNavButtons(){
 }
 
 function handleNavEvent(){
+    if(CURRENT_SESSION.event_id === false){
+        alert('You must create or select an event first!')
+    }else{
     let event = CURRENT_SESSION.event;
-    console.log(event);
-    getEventInformation(event);
+    //console.log(event);
+    getEventInformation(event);}
 }
 
-/*function Logout(){
-        CURRENT_SESSION.username = "";
-        CURRENT_SESSION.user_id = "";
-        CURRENT_SESSION.user_events = [];
-        CURRENT_SESSION.event = "";
-        CURRENT_SESSION.event_id = "";
-        CURRENT_SESSION.organizer_id = "";
-
-    $('.js-nav-bar').addClass("hidden")
-    $('.js-landing-page').removeClass("hidden")
-    $('.js-login-page').addClass("hidden")
-    $('.js-welcome-page').addClass("hidden")
-    $('.js-event-page').addClass("hidden")
-    $('.js-activity-page').addClass("hidden")
-}*/
+function Logout(){
+    //let URL = `${window.location.protocol}//${window.location.host}`;
+    //Window.location.href=URL;
+    //location.reload();
+    window.location = window.location.href.split("?")[0];
+}
 
 function handleInvite(){
-    if(CURRENT_SESSION.event_id === ""){
+    //console.log(CURRENT_SESSION.event_id);
+    if(CURRENT_SESSION.event_id === false){
         alert('You must create or select an event first!')
     }else{
     openModal()
@@ -245,7 +240,7 @@ function handleCloseInvite(){
 
 //once user logs on, they can choose an event or make a new one
 function showWelcomePage(data){
-    console.log('show welcome page');
+    //console.log('show welcome page');
 
     $('.js-landing-page').addClass("hidden");
     $('.js-welcome-page').removeClass("hidden");
@@ -261,7 +256,7 @@ function showWelcomePage(data){
 
 function renderWelcome(){
     let button = generateEventButtons()
-    console.log(button);
+    //console.log(button);
     return`
         <h3 class="title">WELCOME</h3>
         <div class="paper blue-border">
@@ -285,7 +280,7 @@ function renderWelcome(){
 //the next section makes a call to get events for a registered user, adds them to the
 //CURRENT_SESSION object and generates a button for each event which are displayed on the Welcome page
 function getUserEvents(){
-    console.log('get user events ran');
+    //console.log('get user events ran');
     $.ajax({
         type: "GET",
         url: `/event/byUserId/${CURRENT_SESSION.user_id}`,
@@ -296,18 +291,18 @@ function getUserEvents(){
 }
 
 function updateUserEvents(data){
-    console.log('update user events')
-    console.log(data);
+    //console.log('update user events')
+    //console.log(data);
     if (!(data === undefined || data.length === 0)){
         const events = data.map((item, index) => renderUserEvents(item))
     CURRENT_SESSION.user_events = events;
-    console.log(CURRENT_SESSION.user_events);
+    //console.log(CURRENT_SESSION.user_events);
     }
     showWelcomePage();
 }
 
 function renderUserEvents(event){
-    console.log('render user events')
+    //console.log('render user events')
 
     const data = {name: event.name,
                   id: event.id}
@@ -316,16 +311,16 @@ function renderUserEvents(event){
 }
 
 function generateEventButtons(){
-    console.log('generate event buttons ran')
+    //console.log('generate event buttons ran')
     let button = []
-    console.log(CURRENT_SESSION.user_events.length);
+    //console.log(CURRENT_SESSION.user_events.length);
     if(!(CURRENT_SESSION.user_events.length === 0)){
         for(let i=0; i<CURRENT_SESSION.user_events.length; i++){
             //console.log(i);
             //console.log(`console.log(Event: ${CURRENT_SESSION.user_events[i].name}`);
             button.push(`<button type="button" class="event-button generate-sticker" id="${CURRENT_SESSION.user_events[i].name}">${CURRENT_SESSION.user_events[i].name}</button>`)
         }}
-    console.log(button)
+    //console.log(button)
     return button;
 }
 
@@ -336,7 +331,7 @@ function handleNewEventButton(){
 }
 
 function newEventForm(){
-    console.log('new event form ran');
+    //('new event form ran');
     openModal();
     const event = renderNewEventForm();
     $('.lined-paper').html(event);
@@ -374,13 +369,13 @@ function handleSubmitNewEvent(){
             event_organizer: CURRENT_SESSION.user_id,
             event_members: CURRENT_SESSION.user_id
         }
-        console.log(event);
+        //console.log(event);
         postNewEvent(event);
     })
 }
 
 function postNewEvent(data){
-    console.log('post new event ran');
+    //console.log('post new event ran');
     $.ajax({
         type: "POST",
         url: "/event",
@@ -394,7 +389,7 @@ function postNewEvent(data){
 function handleEventButton(){
     $('.event-button').click(function(e){
         let name = this.id;
-        console.log(name)
+        //console.log(name)
         getEventInformation(name)
     }) 
 }
@@ -426,6 +421,8 @@ function showEventPage(data){
     let dates = data.dates;
     let id = data.id;
 
+    console.log(`userID: ${CURRENT_SESSION.user_id}`);
+    console.log(`organizerId: ${CURRENT_SESSION.organizer_id}`);
 
     const event = renderEvent(name, location, dates)
     retrieveActivities(id);
@@ -435,6 +432,11 @@ function showEventPage(data){
     handleDeleteEvent();
     handleViewProfile()
     handleNewActivity();
+
+    if(!(CURRENT_SESSION.user_id === CURRENT_SESSION.organizer_id)){
+        console.log('not equal')
+        $('.not-organizer').addClass("hidden");
+    }
 }
 
 //displays main event as a banner
@@ -466,11 +468,28 @@ function renderEvent(name, location, dates){
     return`
         <div class="include-edit">
             <h2 class="event-name title">${name}</h2>
-            <button type="button" class="edit edit-event-name not-organizer">edit</button>
+            <div class="event-button-section">
+                <button type="button" class="edit edit-event-name not-organizer">edit</button>
+                <button type="button" class="js-delete-event not-organizer sticker">Delete</button>
+            </div>
         </div>
-        <div class="event-button-section">
-            <button type="button" class="js-delete-event not-organizer sticker">Delete</button> 
-            <button type="button" class="js-make-activity circle-sticker">New Activity</button>   
+        <div class="event-details-section">
+            <div class="event-details wrapper-event-details blue-border">
+                <div class="thumb-green"></div>
+                <div class="include-edit">
+                    <p><span class="emphasis">${location}!</span></p>
+                    <button type="button" class="edit edit-event-location not-organizer">edit</button>
+                </div>
+                <div class="include-edit">
+                    <p><span class="emphasis">${dates}   </span></p>
+                    <button type="button" class="edit edit-event-dates not-organizer">edit</button>
+                </div>
+            </div>
+            <div class="join-activity wrapper-event-details blue-border">
+                <div class="thumb-green"></div>
+                <p class="emphasis">Join a fun activity below or create your own!</p>
+                <button type="button" class="js-make-activity circle-sticker">New Activity</button>   
+        </div>
         </div>` 
 }
 
@@ -570,7 +589,7 @@ function handleEditDatesButton(){
 
 //update function for all event update forms
 function updateEvent(data){
-    console.log(data);
+    //console.log(data);
     $.ajax({
         type: "PUT",
         url: `/event/${CURRENT_SESSION.event_id}`,
@@ -614,8 +633,8 @@ function renderUserPage(){
 
 //displays activites that have been created under the event
 function retrieveActivities(eventId){
-    console.log('retrieve activities')
-    console.log(eventId)
+    //console.log('retrieve activities')
+    //console.log(eventId)
 
     $.ajax({
         type: "GET",
@@ -627,57 +646,66 @@ function retrieveActivities(eventId){
 }
 
 function displayActivities(data){
-    console.log('display activities');
-    console.log(data);
-    const activity = data.map((item, index) =>renderActivities(item))
+    //console.log('display activities');
+    //console.log(data);
+    const activity = data.map((item, index) => renderActivities(item))
     $('.all-activities').html(activity);
     handleRSVP();
 }
 
 function renderActivities(results){
-    console.log(results.name)
-    let price = calculateCost(results);
 
+    let price = calculateCost(results);
     if(price === 0){price = `<div class="free"></div>`}else{price = `<div></div>`}
     
     let kidNumber = 0;
     let adultNumber = results.adult_number;
-    let number
+    let number;
 
     if(results.kid_number){
         kidNumber = results.kid_number
     }
     number = kidNumber + adultNumber
+    if(number ==1){
+        number = `${number} person is`
+    }else {number = `${number} people are`}
 
-    console.log(kidNumber)
-    console.log(adultNumber)
-    console.log()
+
+    let attend;
+    console.log(results.attendees[0]);
+    console.log(`"${CURRENT_SESSION.user_id}"`);
+    console.log(results.attendees[0].includes(`"${CURRENT_SESSION.user_id}"`));
+    if(results.attendees.includes(CURRENT_SESSION.user_id)){
+        attend = `<div class="already-going"></div>`
+    }else{
+        attend = `<button type="button" name="${results.name}" class="js-RSVP sticker-green-circle" id="${results.id}">Join!</button>`
+    }
 
     let thumbColorArray = ["thumb-yellow", "thumb-green", "thumb-red"]
     let borderColorArray = ["blue-border","light-blue-border", "yellow-border", "green-border", "orange-border"]
     let rotateArray = ["rotate-right", "rotate-left"]
+    let flexArray = ["flex-grow", "flex-grow-more", "flex-grow-most"]
     let thumbColor = thumbColorArray[Math.floor(Math.random()*thumbColorArray.length)]
     let borderColor = borderColorArray[Math.floor(Math.random()*borderColorArray.length)]
     let rotate = rotateArray[Math.floor(Math.random()*rotateArray.length)]
-    console.log(thumbColor);
-    console.log(borderColor);
+    let flex = flexArray[Math.floor(Math.random()*flexArray.length)]
 
     return `        
-        <div class="activity wrapper ${borderColor} ${rotate}">
+        <div class="activity wrapper ${borderColor} ${rotate} ${flex}">
             <div class="${thumbColor}"></div>
-            <button type="button" class="activity-name handwrite" id="${results.id}">${results.name}</button>
+            <button type="button" class="activity-name" id="${results.id}">${results.name}</button>
             <div class="attending">
-                <p class="fun-text">${number} people are going</p>
+                <p class="fun-text">${number} going</p>
             </div>
             <div class="js-kids-allowed"></div>
             ${price}
-            <button type="button" name="${results.name}" class="js-RSVP sticker-green-circle" id="${results.id}">Join!</button>
+            ${attend}
          </div>`;
 }
 
 function handleNewActivity(){
     $('.js-make-activity').click(e =>{
-        console.log('handle new activity ran');
+        //console.log('handle new activity ran');
         openModal();
         const activity = createActivity();
         $('.lined-paper').html(activity);
@@ -756,7 +784,7 @@ function createActivity(){
 function handleSubmitNewActivity(){
     $('.js-activity-form').on('submit', function(e){
         e.preventDefault();
-        console.log($(this).find(`#kid-friendly`.checked))
+        //console.log($(this).find(`#kid-friendly`.checked))
         let kids = parseInt($(this).find('#kids-attending').val(), 10);
         let adults = parseInt($(this).find('#adults-attending').val(), 10);
         let kidCost = parseFloat($(this).find('#kid-cost').val(), 10);
@@ -778,9 +806,9 @@ function handleSubmitNewActivity(){
             adult_number: 1+adults,
             activity_comments: $(this).find('.comments').val()
         }
-        console.log('handle submit activity ran');
-        console.log(data);
-        console.log(CURRENT_SESSION.user_id);
+        //console.log('handle submit activity ran');
+        //console.log(data);
+        //console.log(CURRENT_SESSION.user_id);
         postNewActivity(data);
         closeModal();
     });
@@ -863,16 +891,16 @@ function calculateCost(data){
     let kidCost = 0;
     let groupCost = 0;
     let totalCost
-    console.log(data.name);
-    console.log(data.kid_cost);
-    console.log(data.adult_cost);
-    console.log(data.group_cost);
+    //console.log(data.name);
+    //console.log(data.kid_cost);
+    //console.log(data.adult_cost);
+    //console.log(data.group_cost);
     //if ((results.adult_cost || results.kid_cost) && (results.adult_cost > 0 || results.kid_cost > 0))
     if(data.adult_cost && data.adult_cost > 0){adultCost = data.adult_cost;}
     if(data.kid_cost && data.kid_cost > 0 ){kidCost = data.kid_cost}
     if(data.group_cost && data.group_cost > 0){groupCost = data.group_cost}
 
-    console.log(groupCost);
+    //console.log(groupCost);
 
     if (adultCost === 0 && kidCost === 0 && groupCost === 0){
         totalCost = 0;
@@ -896,7 +924,7 @@ function calculateCost(data){
             </div>`
     }
 
-    console.log(totalCost);
+    //console.log(totalCost);
     return totalCost;
 }
 
@@ -933,7 +961,7 @@ function respondActivity(id, name){
 function handleSubmitResponse(){
     $('.js-rsvp-form').submit(function(e){
         e.preventDefault();
-        console.log('handle submit rsvp ran');
+        //console.log('handle submit rsvp ran');
         closeModal();
         let kids = parseInt($(this).find('#kids-attending').val(), 10);
         let adults = parseInt($(this).find('#adults-attending').val(), 10);
@@ -958,16 +986,16 @@ function updateJoinActivity(kids, adults, id){
 }
 
 function handleInviteLink(){
-    console.log('handle invite link ran');
+    //console.log('handle invite link ran');
     let eventId = getQueryVariable("eventId")
     let event = getQueryVariable("name")
-    console.log(eventId);
-    console.log(name);
+    //console.log(eventId);
+    //console.log(name);
     CURRENT_SESSION.event_id = eventId;
     if(!event==false){
         let eventName = event.split("+").join(" ")
         $('.welcome-message').html(`You have been invited to join <span class="invite-name">${eventName}</span>`)
-        console.log(eventName)
+        //console.log(eventName)
         $('.js-not-invite').remove();
         $('.intro-content').addClass("intro-content-invite")}
 }
@@ -975,7 +1003,7 @@ function handleInviteLink(){
 function getQueryVariable(variable){
     let query = window.location.search.substring(1);
     const querypart = query.split("&");
-    console.log(querypart);
+    //console.log(querypart);
     for(let i=0; i<querypart.length; i++){;
         let querypair = querypart[i].split("=");
         if (querypair[0] == variable){return querypair[1]}
