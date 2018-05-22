@@ -674,8 +674,8 @@ function renderActivities(results){
     let attend;
     console.log(results.attendees[0]);
     console.log(`"${CURRENT_SESSION.user_id}"`);
-    console.log(results.attendees[0].includes(`"${CURRENT_SESSION.user_id}"`));
-    if(results.attendees.includes(CURRENT_SESSION.user_id)){
+    console.log(results.attendees[0].includes(CURRENT_SESSION.user_id));
+    if(results.attendees[0].includes(CURRENT_SESSION.user_id)){
         attend = `<div class="already-going"></div>`
     }else{
         attend = `<button type="button" name="${results.name}" class="js-RSVP sticker-green-circle" id="${results.id}">Join!</button>`
