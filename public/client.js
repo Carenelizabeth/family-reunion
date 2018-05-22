@@ -466,7 +466,7 @@ function showEventPage(data){
 
 function renderEvent(name, location, dates){
     return`
-        <div class="include-edit">
+        <div class="include-edit title-section">
             <h2 class="event-name title">${name}</h2>
             <div class="event-button-section">
                 <button type="button" class="edit edit-event-name not-organizer">edit</button>
@@ -476,12 +476,14 @@ function renderEvent(name, location, dates){
         <div class="event-details-section">
             <div class="event-details wrapper-event-details blue-border">
                 <div class="thumb-green"></div>
+                <p class="label">Location:</p>
                 <div class="include-edit">
-                    <p><span class="emphasis">${location}!</span></p>
+                    <p class="emphasis">${location}!</p>
                     <button type="button" class="edit edit-event-location not-organizer">edit</button>
                 </div>
+                <p class="label">Dates:</p>
                 <div class="include-edit">
-                    <p><span class="emphasis">${dates}   </span></p>
+                    <p class="emphasis">${dates}</p>
                     <button type="button" class="edit edit-event-dates not-organizer">edit</button>
                 </div>
             </div>
@@ -697,8 +699,10 @@ function renderActivities(results){
             <div class="attending">
                 <p class="fun-text">${number} going</p>
             </div>
-            <div class="js-kids-allowed"></div>
-            ${price}
+            <div class="extra-info">                
+                ${price}
+                <div class="js-kid-friendly"></div>
+            </div>
             ${attend}
          </div>`;
 }

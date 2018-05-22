@@ -685,6 +685,10 @@ textarea{
     align-items: center;
 }
 
+.title-section{
+    justify-content: center;
+}
+
 .js-edit{
     display: flex;
     flex-direction: column;
@@ -718,6 +722,9 @@ textarea{
 }
 
 .js-RSVP{
+    position: absolute;
+    top: 20px;
+    right: 0;
     z-index: 1;
 }
 
@@ -729,15 +736,16 @@ textarea{
     width: 70%;
     display: flex;
     margin: 40px auto;
-    justify-content: space-between;
+    justify-content: space-around;
     flex-wrap: wrap;
 }
 
 .wrapper{
     position: relative;
     padding: 20px;
-    margin: 10px;
+    margin: 20px 10px;
     width: 250px;
+    max-width: 500px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -758,6 +766,7 @@ textarea{
     margin: 10px;
     width: 350px;
     min-width: 300px;
+    max-width: 500px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -884,4 +893,21 @@ textarea{
     border: solid 1px black;
     padding: 10px 20px;
     margin: 20px 0;
+}
+
+.extra-info{
+    display: flex;
+    justify-content: space-between;
+}
+
+.js-kid-friendly{
+    background-image: url(images/kid-friendly.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 100px;
+    height: 50px;
+}
+
+.label{
+    margin-bottom: 10px;
 }
