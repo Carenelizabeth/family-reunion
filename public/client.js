@@ -653,6 +653,10 @@ function renderActivities(results){
         number = `${number} person is`
     }else {number = `${number} people are`}
 
+    let kids = `<div></div>`;
+    console.log(results.kids_welcome);
+    console.log(results.kids_welcome===true);
+    if(results.kids_welcome===true){kids = `<div class="js-kid-friendly"></div>`}
 
     let attend;
     //console.log(results.attendees[0]);
@@ -682,7 +686,7 @@ function renderActivities(results){
             </div>
             <div class="extra-info">                
                 ${price}
-                <div class="js-kid-friendly"></div>
+                ${kids}
             </div>
             ${attend}
          </div>`;
