@@ -18,7 +18,7 @@ const app = express();
 app.use(morgan('common'));
 app.use(express.json());
 
-//const jwtAuth = passport.authenticate('jwt', { session: false });
+const jwtAuth = passport.authenticate('jwt', { session: false });
 
 router.get('/', (req,res) => {
     User
@@ -43,7 +43,7 @@ router.get('/:id', (req, res) => {
         });
 });
 
-router.get('/userdata/:username', (req, res) => {
+router.get('/userdata/:username', jwtAuth, (req, res) => {
     console.log(req.params.username);
     User
         .findOne({username: req.params.username})

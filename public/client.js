@@ -15,6 +15,30 @@ function handleStartButtons(){
     $('.js-make-account').click(e => displayCreateAccount());
 }
 
+function handleMockUsers(){
+    $('.js-aunt-judy').click(function(e){
+        let username = "Aunt Judy";
+        let password = "judysfunvacation";
+        CURRENT_SESSION.username = username;
+        handleLogin(username, password);
+    })
+
+    $('.js-cousin-bob').click(function(e){
+        let username = "Cousin Bob";
+        let password = "bobsfunvacation";
+        CURRENT_SESSION.username = username;
+        handleLogin(username, password);
+    })
+
+    $('.js-grandma-jo').click(function(e){
+        let username = "Grandma Jo";
+        let password = "josfunvacation";
+        CURRENT_SESSION.username = username;
+        handleLogin(username, password);
+    })
+
+}
+
 function displayLogin(){
     $('.landing-page').addClass("hidden");
     $('.login-page').removeClass("hidden");
@@ -114,11 +138,11 @@ function handleLogin(username, password){
 function getUserData(token){
     //console.log('get user data ran');
     let authToken = token.authToken;
-    //console.log(authToken);
+    console.log(authToken);
     $.ajax({
-        /*beforeSend: function(xhr){
+        beforeSend: function(xhr){
             xhr.setRequestHeader(`Authorization`, `Bearer ${authToken}`)
-        },*/
+        },
         type: "GET",
         url: `/user/userdata/${CURRENT_SESSION.username}`,
         contentType: "application/json",
@@ -819,6 +843,7 @@ function handleSubmitNewActivity(){
         //console.log($(this).find(`#kid-friendly`.checked))
         let kids = parseInt($(this).find('#kids-attending').val(), 10);
         let adults = parseInt($(this).find('#adults-attending').val(), 10);
+        adults++
         let kidCost = parseFloat($(this).find('#kid-cost').val(), 10);
         let adultCost = parseFloat($(this).find('#adult-cost').val(), 10);
         let groupCost = parseFloat($(this).find('#group-cost').val(), 10);
@@ -837,7 +862,7 @@ function handleSubmitNewActivity(){
             host_name: CURRENT_SESSION.username,
             attendees: CURRENT_SESSION.user_id,
             kid_number: kids,
-            adult_number: 1+adults,
+            adult_number: adults,
             activity_comments: $(this).find('.comments').val()
         }
         //console.log('handle submit activity ran');
@@ -1061,6 +1086,7 @@ function handleCloseModal(){
     $('.overlay').click(e => closeModal());
 }
 
+handleMockUsers();
 handleInviteLink();
 handleStartButtons();
 handleNavButtons();
