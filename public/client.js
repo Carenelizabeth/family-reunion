@@ -188,7 +188,7 @@ function handleNavButtons(){
     $('.nav-event').click(e => handleNavEvent());
     $('.nav-logout').click(e => location.reload());
     $('.nav-invite').click(e => handleInvite());
-    //handleInvite();
+    $('.nav-profile').click(e => alert('Coming soon!'))
     //handleProfile();  
 }
 
@@ -655,9 +655,9 @@ function renderActivities(results){
 
 
     let attend;
-    console.log(results.attendees[0]);
-    console.log(`"${CURRENT_SESSION.user_id}"`);
-    console.log(results.attendees[0].includes(CURRENT_SESSION.user_id));
+    //console.log(results.attendees[0]);
+    //console.log(`"${CURRENT_SESSION.user_id}"`);
+    //console.log(results.attendees[0].includes(CURRENT_SESSION.user_id));
     if(results.attendees[0].includes(CURRENT_SESSION.user_id)){
         attend = `<div class="already-going"></div>`
     }else{
@@ -818,24 +818,26 @@ function handleSubmitNewActivity(){
         let kidCost = parseFloat($(this).find('#kid-cost').val(), 10);
         let adultCost = parseFloat($(this).find('#adult-cost').val(), 10);
         let groupCost = parseFloat($(this).find('#group-cost').val(), 10);
+        let groupSize = parseInt($(this).find('#group-size').val(), 10);
         let data = {
             eventId: CURRENT_SESSION.event_id,
             activity_name: $(this).find('#activity-name').val(),
             activity_date: $(this).find('#activity-date').val(),
             activity_time: $(this).find('#activity-time').val(),
-            kids_welcome: $(this).find(`#kid-friendly`).checked,
+            kids_welcome: $(this).find(`#kid-friendly`).is(":checked"),
             kid_cost: kidCost,
             adult_cost: adultCost,
             group_cost: groupCost,
-            group_size: $(this).find('#group-size').val(),
+            group_size: groupSize,
             activity_host: CURRENT_SESSION.user_id,
+            host_name: CURRENT_SESSION.username,
             attendees: CURRENT_SESSION.user_id,
             kid_number: kids,
             adult_number: 1+adults,
             activity_comments: $(this).find('.comments').val()
         }
         //console.log('handle submit activity ran');
-        //console.log(data);
+        console.log(data);
         //console.log(CURRENT_SESSION.user_id);
         postNewActivity(data);
         closeModal();
@@ -994,7 +996,7 @@ function handleSubmitResponse(){
         let kids = parseInt($(this).find('#kids-attending').val(), 10);
         let adults = parseInt($(this).find('#adults-attending').val(), 10);
         let id = $('.submit-rsvp').id
-        UpdateActivityNumber(kids, adults, id)
+        UpdateJoinActivity(kids, adults, id)
     })
 }
 

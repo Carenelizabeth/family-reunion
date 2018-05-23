@@ -422,7 +422,7 @@ i{
 
 .title{
     font-family: 'Passion One', sans-serif;
-    font-size: 18vh;
+    font-size: 12vh;
     letter-spacing: .8vh;
     text-align: center;
     font-weight: 900;
@@ -461,7 +461,6 @@ i{
 .welcome-page{
     height: 80%;
     flex-direction: column;
-    justify-content: space-around;
 }
 
 /*.paper:before, .paper:after{
@@ -907,4 +906,8 @@ textarea{
 
 .label{
     margin-bottom: 5px;
+}
+
+.js-acitivty-form{
+    height: 520px;
 }

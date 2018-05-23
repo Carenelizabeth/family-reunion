@@ -45,6 +45,8 @@ router.post('/', (req, res) =>{
         }
     }
 
+    console.log(req.body);
+
     Activity
         .create({
             eventId: req.body.eventId,
