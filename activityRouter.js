@@ -51,7 +51,7 @@ router.post('/', (req, res) =>{
         .create({
             eventId: req.body.eventId,
             activity_name: req.body.activity_name,
-            activity_comments: req.body.activity_comments,
+            activity_comments: {comment: req.body.activity_comments, name: req.body.host_name},
             activity_date: req.body.activity_date,
             activity_time: req.body.activity_time,
             kids_welcome: req.body.kids_welcome,

@@ -722,7 +722,6 @@ textarea{
     position: absolute;
     top: 20px;
     right: 0;
-    z-index: 1;
 }
 
 .event-information{
@@ -815,7 +814,7 @@ textarea{
     background-color:#F7F6F5;
     min-height: 300px;
     min-width: 200px;
-    z-index: 2;
+    z-index: 3;
     display: flex;
     flex-direction: column;
     padding-bottom: 20px;
@@ -881,8 +880,10 @@ textarea{
 
 .comment{
     background-color: white;
+    border-radius: 5%;
     border: solid 1px black;
-    border-radius: 2%;
+    padding: 15px;
+    margin: 20px; 0;
 }
 
 .link-box{

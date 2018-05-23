@@ -42,11 +42,11 @@ function renderLoginForm(){
                     <legend>Log In</legend>
                     <div class="input-line"> 
                         <label for="login-username">Username</label>
-                        <input type="text" name="login-username" id="login-username" class="login-username">
+                        <input type="text" name="login-username" id="login-username" class="login-username" required>
                     </div>
                     <div class="input-line"> 
                         <label for="user-password">Password</label>
-                        <input type="text" name="user-password" id="user-password">
+                        <input type="text" name="user-password" id="user-password" required>
                     </div>
                 </fieldset>
                 <button type="submit sticker" class="js-login-button sticker">Submit</button>
@@ -66,15 +66,15 @@ function renderCreateAccount(){
                     <legend>Create New Account</legend>
                     <div class="input-line"> 
                         <label for="create-user-name">Choose a public user name</label>
-                        <input type="text" name="create-user-name" id="create-user-name">
+                        <input type="text" name="create-user-name" id="create-user-name" required>
                     </div>
                     <div class="input-line"> 
                         <label for="login-email">Email</label>
-                        <input type="text" name="login-email" id="login-email" class="user-email">
+                        <input type="text" name="login-email" id="login-email" class="user-email" required>
                     </div>
                     <div class="input-line"> 
                         <label for="user-password">Password</label>
-                        <input type="text" name="user-password" id="user-password">
+                        <input type="text" name="user-password" id="user-password" required>
                     </div>
                 </fieldset>
                 <button type="submit" class="js-create-account-button sticker">Submit</button>
@@ -662,7 +662,7 @@ function renderActivities(results){
     //console.log(results.attendees[0]);
     //console.log(`"${CURRENT_SESSION.user_id}"`);
     //console.log(results.attendees[0].includes(CURRENT_SESSION.user_id));
-    if(results.attendees[0].includes(CURRENT_SESSION.user_id)){
+    if(results.attendees.includes(CURRENT_SESSION.user_id)){
         attend = `<div class="already-going"></div>`
     }else{
         attend = `<button type="button" name="${results.name}" class="js-RSVP sticker-green-circle" id="${results.id}">Join!</button>`
@@ -894,7 +894,10 @@ function renderActivityPage(data){
 
     for (i=0; i<data.activity_comments.length; i++){
         let eachComment = `
-            <div class="comment"><blockquote>${data.activity_comments[i]}</blockquote></div>`
+            <div class="comment">
+                <blockquote>${data.activity_comments[i].comment}</blockquote>
+                <cite>${data.activity_comments[i].name}</cite>
+            </div>`
         comments.push(eachComment);
     }
 

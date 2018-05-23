@@ -47,7 +47,7 @@ const activitySchema = new Schema({
     attendees: [String],
     kid_number: Number,
     adult_number: Number,
-    activity_comments: [String]
+    activity_comments: [{comment: String, name: String}]
 })
 
 activitySchema.methods.serialize = function(){
@@ -64,10 +64,10 @@ activitySchema.methods.serialize = function(){
         group_size: this.group_size,
         host: this.activity_host,
         host_name: this.activity_host,
-        attendees: [this.attendees],
+        attendees: this.attendees,
         kid_number: this.kid_number,
         adult_number: this.adult_number,
-        activity_comments: [this.activity_comments]
+        activity_comments: this.activity_comments
     }
 }
 
