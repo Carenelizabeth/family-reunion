@@ -110,7 +110,8 @@ h2{
     font-size: 28px;
     font-family: 'Roboto', sans-serif;
     font-weight: bold;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
+    margin-top: -10px;
 }
 
 h1{
@@ -240,7 +241,7 @@ fieldset{
     color: #0F4030;
     font-size: 24px;
     font-weight: bold;
-    margin-bottom: 40px;
+    margin-bottom: 10px;
 }
 
 .edit{
@@ -423,7 +424,6 @@ i{
     font-family: 'Passion One', sans-serif;
     font-size: 18vh;
     letter-spacing: .8vh;
-    margin: 5vh 0;
     text-align: center;
     font-weight: 900;
     color: #F83846;
@@ -445,6 +445,8 @@ i{
 
 .activity-title{
     font-size: 10vh;
+    margin-top: 3vh;
+    margin-bottom: 3vh;
 }
 
 .handwrite{
@@ -685,10 +687,6 @@ textarea{
     align-items: center;
 }
 
-.title-section{
-    justify-content: center;
-}
-
 .js-edit{
     display: flex;
     flex-direction: column;
@@ -729,11 +727,11 @@ textarea{
 }
 
 .event-information{
-    width: 70%;
+    width: 960px;
 }
 
 .all-activities{
-    width: 70%;
+    width: 960px;
     display: flex;
     margin: 40px auto;
     justify-content: space-around;
@@ -742,10 +740,11 @@ textarea{
 
 .wrapper{
     position: relative;
-    padding: 20px;
+    padding: 10px 20px;
     margin: 20px 10px;
     width: 250px;
-    max-width: 500px;
+    max-width: 400px;
+    min-height: 325px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -754,24 +753,22 @@ textarea{
 
 .event-details-section{
     display: flex;
-    justify-content: center;
     flex-grow: 1;
-    margin-top: -3vh;
-    margin-bottom: 3vh;
+    margin-bottom:2vh;
 }
 
 .wrapper-event-details{
     position: relative;
-    padding: 20px;
-    margin: 10px;
+    padding: 5px 20px;
     width: 350px;
     min-width: 300px;
-    max-width: 500px;
+    max-width: 960px;
+    min-height: 250px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     background-color: #F2ECE3;
-    max-height: 250px;
+    max-height: 300px;
     flex-grow: 1;
 }
 
@@ -876,8 +873,8 @@ textarea{
 }
 
 .free{
-    width: 60px;
-    height: 60px;
+    width: 120px;
+    height: 40px;
     background-image: url(images/free.png);
     background-size: contain;
     background-repeat: no-repeat;
@@ -897,17 +894,17 @@ textarea{
 
 .extra-info{
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
 }
 
 .js-kid-friendly{
     background-image: url(images/kid-friendly.png);
     background-size: contain;
     background-repeat: no-repeat;
-    width: 100px;
-    height: 50px;
+    width: 120px;
+    height: 40px;
 }
 
 .label{
-    margin-bottom: 10px;
+    margin-bottom: 5px;
 }

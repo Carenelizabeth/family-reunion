@@ -433,44 +433,22 @@ function showEventPage(data){
     handleViewProfile()
     handleNewActivity();
 
-    if(!(CURRENT_SESSION.user_id === CURRENT_SESSION.organizer_id)){
+    if(CURRENT_SESSION.user_id === CURRENT_SESSION.organizer_id){
         console.log('not equal')
-        $('.not-organizer').addClass("hidden");
-    }
+        $('.include-edit').hover(function(){
+            $(this).children('button').removeClass("hidden");
+        }, function(){
+            $(this).children('button').addClass("hidden");
+        });}
 }
-
-//displays main event as a banner
-/*function renderEvent(name, location, dates){
-    return `
-        <div class="event-info-section">
-            <div class="thumb-red"></div>
-            <div class="include-edit">
-                <h1 class="event-name handwrite">${name}</h1>
-                <button type="button" class="edit edit-event-name not-organizer">edit</button>
-            </div>
-            <div class="include-edit">
-                <p>Where? <span class="fun-text">${location}!</span></p>
-                <button type="button" class="edit edit-event-location not-organizer">edit</button>
-            </div>
-            <div class="include-edit">
-                <p>When? <span class="fun-text">${dates}</span></p>
-                <button type="button" class="edit edit-event-dates not-organizer">edit</button>
-            </div>
-            <p class="emphasis">Join a fun activity below or create your own!</p>
-        </div>
-        <div class="event-button-section">
-            <button type="button" class="js-delete-event not-organizer sticker">Delete</button> 
-            <button type="button" class="js-make-activity circle-sticker">New Activity</button>   
-        </div>`   
-}*/
 
 function renderEvent(name, location, dates){
     return`
-        <div class="include-edit title-section">
+        <div class="include-edit">
             <h2 class="event-name title">${name}</h2>
             <div class="event-button-section">
-                <button type="button" class="edit edit-event-name not-organizer">edit</button>
-                <button type="button" class="js-delete-event not-organizer sticker">Delete</button>
+                <button type="button" class="edit edit-event-name not-organizer hidden">edit</button>
+                <button type="button" class="js-delete-event not-organizer hidden sticker">Delete</button>
             </div>
         </div>
         <div class="event-details-section">
@@ -479,21 +457,24 @@ function renderEvent(name, location, dates){
                 <p class="label">Location:</p>
                 <div class="include-edit">
                     <p class="emphasis">${location}!</p>
-                    <button type="button" class="edit edit-event-location not-organizer">edit</button>
+                    <button type="button" class="edit edit-event-location not-organizer hidden">edit</button>
                 </div>
                 <p class="label">Dates:</p>
                 <div class="include-edit">
                     <p class="emphasis">${dates}</p>
-                    <button type="button" class="edit edit-event-dates not-organizer">edit</button>
+                    <button type="button" class="edit edit-event-dates not-organizer hidden">edit</button>
                 </div>
-            </div>
-            <div class="join-activity wrapper-event-details blue-border">
+                <p class="emphasis">Join a fun activity below or create your own!</p>
+                <button type="button" class="js-make-activity circle-sticker">New Activity</button>
+            </div> 
+        </div>` 
+}
+
+/*            <div class="join-activity wrapper-event-details blue-border">
                 <div class="thumb-green"></div>
                 <p class="emphasis">Join a fun activity below or create your own!</p>
                 <button type="button" class="js-make-activity circle-sticker">New Activity</button>   
-        </div>
-        </div>` 
-}
+        </div>*/
 
 //buttons for editing event: only the host of event can edit
 function handleEditEventButtons(){
@@ -591,16 +572,16 @@ function handleEditDatesButton(){
 
 //update function for all event update forms
 function updateEvent(data){
-    //console.log(data);
+    console.log(CURRENT_SESSION.event_id)
+    console.log(data);
     $.ajax({
         type: "PUT",
         url: `/event/${CURRENT_SESSION.event_id}`,
         data: JSON.stringify(data),
         contentType: 'application/json',
-        success: getEventInformation,
+        success: handleNavEvent,
         dataType: "json"
     })
-    
 }
 
 //delete event
@@ -684,7 +665,7 @@ function renderActivities(results){
     }
 
     let thumbColorArray = ["thumb-yellow", "thumb-green", "thumb-red"]
-    let borderColorArray = ["blue-border","light-blue-border", "yellow-border", "green-border", "orange-border"]
+    let borderColorArray = ["light-blue-border", "yellow-border", "green-border"]
     let rotateArray = ["rotate-right", "rotate-left"]
     let flexArray = ["flex-grow", "flex-grow-more", "flex-grow-most"]
     let thumbColor = thumbColorArray[Math.floor(Math.random()*thumbColorArray.length)]
@@ -714,6 +695,9 @@ function handleNewActivity(){
         const activity = createActivity();
         $('.lined-paper').html(activity);
         handleSubmitNewActivity();
+        showPriceInfo();
+        showGuestInfo();
+        showBasicInfo();
     })
 }
 
@@ -728,7 +712,7 @@ function handleActivity(){
 function createActivity(){
     return`
             <form class="js-activity-form">
-                <fieldset>
+                <fieldset class="basic-info">
                     <legend>Provide Activity Information</legend>
                     <div class="input-line">    
                         <label for="activity-name">Activity name</label>
@@ -751,7 +735,7 @@ function createActivity(){
                         <input type="checkbox" name="kid-friendly" id="kid-friendly">                        
                     </div>
                 </fieldset>
-                <fieldset>
+                <fieldset class="price-info hidden">
                     <legend>How much will it cost?</legend>
                     <div class="input-line price-line"> 
                         <input type="number" step="0.01" name="adult-cost" id="adult-cost" placeholder="e.g. 5.00">
@@ -770,7 +754,7 @@ function createActivity(){
                         <label for="group-size">people</label>
                     </div>
                 </fieldset>
-                <fieldset>
+                <fieldset class="guest-info hidden">
                     <legend>Who else are you bringing?</legend>
                     <div class="input-line">
                         <label for="kids-attending">Kids (under 12)</label>
@@ -780,14 +764,54 @@ function createActivity(){
                         <label for="adults-attending">Adults</label>
                         <input type="number" max="10" min="1" name="adults-attending" id="adults-attending">
                     </div>
-                </fieldset>     
-                <button type="submit" class="submit-new-activity sticker">Submit</button>
+                </fieldset>
+                <div class="form-buttons">
+                        <button type="button" class="show-basic-info sticker-green hidden">Basic</button>
+                        <button type="button" class="show-price-info sticker-green">Price?</button>
+                        <button type="button" class="show-guest-info sticker-green">Guests?</button>
+                    <button type="submit" class="submit-new-activity sticker">Submit</button>
+                </div>
             </form>`
+}
+
+function showPriceInfo(){
+    $('.show-price-info').click(function(){
+        $('.basic-info').addClass('hidden')
+        $('.price-info').removeClass('hidden')
+        $('.guest-info').addClass('hidden')
+        $('.show-basic-info').removeClass('hidden')
+        $('.show-price-info').addClass('hidden')
+        $('.show-guest-info').removeClass('hidden')
+    })
+}
+
+function showGuestInfo(){
+    $('.show-guest-info').click(function(){
+        $('.price-info').addClass('hidden')
+        $('.guest-info').removeClass('hidden')
+        $('.basic-info').addClass('hidden')
+        $('.show-basic-info').removeClass('hidden')
+        $('.show-price-info').removeClass('hidden')
+        $('.show-guest-info').addClass('hidden')
+    })
+}
+
+function showBasicInfo(){
+    $('.show-basic-info').click(function(){
+        console.log('basic info clicked')
+        $('.price-info').addClass('hidden')
+        $('.guest-info').addClass('hidden')
+        $('.basic-info').removeClass('hidden')
+        $('.show-basic-info').addClass('hidden')
+        $('.show-price-info').removeClass('hidden')
+        $('.show-guest-info').removeClass('hidden')
+    })
 }
 
 function handleSubmitNewActivity(){
     $('.js-activity-form').on('submit', function(e){
         e.preventDefault();
+        console.log('submit activity clicked')
         //console.log($(this).find(`#kid-friendly`.checked))
         let kids = parseInt($(this).find('#kids-attending').val(), 10);
         let adults = parseInt($(this).find('#adults-attending').val(), 10);
