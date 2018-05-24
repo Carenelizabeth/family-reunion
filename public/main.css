@@ -189,7 +189,7 @@ fieldset{
 
 .fun-text{
     font-family: 'Pangolin', cursive;
-    font-size: 22px;
+    font-size: 2.6vh;
     color: #0F402F;
 }
 
@@ -451,6 +451,7 @@ i{
 .handwrite{
     font-family: 'Pangolin', cursive;
     font-size: 3.5vh;
+    margin-bottom: .5vh;
 }
 
 .handwrite-small{
@@ -857,9 +858,6 @@ textarea{
 .activity-details, .activity-discussion{
     width: 100%;
     margin: 0 10px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
     min-height: 500px;
 }
 
@@ -873,6 +871,12 @@ textarea{
     justify-content: space-between;
 }
 
+.activity-content{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
 .free{
     width: 120px;
     height: 40px;
@@ -882,11 +886,28 @@ textarea{
 }
 
 .comment{
-    background-color: white;
-    border-radius: 5%;
-    border: solid 1px black;
-    padding: 15px;
     margin: 20px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    border: solid 3px #DEB84C;
+    padding: 10px;
+}
+
+blockquote{
+    font-family: 'Roboto', sans-serif;
+    font-size: 2vh; 
+}
+
+cite{
+    align-self: flex-end;
+    font-family: 'Pangolin', cursive;
+    font-size: 2vh;
+    color: #04B1DA
+}
+
+cite::before{
+    content: "\2014";
 }
 
 .link-box{

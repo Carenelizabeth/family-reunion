@@ -960,25 +960,31 @@ function renderActivityPage(data){
         <div class="activity-detail-section">            
             <div class="activity-details paper light-blue-border rotate-left">
                 <div class="thumb-green"></div>
-                <h3 class="handwrite">Activity details</h3>
-                <p>Host: <span class="fun-text">${data.host_name}</span></p>
-                <div class="date-time">
-                    ${date}
-                    ${time}
-                </div>                
-                ${cost}
-                ${kids}
-                <p>Who's Going?</p>
-                <p class="fun-text">${data.adult_number} adults ${data.kid_number} kids</p>
-                ${attend}
-                ${link}
+                <div class="activity-content">
+                    <h3 class="handwrite">Activity details</h3>
+                    <p>Host: <span class="fun-text">${data.host_name}</span></p>
+                    <div class="date-time">
+                        ${date}
+                        ${time}
+                    </div>                
+                    ${cost}
+                    ${kids}
+                    <div>
+                        <p>Who's Going?</p>
+                        <p class="fun-text">${data.adult_number} adults ${data.kid_number} kids</p>
+                    </div>
+                    ${attend}
+                    ${link}
+                </div>
             </div>
             <div class="activity-discussion paper green-border rotate-right">
                 <div class="thumb-yellow"></div>
-                <h3 class="handwrite">Join the discussion!</h3>
-                ${comments}
-                <textarea class="text-input"></textarea>
-                <button type="button" class="submit-comment text-area sticker">Comment</button>
+                <div class="activity-content">
+                    <h3 class="handwrite">Join the discussion!</h3>
+                    ${comments}
+                    <textarea class="text-input"></textarea>
+                    <button type="button" class="submit-comment text-area sticker">Comment</button>
+                </div>
             </div>
         </div>`
 }
