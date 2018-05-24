@@ -151,7 +151,7 @@ button:active {
 
 p{
     line-height: 1.6em;
-    font-size: 18px;
+    font-size: 2.4vh;
     font-family: 'Roboto', sans-serif;
 }
 
@@ -444,8 +444,8 @@ i{
 }
 
 .activity-title{
-    margin-top: 3vh;
-    margin-bottom: 3vh;
+    margin-top: 5vh;
+    margin-bottom: 4vh;
 }
 
 .handwrite{
@@ -857,6 +857,10 @@ textarea{
 .activity-details, .activity-discussion{
     width: 100%;
     margin: 0 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 500px;
 }
 
 .activity-page{
@@ -913,5 +917,10 @@ textarea{
 }
 
 .submit-comment{
-    justify-content: flex-end;
+    align-self: flex-end;
+}
+
+.circle-sticker-bigger{
+    height: 100px;
+    width: 100px;
 }

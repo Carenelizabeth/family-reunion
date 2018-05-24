@@ -927,6 +927,22 @@ function renderActivityPage(data){
     if(cost === 0){cost = `<div class="free"></div>`}
     const comments = []
 
+    let kids = `<div></div>`;
+    if(data.kids_welcome===true){kids = `<div class="js-kid-friendly"></div>`}
+
+    let attend;
+    if(data.attendees.includes(CURRENT_SESSION.user_id)){
+        attend = `<div class="already-going"></div>`
+    }else{
+        attend = `<button type="button" name="${data.name}" class="js-RSVP sticker-green-circle circle-sticker-bigger" id="${data.id}">Join!</button>`
+    }
+
+    let date;
+    let time = `<p></p>`
+    if(data.date){date = `<p>Date: ${data.date}</p>`}else date = `<p>Date and time are flexible</p>`
+    if(data.time){time = `<p>Time: ${data.time}</p>`}
+
+    
     for (i=0; i<data.activity_comments.length; i++){
         let eachComment = `
             <div class="comment">
@@ -936,34 +952,24 @@ function renderActivityPage(data){
         comments.push(eachComment);
     }
 
-    let attend;
-    if(data.attendees.includes(CURRENT_SESSION.user_id)){
-        attend = `<div class="already-going"></div>`
-    }else{
-        attend = `<button type="button" name="${data.name}" class="js-RSVP sticker-green-circle" id="${data.id}">Join!</button>`
-    }
-
-    let date = `<p></p>`
-    let time = `<p></p>`
-    if(data.date){date = `<p>date: ${data.date}</p>`}
-    if(data.time){time = `<p>time: ${data.time}</p>`}
-
     return`
         <h2 class="title activity-title">${data.name}</h2>
         <div class="activity-detail-section">            
-            <div class="activity-details paper light-blue-border">
+            <div class="activity-details paper light-blue-border rotate-left">
                 <div class="thumb-green"></div>
                 <h3 class="handwrite">Activity details</h3>
+                <p>Host: <span class="fun-text">${data.host_name}</span></p>
                 <div class="date-time">
                     ${date}
                     ${time}
-                </div>
-                <p>Host: <span class="fun-text">${data.host_name}</span></p>
+                </div>                
                 ${cost}
+                ${kids}
+                <p>Who's Going?</p>
                 <p class="fun-text">${data.adult_number} adults ${data.kid_number} kids</p>
                 ${attend}
             </div>
-            <div class="activity-discussion paper green-border">
+            <div class="activity-discussion paper green-border rotate-right">
                 <div class="thumb-yellow"></div>
                 <h3 class="handwrite">Join the discussion!</h3>
                 ${comments}
