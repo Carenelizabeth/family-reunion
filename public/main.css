@@ -444,14 +444,13 @@ i{
 }
 
 .activity-title{
-    font-size: 10vh;
     margin-top: 3vh;
     margin-bottom: 3vh;
 }
 
 .handwrite{
     font-family: 'Pangolin', cursive;
-    font-size: 5vh;
+    font-size: 3.5vh;
 }
 
 .handwrite-small{
@@ -911,4 +910,8 @@ textarea{
 
 .js-acitivty-form{
     height: 520px;
+}
+
+.submit-comment{
+    justify-content: flex-end;
 }

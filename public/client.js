@@ -936,17 +936,32 @@ function renderActivityPage(data){
         comments.push(eachComment);
     }
 
+    let attend;
+    if(data.attendees.includes(CURRENT_SESSION.user_id)){
+        attend = `<div class="already-going"></div>`
+    }else{
+        attend = `<button type="button" name="${data.name}" class="js-RSVP sticker-green-circle" id="${data.id}">Join!</button>`
+    }
+
+    let date = `<p></p>`
+    let time = `<p></p>`
+    if(data.date){date = `<p>date: ${data.date}</p>`}
+    if(data.time){time = `<p>time: ${data.time}</p>`}
+
     return`
         <h2 class="title activity-title">${data.name}</h2>
         <div class="activity-detail-section">            
             <div class="activity-details paper light-blue-border">
                 <div class="thumb-green"></div>
-                <h3 class="handwrite">All the details</h3>
-                <p>Optional date and time</p>
+                <h3 class="handwrite">Activity details</h3>
+                <div class="date-time">
+                    ${date}
+                    ${time}
+                </div>
                 <p>Host: <span class="fun-text">${data.host_name}</span></p>
                 ${cost}
                 <p class="fun-text">${data.adult_number} adults ${data.kid_number} kids</p>
-                <button type="button" name="${data.name}" class="js-RSVP sticker-green-circle" id="${data.id}">Join!</button>
+                ${attend}
             </div>
             <div class="activity-discussion paper green-border">
                 <div class="thumb-yellow"></div>
@@ -1019,7 +1034,7 @@ function respondActivity(id, name){
             <form class="js-rsvp-form">
                 <h3 class="handwrite">${name}</h3>
                 <fieldset>
-                    <legend>Who's coming?</legend>
+                    <legend>Are you bringing anyone?</legend>
                     <label for="kids-attending">Kids (under 12)</label>
                     <input type="number" max="10" min="0"name="kids-attending" id="kids-attending">
                     <label for="adults-attending">Adults (aside from you)</label>
@@ -1046,13 +1061,13 @@ function handleSubmitResponse(){
             kid_number: kids,
             userId: CURRENT_SESSION.user_id
         }
-        console.log(data);
+        //console.log(data);
         updateJoinActivity(data)
     })
 }
 
 function updateJoinActivity(data){
-    console.log(data.id)
+    //console.log(data.id)
     $.ajax({
         type: "PUT",
         url: `activity/join/${data.id}`,
