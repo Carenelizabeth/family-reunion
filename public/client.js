@@ -920,6 +920,7 @@ function displayActivityPage(results){
     const activity = renderActivityPage(results);
     $('.activity-page').html(activity);
     handleRSVP();
+    handleSubmitComment();
 }
 
 function renderActivityPage(data){
@@ -962,7 +963,7 @@ function renderActivityPage(data){
                 <div class="thumb-green"></div>
                 <div class="activity-content">
                     <h3 class="handwrite">Activity details</h3>
-                    <p>Host: <span class="fun-text">${data.host_name}</span></p>
+                    <p>Host: ${data.host_name} </p>
                     <div class="date-time">
                         ${date}
                         ${time}
@@ -971,7 +972,7 @@ function renderActivityPage(data){
                     ${kids}
                     <div>
                         <p>Who's Going?</p>
-                        <p class="fun-text">${data.adult_number} adults ${data.kid_number} kids</p>
+                        <p>${data.adult_number} adults ${data.kid_number} kids</p>
                     </div>
                     ${attend}
                     ${link}
@@ -979,12 +980,12 @@ function renderActivityPage(data){
             </div>
             <div class="activity-discussion paper green-border rotate-right">
                 <div class="thumb-yellow"></div>
-                <div class="activity-content">
+                <form class="activity-content comment-section">
                     <h3 class="handwrite">Join the discussion!</h3>
                     ${comments}
                     <textarea class="text-input"></textarea>
-                    <button type="button" class="submit-comment text-area sticker">Comment</button>
-                </div>
+                    <button type="submit" class="submit-comment text-area sticker" name="${data.id}">Comment</button>
+                </form>
             </div>
         </div>`
 }
@@ -1090,6 +1091,35 @@ function updateJoinActivity(data){
         data: JSON.stringify(data),
         contentType: "application/json",
         success: closeModal,
+        dataType: "json"})
+    .then(retrieveActivityData(data.id))
+}
+
+function handleSubmitComment(){
+    console.log('handle submit comment ran')
+    $('.comment-section').submit(function(e){
+        e.preventDefault();
+        let comment = $(this).find('.text-input').val();
+        let id = $(this).find('.submit-comment').attr("name");
+        let name = CURRENT_SESSION.username;
+        let data = {
+            comment: comment,
+            id: id,
+            name: name
+        }
+        console.log(data);
+        updateComments(data);
+    })
+}
+
+function updateComments(data){
+    console.log('update comments ran')
+    $.ajax({
+        type: "PUT",
+        url: `activity/comments/${data.id}`,
+        data: JSON.stringify(data),
+        contentType: "application/json",
+        success: retrieveActivityData(data.id),
         dataType: "json"})
 }
 

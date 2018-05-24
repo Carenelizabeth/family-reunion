@@ -98,7 +98,7 @@ router.put('/:id', (req, res) => {
     }
 
     const update = {}
-    const updateable = ['activity_name', 'activity_comments', 'activity_date', 'activity_time', 'kid_cost', 'adult_cost', 'group_cost', 'group_size', 'kid_number', 'adult_number']
+    const updateable = ['activity_name', 'activity_date', 'activity_time', 'kid_cost', 'adult_cost', 'group_cost', 'group_size', 'kid_number', 'adult_number']
     updateable.forEach(field =>{
         if (field in req.body){
             update[field] = req.body[field]
@@ -107,6 +107,26 @@ router.put('/:id', (req, res) => {
     
     Activity
         .findByIdAndUpdate(req.params.id, {$set: update})
+        .then(a => res.status(204).end())
+        .catch(err => res.status(500).json({message: 'Internal server error'}))
+})
+
+router.put('/comments/:id', (req, res) =>{
+    if (!(req.params.id && req.body.id && req.params.id === req.body.id)) {
+        res.status(400).json({
+          error: 'Request path id and request body id values must match'
+        });
+    }
+
+    console.log(res.body);
+
+    const data = {comment: req.body.comment,
+                name: req.body.name}
+
+    console.log(data)
+
+    Activity
+        .findByIdAndUpdate(req.params.id, {$addToSet: {activity_comments: data}})
         .then(a => res.status(204).end())
         .catch(err => res.status(500).json({message: 'Internal server error'}))
 })

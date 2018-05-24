@@ -597,7 +597,7 @@ form .sticker{
 }
 
 legend{
-    font-family: 'Walter Turncoat', cursive;
+    font-family: 'Roboto', sans-serif;
     color: #0F4030;
     font-size: 32px;
 
@@ -638,11 +638,6 @@ legend{
     font-size: 24;
     font-weight: bold;
 }
-
-legend{
-    margin-bottom: 30px; 
-}
-
 
 input{
     height: 40px;
@@ -852,7 +847,10 @@ textarea{
 
 .text-input{
     width: 100%;
-    height: 100px;
+    height: 6vh;
+    border: solid 2px #048B3E;
+    font-size: 2vh;
+    font-family: 'Roboto', sans-serif;
 }
 
 .activity-details, .activity-discussion{
@@ -872,6 +870,7 @@ textarea{
 }
 
 .activity-content{
+    height: 90%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -886,6 +885,7 @@ textarea{
 }
 
 .comment{
+    width: 100%;
     margin: 20px 0;
     display: flex;
     flex-direction: column;
