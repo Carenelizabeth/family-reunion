@@ -270,6 +270,7 @@ function showWelcomePage(data){
     $('.js-welcome-page').removeClass("hidden");
     $('.js-event-page').addClass("hidden");
     $('.js-nav-bar').removeClass("hidden");
+    $('.js-activity-page').addClass("hidden");
 
     const welcome = renderWelcome();
     $('.welcome-page').html(welcome);
@@ -678,8 +679,8 @@ function renderActivities(results){
     }else {number = `${number} people are`}
 
     let kids = `<div></div>`;
-    console.log(results.kids_welcome);
-    console.log(results.kids_welcome===true);
+    //console.log(results.kids_welcome);
+    //console.log(results.kids_welcome===true);
     if(results.kids_welcome===true){kids = `<div class="js-kid-friendly"></div>`}
 
     let attend;
@@ -744,7 +745,11 @@ function createActivity(){
                     <legend>Provide Activity Information</legend>
                     <div class="input-line">    
                         <label for="activity-name">Activity name</label>
-                        <input type="text" name="activity-name" id="activity-name">
+                        <input type="text" name="activity-name" id="activity-name" required>
+                    </div>
+                    <div class="input-line">    
+                        <label for="activity-url">Website link (opt)</label>
+                        <input type="text" name="activity-url" id="activity-url">
                     </div>
                     <div class="input-line"> 
                         <label>Additional information</label>
@@ -796,7 +801,7 @@ function createActivity(){
                 <div class="form-buttons">
                         <button type="button" class="show-basic-info sticker-green hidden">Basic</button>
                         <button type="button" class="show-price-info sticker-green">Price?</button>
-                        <button type="button" class="show-guest-info sticker-green">Guests?</button>
+                        <button type="button" class="show-guest-info sticker-green">Details</button>
                     <button type="submit" class="submit-new-activity sticker">Submit</button>
                 </div>
             </form>`
@@ -842,15 +847,21 @@ function handleSubmitNewActivity(){
         console.log('submit activity clicked')
         //console.log($(this).find(`#kid-friendly`.checked))
         let kids = parseInt($(this).find('#kids-attending').val(), 10);
+        if(kids){kids=kid}else kids=0;
         let adults = parseInt($(this).find('#adults-attending').val(), 10);
-        adults++
+        if(adults){adults=adults}else adults=0; adults++;
         let kidCost = parseFloat($(this).find('#kid-cost').val(), 10);
+        if(kidCost){kidCost=kidCost}else kidCost=0;
         let adultCost = parseFloat($(this).find('#adult-cost').val(), 10);
+        if(adultCost){adultCost=adultCost}else adultCost=0
         let groupCost = parseFloat($(this).find('#group-cost').val(), 10);
+        if(groupCost){groupCost=groupCost}else groupCost=0;
         let groupSize = parseInt($(this).find('#group-size').val(), 10);
+        if(groupSize){groupSize=groupSize}else groupSize=0;
         let data = {
             eventId: CURRENT_SESSION.event_id,
             activity_name: $(this).find('#activity-name').val(),
+            activity_url: $(this).find('#activity-url').val(),
             activity_date: $(this).find('#activity-date').val(),
             activity_time: $(this).find('#activity-time').val(),
             kids_welcome: $(this).find(`#kid-friendly`).is(":checked"),
@@ -910,6 +921,7 @@ function displayActivityPage(results){
     const activity = renderActivityPage(results);
     $('.activity-page').html(activity);
     handleRSVP();
+    handleSubmitComment();
 }
 
 function renderActivityPage(data){
@@ -917,6 +929,22 @@ function renderActivityPage(data){
     if(cost === 0){cost = `<div class="free"></div>`}
     const comments = []
 
+    let kids = `<div></div>`;
+    if(data.kids_welcome===true){kids = `<div class="js-kid-friendly"></div>`}
+
+    let attend;
+    if(data.attendees.includes(CURRENT_SESSION.user_id)){
+        attend = `<div class="already-going"></div>`
+    }else{
+        attend = `<button type="button" name="${data.name}" class="js-RSVP sticker-green-circle circle-sticker-bigger" id="${data.id}">Join!</button>`
+    }
+
+    let date;
+    let time = `<p></p>`
+    if(data.date){date = `<p>Date: ${data.date}</p>`}else date = `<p>Date and time are flexible</p>`
+    if(data.time){time = `<p>Time: ${data.time}</p>`}
+
+    
     for (i=0; i<data.activity_comments.length; i++){
         let eachComment = `
             <div class="comment">
@@ -926,24 +954,39 @@ function renderActivityPage(data){
         comments.push(eachComment);
     }
 
+    let link=`<p></p>`
+    if(data.url){link=`<p><a href=${data.url} target="_blank">Visit Website</a></p>`};
+
     return`
         <h2 class="title activity-title">${data.name}</h2>
         <div class="activity-detail-section">            
-            <div class="activity-details paper light-blue-border">
+            <div class="activity-details paper light-blue-border rotate-left">
                 <div class="thumb-green"></div>
-                <h3 class="handwrite">All the details</h3>
-                <p>Optional date and time</p>
-                <p>Host: <span class="fun-text">${data.host_name}</span></p>
-                ${cost}
-                <p class="fun-text">${data.adult_number} adults ${data.kid_number} kids</p>
-                <button type="button" name="${data.name}" class="js-RSVP sticker-green-circle" id="${data.id}">Join!</button>
+                <div class="activity-content">
+                    <h3 class="handwrite">Activity details</h3>
+                    <p>Host: ${data.host_name} </p>
+                    <div class="date-time">
+                        ${date}
+                        ${time}
+                    </div>                
+                    ${cost}
+                    ${kids}
+                    <div>
+                        <p>Who's Going?</p>
+                        <p>${data.adult_number} adults ${data.kid_number} kids</p>
+                    </div>
+                    ${attend}
+                    ${link}
+                </div>
             </div>
-            <div class="activity-discussion paper green-border">
+            <div class="activity-discussion paper green-border rotate-right">
                 <div class="thumb-yellow"></div>
-                <h3 class="handwrite">Join the discussion!</h3>
-                ${comments}
-                <textarea class="text-input"></textarea>
-                <button type="button" class="submit-comment text-area sticker">Comment</button>
+                <form class= "comment-section">
+                    <h3 class="handwrite">Join the discussion!</h3>
+                    ${comments.join("")}
+                    <textarea class="text-input"></textarea>
+                    <button type="submit" class="submit-comment text-area sticker" name="${data.id}">Comment</button>
+                </form>
             </div>
         </div>`
 }
@@ -1009,13 +1052,13 @@ function respondActivity(id, name){
             <form class="js-rsvp-form">
                 <h3 class="handwrite">${name}</h3>
                 <fieldset>
-                    <legend>Who's coming?</legend>
+                    <legend>Are you bringing anyone?</legend>
                     <label for="kids-attending">Kids (under 12)</label>
                     <input type="number" max="10" min="0"name="kids-attending" id="kids-attending">
                     <label for="adults-attending">Adults (aside from you)</label>
                     <input type="number" max="10" min="0" name="adults-attending" id="adults-attending">
                 </fieldset>
-                <button type="submit" class="submit-rsvp sticker" id="${id}">Submit</button>
+                <button type="submit" class="submit-rsvp sticker" id="${id}">Join</button>
             </form>
         </section>`
 }
@@ -1026,24 +1069,58 @@ function handleSubmitResponse(){
         //console.log('handle submit rsvp ran');
         closeModal();
         let kids = parseInt($(this).find('#kids-attending').val(), 10);
+        if(kids){kids=kids}else kids=0;
         let adults = parseInt($(this).find('#adults-attending').val(), 10);
-        let id = $('.submit-rsvp').id
-        UpdateJoinActivity(kids, adults, id)
-    })
-}
-
-function updateJoinActivity(kids, adults, id){
-    $.ajax({
-        type: "PUT",
-        url: `activity/join/${id}`,
-        data: {
+        if(adults){adults=adults}else adults=0; adults++;      
+        let id = $(this).find('.submit-rsvp').attr("id");
+        let data = {
             id: id,
             adult_number: adults,
             kid_number: kids,
             userId: CURRENT_SESSION.user_id
-        },
+        }
+        //console.log(data);
+        updateJoinActivity(data)
+    })
+}
+
+function updateJoinActivity(data){
+    //console.log(data.id)
+    $.ajax({
+        type: "PUT",
+        url: `activity/join/${data.id}`,
+        data: JSON.stringify(data),
         contentType: "application/json",
         success: closeModal,
+        dataType: "json"})
+    .then(retrieveActivityData(data.id))
+}
+
+function handleSubmitComment(){
+    console.log('handle submit comment ran')
+    $('.comment-section').submit(function(e){
+        e.preventDefault();
+        let comment = $(this).find('.text-input').val();
+        let id = $(this).find('.submit-comment').attr("name");
+        let name = CURRENT_SESSION.username;
+        let data = {
+            comment: comment,
+            id: id,
+            name: name
+        }
+        console.log(data);
+        updateComments(data);
+    })
+}
+
+function updateComments(data){
+    console.log('update comments ran')
+    $.ajax({
+        type: "PUT",
+        url: `activity/comments/${data.id}`,
+        data: JSON.stringify(data),
+        contentType: "application/json",
+        success: retrieveActivityData(data.id),
         dataType: "json"})
 }
 

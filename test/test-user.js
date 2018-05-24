@@ -90,6 +90,10 @@ describe('User API endpoint', function(){
         });
     });
 
+    describe('User authentication', function(){
+        
+    })
+
     describe('POST endpoint', function(){
 
         xit('should add a new user', function(){
@@ -112,7 +116,9 @@ describe('User API endpoint', function(){
                     expect(nUser.email).to.equal(newUser.email.toLowerCase());
                     //console.log(nUser)
                 });
-        });      
+        }); 
+        
+        
     });
 
     describe('PUT endpoint, updating current fields', function(){

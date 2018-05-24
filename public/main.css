@@ -151,7 +151,7 @@ button:active {
 
 p{
     line-height: 1.6em;
-    font-size: 18px;
+    font-size: 2.4vh;
     font-family: 'Roboto', sans-serif;
 }
 
@@ -189,7 +189,7 @@ fieldset{
 
 .fun-text{
     font-family: 'Pangolin', cursive;
-    font-size: 22px;
+    font-size: 2.6vh;
     color: #0F402F;
 }
 
@@ -444,14 +444,14 @@ i{
 }
 
 .activity-title{
-    font-size: 10vh;
-    margin-top: 3vh;
-    margin-bottom: 3vh;
+    margin-top: 5vh;
+    margin-bottom: 4vh;
 }
 
 .handwrite{
     font-family: 'Pangolin', cursive;
-    font-size: 5vh;
+    font-size: 3.5vh;
+    margin-bottom: .5vh;
 }
 
 .handwrite-small{
@@ -597,7 +597,7 @@ form .sticker{
 }
 
 legend{
-    font-family: 'Walter Turncoat', cursive;
+    font-family: 'Roboto', sans-serif;
     color: #0F4030;
     font-size: 32px;
 
@@ -639,11 +639,6 @@ legend{
     font-weight: bold;
 }
 
-legend{
-    margin-bottom: 30px; 
-}
-
-
 input{
     height: 40px;
     min-width: 150px;
@@ -683,6 +678,7 @@ textarea{
 
 .include-edit{
     display: flex;
+    justify-content: center;
     align-items: center;
 }
 
@@ -852,12 +848,16 @@ textarea{
 
 .text-input{
     width: 100%;
-    height: 100px;
+    height: 6vh;
+    border: solid 2px #048B3E;
+    font-size: 2vh;
+    font-family: 'Roboto', sans-serif;
 }
 
 .activity-details, .activity-discussion{
     width: 100%;
     margin: 0 10px;
+    min-height: 500px;
 }
 
 .activity-page{
@@ -870,6 +870,13 @@ textarea{
     justify-content: space-between;
 }
 
+.activity-content{
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
 .free{
     width: 120px;
     height: 40px;
@@ -879,11 +886,29 @@ textarea{
 }
 
 .comment{
-    background-color: white;
-    border-radius: 5%;
-    border: solid 1px black;
-    padding: 15px;
+    width: 100%;
     margin: 20px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    border: solid 3px #DEB84C;
+    padding: 10px;
+}
+
+blockquote{
+    font-family: 'Roboto', sans-serif;
+    font-size: 2vh; 
+}
+
+cite{
+    align-self: flex-end;
+    font-family: 'Pangolin', cursive;
+    font-size: 2vh;
+    color: #04B1DA
+}
+
+cite::before{
+    content: "\2014";
 }
 
 .link-box{
@@ -911,4 +936,13 @@ textarea{
 
 .js-acitivty-form{
     height: 520px;
+}
+
+.submit-comment{
+    align-self: flex-end;
+}
+
+.circle-sticker-bigger{
+    height: 100px;
+    width: 100px;
 }
