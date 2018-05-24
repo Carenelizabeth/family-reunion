@@ -952,6 +952,9 @@ function renderActivityPage(data){
         comments.push(eachComment);
     }
 
+    let link=`<p></p>`
+    if(data.url){link=`<p><a href=${data.url} target="_blank">Visit Website</a></p>`};
+
     return`
         <h2 class="title activity-title">${data.name}</h2>
         <div class="activity-detail-section">            
@@ -968,6 +971,7 @@ function renderActivityPage(data){
                 <p>Who's Going?</p>
                 <p class="fun-text">${data.adult_number} adults ${data.kid_number} kids</p>
                 ${attend}
+                ${link}
             </div>
             <div class="activity-discussion paper green-border rotate-right">
                 <div class="thumb-yellow"></div>
