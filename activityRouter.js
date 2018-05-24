@@ -52,6 +52,7 @@ router.post('/', (req, res) =>{
             eventId: req.body.eventId,
             activity_name: req.body.activity_name,
             activity_comments: {comment: req.body.activity_comments, name: req.body.host_name},
+            activity_url: req.body.activity_url,
             activity_date: req.body.activity_date,
             activity_time: req.body.activity_time,
             kids_welcome: req.body.kids_welcome,
@@ -82,7 +83,7 @@ router.put('/join/:id', (req, res) => {
     Activity
         .findByIdAndUpdate(req.params.id, 
             {$inc: {kid_number: req.body.kid_number, adult_number: req.body.adult_number},
-            $push: {attendees: req.body.userId}})
+            $addToSet: {attendees: req.body.userId}})
         .then(a => res.status(204).end())
         .catch(err => res.status(500).json({message: 'Internal server error'}));
 });

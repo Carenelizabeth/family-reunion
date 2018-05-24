@@ -678,8 +678,8 @@ function renderActivities(results){
     }else {number = `${number} people are`}
 
     let kids = `<div></div>`;
-    console.log(results.kids_welcome);
-    console.log(results.kids_welcome===true);
+    //console.log(results.kids_welcome);
+    //console.log(results.kids_welcome===true);
     if(results.kids_welcome===true){kids = `<div class="js-kid-friendly"></div>`}
 
     let attend;
@@ -744,7 +744,11 @@ function createActivity(){
                     <legend>Provide Activity Information</legend>
                     <div class="input-line">    
                         <label for="activity-name">Activity name</label>
-                        <input type="text" name="activity-name" id="activity-name">
+                        <input type="text" name="activity-name" id="activity-name" required>
+                    </div>
+                    <div class="input-line">    
+                        <label for="activity-url">Website link (opt)</label>
+                        <input type="text" name="activity-url" id="activity-url">
                     </div>
                     <div class="input-line"> 
                         <label>Additional information</label>
@@ -796,7 +800,7 @@ function createActivity(){
                 <div class="form-buttons">
                         <button type="button" class="show-basic-info sticker-green hidden">Basic</button>
                         <button type="button" class="show-price-info sticker-green">Price?</button>
-                        <button type="button" class="show-guest-info sticker-green">Guests?</button>
+                        <button type="button" class="show-guest-info sticker-green">Details</button>
                     <button type="submit" class="submit-new-activity sticker">Submit</button>
                 </div>
             </form>`
@@ -842,15 +846,21 @@ function handleSubmitNewActivity(){
         console.log('submit activity clicked')
         //console.log($(this).find(`#kid-friendly`.checked))
         let kids = parseInt($(this).find('#kids-attending').val(), 10);
+        if(kids){kids=kid}else kids=0;
         let adults = parseInt($(this).find('#adults-attending').val(), 10);
-        adults++
+        if(adults){adults=adults}else adults=0; adults++;
         let kidCost = parseFloat($(this).find('#kid-cost').val(), 10);
+        if(kidCost){kidCost=kidCost}else kidCost=0;
         let adultCost = parseFloat($(this).find('#adult-cost').val(), 10);
+        if(adultCost){adultCost=adultCost}else adultCost=0
         let groupCost = parseFloat($(this).find('#group-cost').val(), 10);
+        if(groupCost){groupCost=groupCost}else groupCost=0;
         let groupSize = parseInt($(this).find('#group-size').val(), 10);
+        if(groupSize){groupSize=groupSize}else groupSize=0;
         let data = {
             eventId: CURRENT_SESSION.event_id,
             activity_name: $(this).find('#activity-name').val(),
+            activity_url: $(this).find('#activity-url').val(),
             activity_date: $(this).find('#activity-date').val(),
             activity_time: $(this).find('#activity-time').val(),
             kids_welcome: $(this).find(`#kid-friendly`).is(":checked"),
@@ -1015,7 +1025,7 @@ function respondActivity(id, name){
                     <label for="adults-attending">Adults (aside from you)</label>
                     <input type="number" max="10" min="0" name="adults-attending" id="adults-attending">
                 </fieldset>
-                <button type="submit" class="submit-rsvp sticker" id="${id}">Submit</button>
+                <button type="submit" class="submit-rsvp sticker" id="${id}">Join</button>
             </form>
         </section>`
 }
@@ -1026,22 +1036,27 @@ function handleSubmitResponse(){
         //console.log('handle submit rsvp ran');
         closeModal();
         let kids = parseInt($(this).find('#kids-attending').val(), 10);
+        if(kids){kids=kids}else kids=0;
         let adults = parseInt($(this).find('#adults-attending').val(), 10);
-        let id = $('.submit-rsvp').id
-        UpdateJoinActivity(kids, adults, id)
-    })
-}
-
-function updateJoinActivity(kids, adults, id){
-    $.ajax({
-        type: "PUT",
-        url: `activity/join/${id}`,
-        data: {
+        if(adults){adults=adults}else adults=0; adults++;      
+        let id = $(this).find('.submit-rsvp').attr("id");
+        let data = {
             id: id,
             adult_number: adults,
             kid_number: kids,
             userId: CURRENT_SESSION.user_id
-        },
+        }
+        console.log(data);
+        updateJoinActivity(data)
+    })
+}
+
+function updateJoinActivity(data){
+    console.log(data.id)
+    $.ajax({
+        type: "PUT",
+        url: `activity/join/${data.id}`,
+        data: JSON.stringify(data),
         contentType: "application/json",
         success: closeModal,
         dataType: "json"})
