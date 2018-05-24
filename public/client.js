@@ -270,6 +270,7 @@ function showWelcomePage(data){
     $('.js-welcome-page').removeClass("hidden");
     $('.js-event-page').addClass("hidden");
     $('.js-nav-bar').removeClass("hidden");
+    $('.js-activity-page').addClass("hidden");
 
     const welcome = renderWelcome();
     $('.welcome-page').html(welcome);
@@ -980,9 +981,9 @@ function renderActivityPage(data){
             </div>
             <div class="activity-discussion paper green-border rotate-right">
                 <div class="thumb-yellow"></div>
-                <form class="activity-content comment-section">
+                <form class= "comment-section">
                     <h3 class="handwrite">Join the discussion!</h3>
-                    ${comments}
+                    ${comments.join("")}
                     <textarea class="text-input"></textarea>
                     <button type="submit" class="submit-comment text-area sticker" name="${data.id}">Comment</button>
                 </form>
