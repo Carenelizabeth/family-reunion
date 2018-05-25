@@ -58,10 +58,17 @@
         <section class="js-event-page hidden bulletin" aria-live="polite">
             <div class="content event-page">
                 <div class="event-information"></div>
-                <div class="all-activities"></div>
+                <div class="all-activities" aria-live="polite">
+                    <div class="paper blue-border no-activities">
+                        <div class="thumb-green"></div>
+                        <h2 class="handwrite">You don't have any activities yet!</h2>
+                        <p>You can't have a big event without activities!</p>
+                        <p>Why don't you <button class="activity-name nav-invite">Invite friends</button>or<button class="activity-name js-make-activity">Make an activity</button> now?</p>
+                    </div>
+                </div>
         </section>
 
-        <section class="js-activity-page hidden bulletin">
+        <section class="js-activity-page hidden bulletin" aria-live="polite">
             <div class="content activity-page"></div>
         </section>
 
@@ -72,7 +79,7 @@
         <div class="modal">
             <div class="top-margin"></div>
             <div class="right-margin"></div>
-            <div class="lined-paper"></div> 
+            <div class="lined-paper" aria-live="polite"></div> 
         </div>
     </div>
 

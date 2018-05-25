@@ -330,8 +330,8 @@ i{
 .paper{
     position: relative;
     max-width: 960px;
-    padding: 20px 50px;
-    min-height: 400px;
+    padding: 2vh 50px;
+    min-height: 40vh;
     height: auto;
     margin: 0 auto;
     background-color: #F2ECE3;
@@ -539,13 +539,21 @@ i{
     right: -120px;
 }
 
-.make-new-event, .js-make-activity{
+.make-new-event, .make-activity{
     position: absolute;
     bottom: -40px;
     right: -100px;
     -ms-transform: rotate(-10deg); 
     -webkit-transform: rotate(-10deg); 
     transform: rotate(-10deg);
+}
+
+.make-activity{
+    height: 15vh;
+    width:15vh;
+    font-size: 2vh;
+    bottom: 6vh;
+    right: -5vh;
 }
 
 .sample-buttons{
@@ -576,7 +584,7 @@ i{
     height: 100px;
 }
 
-.invite-friends, .js-make-activity{
+.invite-friends,{
     height: 150px;
     width: 150px;
     font-size: 1.6rem;
@@ -664,7 +672,7 @@ textarea{
     flex-direction: column;
 }
 
-.info-section{
+.event-header{
     display: flex;
     flex-direction: column;
     flex: auto;
@@ -698,7 +706,7 @@ textarea{
     margin: 0 auto;
     bottom: 2vh;
     display: flex;
-    flex-direction: column;
+    padding-left: 500px;
 }
 
 .event-buttons{
@@ -708,8 +716,6 @@ textarea{
 }
 
 .js-delete-event{
-    position: absolute;
-    bottom: -20px;
     -ms-transform: rotate(-2deg); 
     -webkit-transform: rotate(-2deg); 
     transform: rotate(-2deg);
@@ -752,25 +758,21 @@ textarea{
 }
 
 .event-details-section{
+    position: relative;
     display: flex;
-    flex-grow: 1;
-    margin-bottom:2vh;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    margin-bottom:1vh;
+    margin-top: -4vh;
+    color: white;
+    font-weight: bold;
+    text-shadow: 2px 2px 2px black;
 }
 
-.wrapper-event-details{
-    position: relative;
-    padding: 5px 20px;
-    width: 350px;
-    min-width: 300px;
-    max-width: 960px;
-    min-height: 250px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    background-color: #F2ECE3;
-    max-height: 300px;
-    flex-grow: 1;
+.event-details-section p{
+    font-size: 4vh;
 }
+
 
 .activity-name{
     padding: 20px;
@@ -897,7 +899,6 @@ textarea{
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    border: solid 3px #DEB84C;
     padding: 10px;
 }
 
@@ -955,4 +956,10 @@ cite::before{
 
 .invisible{
     visibility: hidden;
+}
+
+.no-activities{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }

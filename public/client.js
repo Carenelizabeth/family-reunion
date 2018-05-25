@@ -297,11 +297,6 @@ function renderWelcome(){
         </div>`
 }
 
-/* <div class="task-buttons">
-    <button type="button" class="invite-friends circle-sticker">Invite Friends</button>
-    <button type="button" class="make-new-event red-sticker">New Event</button>
-</div>*/
-
 //the next section makes a call to get events for a registered user, adds them to the
 //CURRENT_SESSION object and generates a button for each event which are displayed on the Welcome page
 function getUserEvents(){
@@ -469,12 +464,27 @@ function showEventPage(data){
 
 function renderEvent(name, location, dates){
     return`
-        <div class="include-edit">
-            <h2 class="event-name title">${name}</h2>
-            <div class="event-button-section">
-                <button type="button" class="edit edit-event-name not-organizer invisibile">edit</button>
-                <button type="button" class="js-delete-event not-organizer invisible sticker">Delete</button>
+        <div class="event-header">
+            <div class="include-edit">
+                <h2 class="event-name title">${name}</h2>
+                <div class="event-button-section">
+                    <button type="button" class="js-delete-event not-organizer invisible sticker">Delete</button>
+                    <button type="button" class="edit edit-event-name not-organizer invisible">edit</button>  
+                </div>
             </div>
+            </div>
+                <div class="event-details-section">
+                    <div class="include-edit">
+                        <p>${location}!</p>
+                        <button type="button" class="edit edit-event-location not-organizer invisible">edit</button>
+                    </div>
+                    <div class="include-edit">
+                        <p>${dates}</p>
+                        <button type="button" class="edit edit-event-dates not-organizer invisible">edit</button>
+                    </div>
+                    <button type="button" class="js-make-activity make-activity circle-sticker">New Activity</button>
+                </div>
+            <div>
         </div>` 
 }
 
@@ -523,7 +533,7 @@ function editEventName(){
         <form class="js-edit-event-name js-edit">
             <label for="edit-event-name">Enter new event name</label>
             <input type="text" name="edit-event-name" id="edit-event-name">
-            <button type="submit" class="sticker">Submit</button>
+            <button type="submit" class="sticker-green">Submit</button>
         </form>   
     `
 }
@@ -533,7 +543,7 @@ function editEventLocation(){
     <form class="js-edit-event-location js-edit">
         <label for="edit-event-location">Enter new event location</label>
         <input type="text" name="edit-event-location" id="edit-event-location">
-        <button type="submit" class="sticker">Submit</button>
+        <button type="submit" class="sticker-green">Submit</button>
     </form>   
 `
 }
@@ -545,7 +555,7 @@ function editEventDates(){
             <input type="date" name="edit-event-start" id="edit-event-start">
             <label for="edit-event-dates">Enter new end date</label>
             <input type="date" name="edit-event-end" id="edit-event-end">
-            <button type="submit" class="sticker">Submit</button>
+            <button type="submit" class="sticker-green">Submit</button>
         </form>   
     `
 }
@@ -671,11 +681,11 @@ function retrieveActivities(eventId){
 }
 
 function displayActivities(data){
-    //console.log('display activities');
-    //console.log(data);
+    if(!(data.length==0)){
+    console.log(`activities: ${data}`);
     const activity = data.map((item, index) => renderActivities(item))
     $('.all-activities').html(activity);
-    handleRSVP();
+    handleRSVP();}
 }
 
 function renderActivities(results){
@@ -864,7 +874,7 @@ function handleSubmitNewActivity(){
         console.log('submit activity clicked')
         //console.log($(this).find(`#kid-friendly`.checked))
         let kids = parseInt($(this).find('#kids-attending').val(), 10);
-        if(kids){kids=kid}else kids=0;
+        if(kids){kids=kids}else kids=0;
         let adults = parseInt($(this).find('#adults-attending').val(), 10);
         if(adults){adults=adults}else adults=0; adults++;
         let kidCost = parseFloat($(this).find('#kid-cost').val(), 10);
@@ -1167,6 +1177,13 @@ function getQueryVariable(variable){
     return (false);
 }
 
+function escKeyHandler(){
+    $(document).on('keyup', function(event){
+      if (event.keyCode == 27){
+        closeModal();
+      }
+    });
+  }
 
 function openModal(){
     $('.contain-modal').removeClass("behind")
@@ -1180,6 +1197,7 @@ function handleCloseModal(){
     $('.overlay').click(e => closeModal());
 }
 
+escKeyHandler();
 handleMockUsers();
 handleInviteLink();
 handleStartButtons();
