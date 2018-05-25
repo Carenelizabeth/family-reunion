@@ -605,7 +605,29 @@ function updateEvent(data){
 
 //delete event
 function handleDeleteEvent(){
-    $('.js-delete-event').click(e => DeleteEvent())
+    $('.js-delete-event').click(e => confirmDeleteEvent())
+}
+
+function confirmDeleteEvent(){
+    let confirm = `
+        <h3 class="handwrite">Are you sure?</h3>
+        <p>This action cannot be undone</p>
+        <div class="confirm-buttons">
+            <button type="button" class="cancel-delete sticker">Cancel</button>
+            <button type="button" class="yes-delete sticker">Delete</button>
+        </div>`
+    openModal()
+    $('.lined-paper').html(confirm)
+    handleConfirmDeleteEvent()
+    handleCancelDelete()
+}
+
+function handleConfirmDeleteEvent(){
+    $('.yes-delete').click(e => DeleteEvent())
+}
+
+function handleCancelDelete(){
+    $('.cancel-delete').click(e => closeModal())
 }
 
 function DeleteEvent(){
@@ -613,9 +635,10 @@ function DeleteEvent(){
         type: "DELETE",
         url: `/event/${CURRENT_SESSION.event_id}`,
         contentType: 'application/json',
-        success: showWelcomePage,
+        success: closeModal(),
         dataType: "json"
     })
+    .then(showWelcomePage())
 }
 
 function handleViewProfile(){

@@ -676,6 +676,7 @@ textarea{
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
 }
 
 .js-edit{
@@ -693,6 +694,9 @@ textarea{
 }
 
 .event-button-section{
+    position: absolute;
+    margin: 0 auto;
+    bottom: 2vh;
     display: flex;
     flex-direction: column;
 }
@@ -704,6 +708,8 @@ textarea{
 }
 
 .js-delete-event{
+    position: absolute;
+    bottom: -20px;
     -ms-transform: rotate(-2deg); 
     -webkit-transform: rotate(-2deg); 
     transform: rotate(-2deg);
