@@ -1160,7 +1160,7 @@ function handleInviteLink(){
     CURRENT_SESSION.event_id = eventId;
     if(!event==false){
         let eventName = event.split("+").join(" ")
-        $('.welcome-message').html(`You have been invited to join <span class="invite-name">${eventName}</span>`)
+        $('.welcome-message').html(`You have been invited to join <p class="invite-name">${eventName}</p>`)
         //console.log(eventName)
         $('.js-not-invite').remove();
         $('.intro-content').addClass("intro-content-invite")}
