@@ -118,7 +118,7 @@ describe('Activity API endpoint', function(){
             const newAct = generateActivityData()
             delete newAct.activity_comments
             newAct.activity_comments = faker.lorem.sentence();
-            console.log(newAct);
+            //console.log(newAct);
 
             return chai.request(app)
                 .post('/activity')
@@ -211,10 +211,10 @@ describe('Activity API endpoint', function(){
                 .findOne()
                 .then(function(act){
                     joinAct.id = act.id;
-                    console.log(joinAct)
+                    //console.log(joinAct)
                     orgAct.kid_number = act.kid_number;
                     orgAct.adult_number = act.adult_number;
-                    console.log(orgAct)
+                    //console.log(orgAct)
                 return chai.request(app)
                     .put(`/activity/join/${joinAct.id}`)
                     .send(joinAct)
@@ -231,6 +231,32 @@ describe('Activity API endpoint', function(){
             })
         })
 
+        it('should add a comment to the array', function(){
+            const newComment = {
+                comment: faker.lorem.sentence(),
+                name: faker.internet.userName()
+            }
+
+            return Activity
+                .findOne()
+                .then(function(act){
+                    console.log(act);
+                    newComment.id = act.id;
+                    console.log(newComment);
+                return chai.request(app)
+                    .put(`activity/comments/${newComment.id}`)
+                    .send(newComment)
+                })
+            
+            .then(function(res){
+                expect(res).to.have.status(204);
+                return Activity.findById(newComment.id)
+            })
+            .then(function(comment){
+                expect(comment.activity_comments.comment).to.equal(newComment.comment);
+                expect(comment.activity_comments.name).to.equal(newComment.name);
+            })
+        })
     });
 
     describe('DELETE endpoint', function(){

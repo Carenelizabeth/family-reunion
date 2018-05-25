@@ -118,7 +118,7 @@ router.put('/comments/:id', (req, res) =>{
         });
     }
 
-    console.log(res.body);
+    console.log(req.body);
 
     const data = {comment: req.body.comment,
                 name: req.body.name}
