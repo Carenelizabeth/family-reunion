@@ -423,6 +423,7 @@ i{
 .title{
     font-family: 'Passion One', sans-serif;
     font-size: 12vh;
+    margin: 5vh 0;
     letter-spacing: .8vh;
     text-align: center;
     font-weight: 900;
@@ -441,11 +442,6 @@ i{
     1px -1px 0 #fff, 
     -1px 1px 0 #fff,
     6px 6px 0 black;
-}
-
-.activity-title{
-    margin-top: 5vh;
-    margin-bottom: 4vh;
 }
 
 .handwrite{
@@ -566,10 +562,10 @@ i{
     background-image: url(images/sticker-circle.png);
     background-repeat: no-repeat;
     background-size: contain;
+    font-size: 18px;
     font-weight: bold;
     text-align: center;
     color: #FFF485;
-    line-height: 1.2em;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -718,6 +714,10 @@ textarea{
     position: absolute;
     top: 20px;
     right: 0;
+}
+
+.js-RSVP:hover{
+    transform: scale(1.05);
 }
 
 .event-information{
@@ -945,4 +945,8 @@ cite::before{
 .circle-sticker-bigger{
     height: 100px;
     width: 100px;
+}
+
+.invisible{
+    visibility: hidden;
 }

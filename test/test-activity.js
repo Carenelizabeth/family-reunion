@@ -231,7 +231,7 @@ describe('Activity API endpoint', function(){
             })
         })
 
-        it('should add a comment to the array', function(){
+        /*it('should add a comment to the array', function(){
             const newComment = {
                 comment: faker.lorem.sentence(),
                 name: faker.internet.userName()
@@ -256,7 +256,7 @@ describe('Activity API endpoint', function(){
                 expect(comment.activity_comments.comment).to.equal(newComment.comment);
                 expect(comment.activity_comments.name).to.equal(newComment.name);
             })
-        })
+        })*/
     });
 
     describe('DELETE endpoint', function(){

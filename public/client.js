@@ -461,9 +461,9 @@ function showEventPage(data){
     if(CURRENT_SESSION.user_id === CURRENT_SESSION.organizer_id){
         console.log('not equal')
         $('.include-edit').hover(function(){
-            $(this).children('button').removeClass("hidden");
+            $(this).find('button').removeClass("invisible");
         }, function(){
-            $(this).children('button').addClass("hidden");
+            $(this).find('button').addClass("invisible");
         });}
 }
 
@@ -472,36 +472,30 @@ function renderEvent(name, location, dates){
         <div class="include-edit">
             <h2 class="event-name title">${name}</h2>
             <div class="event-button-section">
-                <button type="button" class="edit edit-event-name not-organizer hidden">edit</button>
-                <button type="button" class="js-delete-event not-organizer hidden sticker">Delete</button>
+                <button type="button" class="edit edit-event-name not-organizer invisibile">edit</button>
+                <button type="button" class="js-delete-event not-organizer invisible sticker">Delete</button>
             </div>
-        </div>
-        <div class="event-details-section">
-            <div class="event-details wrapper-event-details blue-border">
-                <div class="thumb-green"></div>
-                <p class="label">Location:</p>
-                <div class="include-edit">
-                    <p class="emphasis">${location}!</p>
-                    <button type="button" class="edit edit-event-location not-organizer hidden">edit</button>
-                </div>
-                <p class="label">Dates:</p>
-                <div class="include-edit">
-                    <p class="emphasis">${dates}</p>
-                    <button type="button" class="edit edit-event-dates not-organizer hidden">edit</button>
-                </div>
-                <p class="emphasis">Join a fun activity below or create your own!</p>
-                <button type="button" class="js-make-activity circle-sticker">New Activity</button>
-            </div> 
         </div>` 
 }
 
-/*            <div class="join-activity wrapper-event-details blue-border">
-                <div class="thumb-green"></div>
-                <p class="emphasis">Join a fun activity below or create your own!</p>
-                <button type="button" class="js-make-activity circle-sticker">New Activity</button>   
-        </div>*/
+/*<div class="event-details-section">
+<div class="event-details wrapper-event-details blue-border">
+    <div class="thumb-green"></div>
+    <p class="label">Location:</p>
+    <div class="include-edit">
+        <p class="emphasis">${location}!</p>
+        <button type="button" class="edit edit-event-location not-organizer hidden">edit</button>
+    </div>
+    <p class="label">Dates:</p>
+    <div class="include-edit">
+        <p class="emphasis">${dates}</p>
+        <button type="button" class="edit edit-event-dates not-organizer hidden">edit</button>
+    </div>
+    <p class="emphasis">Join a fun activity below or create your own!</p>
+    <button type="button" class="js-make-activity circle-sticker">New Activity</button>
+</div> */
 
-//buttons for editing event: only the host of event can edit
+//buttons for editing event: only the creator of the event can edit
 function handleEditEventButtons(){
     $('.edit-event-name').click(function(e){
         const name = editEventName();
@@ -958,7 +952,7 @@ function renderActivityPage(data){
     if(data.url){link=`<p><a href=${data.url} target="_blank">Visit Website</a></p>`};
 
     return`
-        <h2 class="title activity-title">${data.name}</h2>
+        <h2 class="title">${data.name}</h2>
         <div class="activity-detail-section">            
             <div class="activity-details paper light-blue-border rotate-left">
                 <div class="thumb-green"></div>
