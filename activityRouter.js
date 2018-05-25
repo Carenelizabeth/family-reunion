@@ -51,7 +51,6 @@ router.post('/', (req, res) =>{
         .create({
             eventId: req.body.eventId,
             activity_name: req.body.activity_name,
-            activity_comments: {comment: req.body.activity_comments, name: req.body.host_name},
             activity_url: req.body.activity_url,
             activity_date: req.body.activity_date,
             activity_time: req.body.activity_time,
@@ -59,12 +58,13 @@ router.post('/', (req, res) =>{
             kid_cost: req.body.kid_cost,
             adult_cost: req.body.adult_cost,
             group_cost: req.body.group_cost,
-            group_size: req.body.group_cost,
+            group_size: req.body.group_size,
             activity_host: req.body.activity_host,
             host_name: req.body.host_name,
             attendees: req.body.attendees,
             kid_number: req.body.kid_number,
-            adult_number: req.body.adult_number
+            adult_number: req.body.adult_number,
+            activity_comments: {comment: req.body.activity_comments, name: req.body.host_name}
         })
         .then(event => res.status(201).json(event.serialize()))
         .catch(err => {

@@ -24,21 +24,26 @@ function seedActivityData(){
     return Activity.insertMany(activityData)
 }
 
+//Generate test data
+//I used strings for the date and time and number instead of currency because that's how they are stored
 function generateActivityData(){
     return{
         eventId: "5af4c9c6f4266d148c2bc6ad",
         activity_name: faker.lorem.word(),
-        activity_comments: {comment: faker.lorem.sentence(), name: faker.internet.userName()},
-        //activity_date: faker.date.future(),
-        //activity_time: faker.random.number(),
-        kid_cost: faker.finance.amount(),
-        adult_cost: faker.finance.amount(),
-        group_cost: faker.finance.amount(),
+        activity_url: faker.lorem.words(),        
+        activity_date: faker.lorem.words(),
+        activity_time: faker.lorem.words(),
+        kids_welcome: faker.random.boolean(),
+        kid_cost: faker.random.number(),
+        adult_cost: faker.random.number(),
+        group_cost: faker.random.number(),
         group_size: faker.random.number(),
         activity_host: faker.internet.userName(),
-        //attendees: faker.random.arrayElement(),
+        host_name: faker.internet.userName(),
+        attendees: faker.internet.userName(),
         kid_number: faker.random.number(),
-        adult_number: faker.random.number()
+        adult_number: faker.random.number(),
+        activity_comments: {comment: faker.lorem.sentence(), name: faker.internet.userName()}
     }
 }
 
@@ -63,7 +68,7 @@ describe('Activity API endpoint', function(){
     });
 
     describe('GET endpoint', function(){
-        xit('should return all activities associated with an event', function(){
+        it('should return all activities associated with an event', function(){
             let eventId = "5af4c9c6f4266d148c2bc6ad"
             let res;
             
@@ -82,7 +87,7 @@ describe('Activity API endpoint', function(){
                 });
         });
 
-        xit('should return the correct activity when called by Id', function(){
+        it('should return the correct activity when called by Id', function(){
             let singleAct;
 
             return Activity
@@ -109,29 +114,60 @@ describe('Activity API endpoint', function(){
     });
 
     describe('POST endpoint', function(){
-        xit('should create a new activity', function(){
+        it('should create a new activity', function(){
             const newAct = generateActivityData()
+            delete newAct.activity_comments
+            newAct.activity_comments = faker.lorem.sentence();
             console.log(newAct);
 
             return chai.request(app)
                 .post('/activity')
                 .send(newAct)
                 .then(function(res){
-                    console.log(res.body);
+                    //console.log(res.body);
                     expect(res).to.have.status(201);
                     expect(res).to.be.json;
-                    expect(res.body).to.include.keys('id', 'eventId', 'name', 'host');
+                    expect(res.body).to.include.keys('id', 'eventId', 'name', 'url', 'date', 'time', 'kids_welcome',
+                        'kid_cost', 'adult_cost', 'group_cost', 'group_size', 'host', 'host_name', 'attendees',
+                        'kid_number', 'adult_number', 'activity_comments');
                     expect(res.body.name).to.equal(newAct.activity_name);
                     expect(res.body.eventId).to.equal(newAct.eventId);
+                    expect(res.body.url).to.equal(newAct.activity_url);
+                    expect(res.body.date).to.equal(newAct.activity_date);
+                    expect(res.body.time).to.equal(newAct.activity_time);
+                    expect(res.body.kids_welcome).to.equal(newAct.kids_welcome);
+                    expect(res.body.kid_cost).to.equal(newAct.kid_cost);
+                    expect(res.body.adult_cost).to.equal(newAct.adult_cost);
+                    expect(res.body.group_cost).to.equal(newAct.group_cost);
+                    expect(res.body.group_size).to.equal(newAct.group_size);
                     expect(res.body.host).to.equal(newAct.activity_host);
-                    return Activity.findById(res.body.id);
+                    expect(res.body.host_name).to.equal(newAct.host_name);
+                    expect(res.body.attendees).to.include(newAct.attendees);
+                    expect(res.body.kid_number).to.equal(newAct.kid_number);
+                    expect(res.body.adult_number).to.equal(newAct.adult_number);
+                    expect(res.body.activity_comments.comment).to.equal(newAct.activity_comments.comment);
+                    //console.log(res.body.id);
+                    //return Activity.findById(res.body.id);
                 })
-                .then(function(nAct){
-                    expect(nAct.activity_name).to.equal(newAct.activity_name);
-                    expect(nAct.eventId).to.equal(newAct.eventId);
-                    expect(nAct.activity_host).to.equal(newAct.activity_host);
-                });
+                /*.then(function(nAct){
+                    expect(nAct.body.activity_name).to.equal(newAct.activity_name);
+                    expect(nAct.body.eventId).to.equal(newAct.eventId);
+                    expect(nAct.body.activity_url).to.equal(newAct.activity_url);
+                    expect(nAct.body.activityData).to.equal(newAct.activity_date);
+                    expect(nAct.body.activity_time).to.equal(newAct.activity_time);
+                    expect(nAct.body.kids_welcome).to.equal(newAct.kids_welcome);
+                    expect(nAct.body.kid_cost).to.equal(newAct.kid_cost);
+                    expect(nAct.body.adult_cost).to.equal(newAct.adult_cost);
+                    expect(nAct.body.group_cost).to.equal(newAct.group_cost);
+                    expect(nAct.body.group_size).to.equal(newAct.group_size);
+                    expect(nAct.body.activity_host).to.equal(newAct.activity_host);
+                    expect(nAct.body.host_name).to.equal(newAct.host_name);
+                    expect(nAct.body.attendees).to.include(newAct.attendees);
+                    expect(nAct.body.kid_number).to.equal(newAct.kid_number);
+                    expect(nAct.body.adult_number).to.equal(newAct.adult_number);
+                });*/
         });
+
     });
 
     describe('PUT endpoint', function(){
@@ -145,9 +181,9 @@ describe('Activity API endpoint', function(){
                 .findOne()
                 .then(function(act){
                     updateAct.id = act.id;
-                    console.log(act);
-                    console.log(updateAct);
-                    console.log(updateAct.id);
+                    //console.log(act);
+                    //console.log(updateAct);
+                    //console.log(updateAct.id);
                 return chai.request(app)
                     .put(`/activity/${updateAct.id}`)
                     .send(updateAct)
@@ -162,8 +198,38 @@ describe('Activity API endpoint', function(){
                 expect(uAct.group_size).to.equal(updateAct.group_size);
             })
         });
+        
+        it('should add a userId to the attendees array and increase attendence', function(){
+            const joinAct = {
+                userId: faker.internet.userName(),
+                kid_number: 1,
+                adult_number: 1
+            }
+            const orgAct ={}
 
-
+            return Activity
+                .findOne()
+                .then(function(act){
+                    joinAct.id = act.id;
+                    console.log(joinAct)
+                    orgAct.kid_number = act.kid_number;
+                    orgAct.adult_number = act.adult_number;
+                    console.log(orgAct)
+                return chai.request(app)
+                    .put(`/activity/join/${joinAct.id}`)
+                    .send(joinAct)
+                })
+            
+            .then(function(res){
+                expect(res).to.have.status(204);
+                return Activity.findById(joinAct.id)
+            })
+            .then(function(jAct){
+                expect(jAct.attendees).to.include(joinAct.userId);
+                expect(jAct.kid_number).to.equal(joinAct.kid_number+orgAct.kid_number);
+                expect(jAct.adult_number).to.equal(joinAct.adult_number+orgAct.adult_number);
+            })
+        })
 
     });
 
