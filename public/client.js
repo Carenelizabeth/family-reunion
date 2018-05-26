@@ -468,8 +468,7 @@ function renderEvent(name, location, dates){
             <div class="include-edit">
                 <h2 class="event-name title">${name}</h2>
                 <div class="event-button-section">
-                    <button type="button" class="js-delete-event not-organizer invisible sticker">Delete</button>
-                    <button type="button" class="edit edit-event-name not-organizer invisible">edit</button>  
+                    <button type="button" class="js-delete-event not-organizer invisible sticker">Delete</button>  
                 </div>
             </div>
             </div>
@@ -721,7 +720,7 @@ function renderActivities(results){
     }
 
     let thumbColorArray = ["thumb-yellow", "thumb-green", "thumb-red"]
-    let borderColorArray = ["light-blue-border", "yellow-border", "green-border"]
+    let borderColorArray = ["light-blue-border", "yellow-border", "green-border", "blue-border"]
     let rotateArray = ["rotate-right", "rotate-left"]
     let flexArray = ["flex-grow", "flex-grow-more", "flex-grow-most"]
     let thumbColor = thumbColorArray[Math.floor(Math.random()*thumbColorArray.length)]
@@ -930,11 +929,12 @@ function retrieveActivityId(results){
 function showActivityPage(id){
     $('.js-event-page').addClass("hidden");
     $('.js-activity-page').removeClass("hidden");
-    $('body, html').animate({scrollTop:0}, 0);
+    $('body, html').scrollTop(0);
     retrieveActivityData(id)
 }
 
 function retrieveActivityData(id){
+    console.log('retrieve activity data ran')
     $.ajax({
         type: "GET",
         url: `activity/${id}`,
@@ -1064,7 +1064,7 @@ function handleRSVP(){
     $('.js-RSVP').click(function(e){
         let activityId = this.id;
         let activityName = this.name;
-        showActivityPage(activityId);
+        $('html,body').scrollTop(0);
         openModal();
         const rsvp = respondActivity(activityId, activityName);
         $('.lined-paper').html(rsvp);
@@ -1118,9 +1118,17 @@ function updateJoinActivity(data){
         url: `activity/join/${data.id}`,
         data: JSON.stringify(data),
         contentType: "application/json",
-        success: closeModal,
+        success: refreshPage(data.id),
         dataType: "json"})
-    .then(retrieveActivityData(data.id))
+    .then(closeModal)
+}
+
+function refreshPage(id){
+    console.log($('.js-activity-page').hasClass("hidden"));
+    if($('.js-activity-page').hasClass("hidden")){
+        console.log('activity page hidden');
+        getEventInformation(CURRENT_SESSION.event);
+    }else{console.log('event page hidden'); retrieveActivityData(id)}
 }
 
 function handleSubmitComment(){
