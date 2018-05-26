@@ -220,9 +220,9 @@ function handleNavEvent(){
     if(CURRENT_SESSION.event_id === false){
         alert('You must create or select an event first!')
     }else{
-    let event = CURRENT_SESSION.event;
+    let eventId = CURRENT_SESSION.event_id;
     //console.log(event);
-    getEventInformation(event);}
+    getEventInformation(eventId);}
 }
 
 function Logout(){
@@ -333,12 +333,12 @@ function renderUserEvents(event){
 function generateEventButtons(){
     //console.log('generate event buttons ran')
     let button = []
-    //console.log(CURRENT_SESSION.user_events.length);
+    console.log(CURRENT_SESSION.user_events);
     if(!(CURRENT_SESSION.user_events.length === 0)){
         for(let i=0; i<CURRENT_SESSION.user_events.length; i++){
             //console.log(i);
             //console.log(`console.log(Event: ${CURRENT_SESSION.user_events[i].name}`);
-            button.push(`<button type="button" class="event-button generate-sticker" id="${CURRENT_SESSION.user_events[i].name}">${CURRENT_SESSION.user_events[i].name}</button>`)
+            button.push(`<button type="button" class="event-button generate-sticker" id="${CURRENT_SESSION.user_events[i].id}">${CURRENT_SESSION.user_events[i].name}</button>`)
         }}
     //console.log(button)
     return button;
@@ -408,17 +408,17 @@ function postNewEvent(data){
 
 function handleEventButton(){
     $('.event-button').click(function(e){
-        let name = this.id;
+        let id = this.id;
         //console.log(name)
-        getEventInformation(name)
+        getEventInformation(id)
     }) 
 }
 
-function getEventInformation(event){
+function getEventInformation(id){
     console.log('get event information');
     $.ajax({
         type: "GET",
-        url: `/event/${event}`,
+        url: `/event/${id}`,
         contentType: 'application/json',
         success: showEventPage,
         dataType: "json"
