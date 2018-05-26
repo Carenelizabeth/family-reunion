@@ -212,8 +212,15 @@ function handleNavButtons(){
     $('.nav-event').click(e => handleNavEvent());
     $('.nav-logout').click(e => location.reload());
     $('.nav-invite').click(e => handleInvite());
-    $('.nav-profile').click(e => alert('Coming soon!'))
+    $('.nav-profile').click(e => showProfilePage());
     //handleProfile();  
+}
+
+function showProfilePage(){
+    $('.js-welcome-page').addClass("hidden");
+    $('.js-activity-page').addClass("hidden");
+    $('.js-event-page').addClass("hidden");
+    $('.js-profile-page').removeClass("hidden");
 }
 
 function handleNavEvent(){
@@ -271,6 +278,7 @@ function showWelcomePage(data){
     $('.js-event-page').addClass("hidden");
     $('.js-nav-bar').removeClass("hidden");
     $('.js-activity-page').addClass("hidden");
+    $('.js-profile-page').addClass("hidden");
 
     const welcome = renderWelcome();
     $('.welcome-page').html(welcome);
@@ -431,6 +439,7 @@ function showEventPage(data){
     $('.js-welcome-page').addClass("hidden");
     $('.js-activity-page').addClass("hidden");
     $('.js-event-page').removeClass("hidden");
+    $('.js-profile-page').addClass("hidden");
 
     CURRENT_SESSION.event = data.name;
     CURRENT_SESSION.event_id = data.id;
@@ -929,6 +938,7 @@ function retrieveActivityId(results){
 function showActivityPage(id){
     $('.js-event-page').addClass("hidden");
     $('.js-activity-page').removeClass("hidden");
+    $('.js-profile-page').addClass("hidden");
     $('body, html').scrollTop(0);
     retrieveActivityData(id)
 }
