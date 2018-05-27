@@ -417,7 +417,11 @@ function postNewEvent(data){
 function handleEventButton(){
     $('.event-button').click(function(e){
         let id = this.id;
+<<<<<<< HEAD
         //console.log(name)
+=======
+        console.log(id)
+>>>>>>> master
         getEventInformation(id)
     }) 
 }

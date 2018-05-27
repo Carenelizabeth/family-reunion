@@ -755,7 +755,6 @@ textarea{
     position: relative;
     display: flex;
     justify-content: center;
-    flex-wrap: wrap;
     margin-bottom:1vh;
     margin-top: -4vh;
     color: white;
@@ -767,6 +766,7 @@ textarea{
     font-size: 4vh;
     margin-right: 20px;
     margin-left: 20px;
+    text-align: center;
 }
 
 
