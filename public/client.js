@@ -408,9 +408,9 @@ function postNewEvent(data){
 
 function handleEventButton(){
     $('.event-button').click(function(e){
-        let name = this.id;
-        //console.log(name)
-        getEventInformation(name)
+        let id = this.id;
+        console.log(id)
+        getEventInformation(id)
     }) 
 }
 
