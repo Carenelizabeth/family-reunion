@@ -1168,8 +1168,16 @@ function getHostedActvities(data){
     console.log('get hosted activites ran')
     $.ajax({
         type: "GET",
-        url: `activity/host`,
-        data: JSON.stringify(data),
+        url: `activity/host?userId=${data.userId}&eventId=${data.eventId}`,
+        contentType: "application/json",
+        success: publishUserActivites,
+        dataType: "json"})
+}
+
+function getUserActivities(data){
+    $.ajax({
+        type: "GET",
+        url: `activity/user?userId=${data.userId}&eventId=${data.eventId}`,
         contentType: "application/json",
         success: publishUserActivites,
         dataType: "json"})
