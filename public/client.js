@@ -342,7 +342,7 @@ function renderUserEvents(event){
 function generateEventButtons(){
     //console.log('generate event buttons ran')
     let button = []
-    console.log(CURRENT_SESSION.user_events);
+    //console.log(CURRENT_SESSION.user_events);
     if(!(CURRENT_SESSION.user_events.length === 0)){
         for(let i=0; i<CURRENT_SESSION.user_events.length; i++){
             //console.log(i);
@@ -1053,7 +1053,7 @@ function calculateCost(data){
         totalCost = `
             <div class="activity-cost">
                 <p>$${adultCost.toFixed([2])} /person</p>
-                <p>$${groupCost.toFixed([2])} /group of ${data.group_size}</p>
+                <p>$${groupCost.toFixed([2])} /group of  ${data.group_size}</p>
             </div>`
     }
 
@@ -1305,7 +1305,7 @@ function displayEditActivity(results){
     let form = renderEditActivity(results)
     $('.lined-paper').html(form)
     handleUpdateActivity();
-    //handleSubmitEditActivity();
+    handleSubmitEditActivity();
 }
 
 function renderEditActivity(results){
@@ -1404,18 +1404,15 @@ function handleSubmitEditActivity(){
             if(groupCost){data.group_cost = groupCost}
             let groupSize = parseInt($(this).find('#group-size').val(), 10);
             if(groupSize){data.group_size=groupSize}
-            let banana = {
-                id: $(this).find('.submit-update-activity').attr("id"),
-                activity_name: $(this).find('#activity-name').val(),
-                activity_url: $(this).find('#activity-url').val(),
-                activity_date: $(this).find('#activity-date').val(),
-                activity_time: $(this).find('#activity-time').val(),
-                kids_welcome: $(this).find(`#kid-friendly`).is(":checked"),
-                kid_cost: kidCost,
-                adult_cost: adultCost,
-                group_cost: groupCost,
-                group_size: groupSize,
-            }
+            let name = $(this).find('#activity-name').val();
+            if(name){data.activity_name = name}
+            let url = $(this).find('#activity-url').val();
+            if(url){data.activity_url = url}
+            let date = $(this).find('#activity-date').val();
+            if(date){data.activity_date = date}
+            let time = $(this).find('#activity-time').val()
+            if(time){data.activity_time = time}
+
             putEditActivity(data);
             closeModal();
         });
