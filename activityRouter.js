@@ -127,12 +127,20 @@ router.put('/:id', (req, res) => {
     }
 
     const update = {}
-    const updateable = ['activity_name', 'activity_date', 'activity_time', 'kid_cost', 'adult_cost', 'group_cost', 'group_size', 'kid_number', 'adult_number']
+    const updateable = ['activity_name', 'activity_url','activity_date', 'activity_time', 'kid_cost', 'adult_cost', 'group_cost', 'group_size']
     updateable.forEach(field =>{
         if (field in req.body){
             update[field] = req.body[field]
         }
     });
+
+    /*const increment = {}
+    const incrementable = [ 'kid_cost', 'adult_cost', 'group_cost', 'group_size']
+    incrementable.forEach(field =>{
+        if (field in req.body){
+            incremend[field] = req.body[field]
+        }
+    })*/
     
     Activity
         .findByIdAndUpdate(req.params.id, {$set: update})

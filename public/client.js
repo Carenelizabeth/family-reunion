@@ -138,7 +138,7 @@ function handleLogin(username, password){
 function getUserData(token){
     //console.log('get user data ran');
     let authToken = token.authToken;
-    console.log(authToken);
+    //console.log(authToken);
     $.ajax({
         beforeSend: function(xhr){
             xhr.setRequestHeader(`Authorization`, `Bearer ${authToken}`)
@@ -423,7 +423,7 @@ function handleEventButton(){
 }
 
 function getEventInformation(id){
-    console.log('get event information');
+    //console.log('get event information');
     $.ajax({
         type: "GET",
         url: `/event/${id}`,
@@ -451,8 +451,8 @@ function showEventPage(data){
     let dates = data.dates;
     let id = data.id;
 
-    console.log(`userID: ${CURRENT_SESSION.user_id}`);
-    console.log(`organizerId: ${CURRENT_SESSION.organizer_id}`);
+    //console.log(`userID: ${CURRENT_SESSION.user_id}`);
+    //console.log(`organizerId: ${CURRENT_SESSION.organizer_id}`);
 
     const event = renderEvent(name, location, dates)
     retrieveActivities(id);
@@ -463,7 +463,7 @@ function showEventPage(data){
     handleNewActivity();
 
     if(CURRENT_SESSION.user_id === CURRENT_SESSION.organizer_id){
-        console.log('not equal')
+        //console.log('not equal')
         $('.include-edit').hover(function(){
             $(this).find('button').removeClass("invisible");
         }, function(){
@@ -609,8 +609,8 @@ function handleEditDatesButton(){
 
 //update function for all event update forms
 function updateEvent(data){
-    console.log(CURRENT_SESSION.event_id)
-    console.log(data);
+    //console.log(CURRENT_SESSION.event_id)
+    //console.log(data);
     $.ajax({
         type: "PUT",
         url: `/event/${CURRENT_SESSION.event_id}`,
@@ -646,7 +646,7 @@ function handleConfirmDelete(id){
             DeleteEvent()
         }else{DeleteActivity(id)}
     })
-    console.log(`confirm delete: ${id}`)
+    //console.log(`confirm delete: ${id}`)
 }
 
 function handleCancelDelete(){
@@ -680,7 +680,7 @@ function retrieveActivities(eventId){
 
 function displayActivities(data){
     if(!(data.length==0)){
-    console.log(`activities: ${data}`);
+    //console.log(`activities: ${data}`);
     const activity = data.map((item, index) => renderActivities(item))
     $('.all-activities').html(activity);
     handleRSVP();}
@@ -758,7 +758,7 @@ function handleNewActivity(){
 function handleActivity(){
     $('.js-event-page').on('click', '.activity-name', function(e){
         let id = this.id
-        console.log(`handle activity: ${this.id}`)
+        //console.log(`handle activity: ${this.id}`)
         showActivityPage(id);
     });
 };
@@ -857,7 +857,7 @@ function showGuestInfo(){
 
 function showBasicInfo(){
     $('.show-basic-info').click(function(){
-        console.log('basic info clicked')
+        //console.log('basic info clicked')
         $('.price-info').addClass('hidden')
         $('.guest-info').addClass('hidden')
         $('.basic-info').removeClass('hidden')
@@ -870,7 +870,7 @@ function showBasicInfo(){
 function handleSubmitNewActivity(){
     $('.js-activity-form').on('submit', function(e){
         e.preventDefault();
-        console.log('submit activity clicked')
+        //console.log('submit activity clicked')
         //console.log($(this).find(`#kid-friendly`.checked))
         let kids = parseInt($(this).find('#kids-attending').val(), 10);
         if(kids){kids=kids}else kids=0;
@@ -903,7 +903,7 @@ function handleSubmitNewActivity(){
             activity_comments: $(this).find('.comments').val()
         }
         //console.log('handle submit activity ran');
-        console.log(data);
+        //console.log(data);
         //console.log(CURRENT_SESSION.user_id);
         postNewActivity(data);
         closeModal();
@@ -935,7 +935,7 @@ function showActivityPage(id){
 }
 
 function retrieveActivityData(id){
-    console.log('retrieve activity data ran')
+    //console.log('retrieve activity data ran')
     $.ajax({
         type: "GET",
         url: `activity/${id}`,
@@ -1133,7 +1133,7 @@ function refreshPage(id){
 }
 
 function handleSubmitComment(){
-    console.log('handle submit comment ran')
+    //console.log('handle submit comment ran')
     $('.comment-section').submit(function(e){
         e.preventDefault();
         let comment = $(this).find('.text-input').val();
@@ -1144,13 +1144,13 @@ function handleSubmitComment(){
             id: id,
             name: name
         }
-        console.log(data);
+        //console.log(data);
         updateComments(data);
     })
 }
 
 function updateComments(data){
-    console.log('update comments ran')
+    //console.log('update comments ran')
     $.ajax({
         type: "PUT",
         url: `activity/comments/${data.id}`,
@@ -1161,22 +1161,22 @@ function updateComments(data){
 }
 
 function populateProfile(){
-    console.log('populate profile ran')
+    //console.log('populate profile ran')
     let data = {
         userId: CURRENT_SESSION.user_id,
         eventId: CURRENT_SESSION.event_id
     }
     //let myActivities = getUserActivities(data)
-    console.log(data);
+    //console.log(data);
     getHostedActvities(data)
     getUserActivities(data)
     handleUserActivity();
 }
 
 function getHostedActvities(data){
-    console.log('get hosted activites ran')
+    //console.log('get hosted activites ran')
     let URL = `activity/host?userId=${data.userId}&eventId=${data.eventId}`
-    console.log(URL)
+    //console.log(URL)
     $.ajax({
         type: "GET",
         url: URL,
@@ -1195,25 +1195,25 @@ function getUserActivities(data){
 }
 
 function publishHostedActivities(results){
-    console.log('publish hosted activities ran')
-    console.log(results)
+    //console.log('publish hosted activities ran')
+    //console.log(results)
     let hosted = renderHostedActivities(results)
-    console.log(`hosted: ${hosted}`)
+    //console.log(`hosted: ${hosted}`)
     $('.user-host-activities').html(hosted)
 
 }
 
 function publishUserActivites(results){
-    console.log('publish user activities ran')
-    console.log(results);
+    //console.log('publish user activities ran')
+    //console.log(results);
     let going = renderUserActivities(results)
-    console.log(`going: ${going}`)
+    //console.log(`going: ${going}`)
     $('.user-attend-activities').html(going)
 }
 
 function renderHostedActivities(results){
     if(!(results.length==0)){
-        console.log(`activities: ${results}`);
+        //console.log(`activities: ${results}`);
         const activity = results.map((item, index) => generateHostedActivities(item))
     return`
         <div class="paper green-border rotate-left activity-details">
@@ -1227,7 +1227,7 @@ function renderHostedActivities(results){
 
 function renderUserActivities(results){
     if(!(results.length==0)){
-        console.log(`activities: ${results}`);
+        //console.log(`activities: ${results}`);
         const activity = results.map((item, index) => generateUserActivities(item))
     return`
         <div class="paper blue-border rotate-right activity-details">
@@ -1272,13 +1272,13 @@ function handleUserActivity(){
     });
     $('.js-profile-page').on('click', '.edit-activity', function(e){
         let id = $(this).parents('.each-hosted').attr("id");
-        console.log(id);
+        //console.log(id);
         editActivityForm(id)
     });
 };
 
 function DeleteActivity(id){
-    console.log(`delete activity: ${id}`)
+    //console.log(`delete activity: ${id}`)
     $.ajax({
         type: "DELETE",
         url: `/activity/${id}`,
@@ -1304,6 +1304,8 @@ function displayEditActivity(results){
     openModal();
     let form = renderEditActivity(results)
     $('.lined-paper').html(form)
+    handleUpdateActivity();
+    //handleSubmitEditActivity();
 }
 
 function renderEditActivity(results){
@@ -1325,12 +1327,12 @@ function renderEditActivity(results){
     if(results.group_size){groupSize=results.group_size}
 
     return`
-            <form class="js-activity-form">
+            <form class="js-update-activity-form">
                 <fieldset class="basic-info">
                     <legend>Provide Activity Information</legend>
                     <div class="input-line">    
                         <label for="activity-name">Activity name</label>
-                        <input type="text" name="activity-name" id="activity-name" placeholder="${name}"required>
+                        <input type="text" name="activity-name" id="activity-name" placeholder="${name}">
                     </div>
                     <div class="input-line">    
                         <label for="activity-url">Website link (opt)</label>
@@ -1352,26 +1354,26 @@ function renderEditActivity(results){
                 <fieldset class="price-info hidden">
                     <legend>How much will it cost?</legend>
                     <div class="input-line price-line"> 
-                        <input type="number" step="0.01" name="adult-cost" id="adult-cost" placeholder="${adultCost}">
+                        <input type="number" step="0.01" name="adult-cost" id="adult-cost" placeholder="$${adultCost}">
                         <label for="adult-cost">per adult</label>
                     </div>
                     <div class="input-line price-line"> 
-                        <input type="number" step="0.01" name="kid-cost" id="kid-cost" placeholder="${kidCost}">
+                        <input type="number" step="0.01" name="kid-cost" id="kid-cost" placeholder="$${kidCost}">
                         <label for="kid-cost">per child under 12</label>
                     </div>
                     <div class="input-line price-line"> 
-                        <input type="number" step="0.01" name="group-cost" id="group-cost" placeholder="${groupCost}">
+                        <input type="number" step="0.01" name="group-cost" id="group-cost" placeholder="$${groupCost}">
                         <label for="group-cost">per group of</label>
                     </div>
                     <div class="input-line price-line"> 
-                        <input type="number" name="group-size" id="group-size" placeholder="${groupSize}">
+                        <input type="number" name="group-size" id="group-size" placeholder="$${groupSize}">
                         <label for="group-size">people</label>
                     </div>
                 </fieldset>
                 <div class="form-buttons">
-                    <button type="button" class="show-basic-info sticker-green hidden">Basic</button>
+                    <button type="button" class="show-basic-info sticker-green">Basic</button>
                     <button type="button" class="show-price-info sticker-green">Price?</button>
-                    <button type="submit" class="submit-new-activity sticker">Submit</button>
+                    <button type="submit" class="submit-update-activity sticker" id="${results.id}">Submit</button>
                 </div>
             </form>`
 }
@@ -1386,6 +1388,49 @@ function handleUpdateActivity(){
         $('.basic-info').removeClass('hidden')
         $('.price-info').addClass('hidden')
     })
+}
+
+function handleSubmitEditActivity(){
+        $('.js-update-activity-form').on('submit', function(e){
+            e.preventDefault();
+            const data = {
+                id: $(this).find('.submit-update-activity').attr("id")
+            }
+            let kidCost = parseFloat($(this).find('#kid-cost').val(), 10);
+            if(kidCost){data.kid_cost = kidCost}
+            let adultCost = parseFloat($(this).find('#adult-cost').val(), 10);
+            if(adultCost){data.adult_cost = adultCost}
+            let groupCost = parseFloat($(this).find('#group-cost').val(), 10);
+            if(groupCost){data.group_cost = groupCost}
+            let groupSize = parseInt($(this).find('#group-size').val(), 10);
+            if(groupSize){data.group_size=groupSize}
+            let banana = {
+                id: $(this).find('.submit-update-activity').attr("id"),
+                activity_name: $(this).find('#activity-name').val(),
+                activity_url: $(this).find('#activity-url').val(),
+                activity_date: $(this).find('#activity-date').val(),
+                activity_time: $(this).find('#activity-time').val(),
+                kids_welcome: $(this).find(`#kid-friendly`).is(":checked"),
+                kid_cost: kidCost,
+                adult_cost: adultCost,
+                group_cost: groupCost,
+                group_size: groupSize,
+            }
+            putEditActivity(data);
+            closeModal();
+        });
+}
+
+function putEditActivity(data){
+    console.log(data)
+    $.ajax({
+        type: "PUT",
+        url: `/activity/${data.id}`,
+        data: JSON.stringify(data),
+        contentType: "application/json",
+        success: closeModal,
+        dataType: "json"
+    }).then(showProfilePage)
 }
 
 function handleInviteLink(){
