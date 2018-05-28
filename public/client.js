@@ -440,6 +440,7 @@ function showEventPage(data){
     $('.js-activity-page').addClass("hidden");
     $('.js-event-page').removeClass("hidden");
     $('.js-profile-page').addClass("hidden");
+    $('.nav-button').removeClass("invisible");
 
     CURRENT_SESSION.event = data.name;
     CURRENT_SESSION.event_id = data.id;
@@ -1170,7 +1171,7 @@ function getHostedActvities(data){
         type: "GET",
         url: `activity/host?userId=${data.userId}&eventId=${data.eventId}`,
         contentType: "application/json",
-        success: publishUserActivites,
+        success: publishHostedActivities,
         dataType: "json"})
 }
 
@@ -1183,9 +1184,29 @@ function getUserActivities(data){
         dataType: "json"})
 }
 
+function publishHostedActivities(results){
+    console.log('publish hosted activities ran')
+    console.log('results')
+    let hosted = renderHostedActivities(results)
+    $('user-hosted-activities').html(hosted)
+}
+
 function publishUserActivites(results){
     console.log('publish user activities ran')
     console.log(results);
+    let going = renderUserActivities(results)
+    $('user-attend-activities').html(going)
+}
+
+function renderHostedActivities(results){
+    return`
+        <div class="paper green-border">
+            <div class="blue-thumb"></div>
+        </div>`
+}
+
+function renderUserActivities(results){
+
 }
 
 function handleInviteLink(){
