@@ -138,7 +138,7 @@ function handleLogin(username, password){
 function getUserData(token){
     //console.log('get user data ran');
     let authToken = token.authToken;
-    console.log(authToken);
+    //console.log(authToken);
     $.ajax({
         beforeSend: function(xhr){
             xhr.setRequestHeader(`Authorization`, `Bearer ${authToken}`)
@@ -212,17 +212,25 @@ function handleNavButtons(){
     $('.nav-event').click(e => handleNavEvent());
     $('.nav-logout').click(e => location.reload());
     $('.nav-invite').click(e => handleInvite());
-    $('.nav-profile').click(e => alert('Coming soon!'))
+    $('.nav-profile').click(e => showProfilePage());
     //handleProfile();  
+}
+
+function showProfilePage(){
+    $('.js-welcome-page').addClass("hidden");
+    $('.js-activity-page').addClass("hidden");
+    $('.js-event-page').addClass("hidden");
+    $('.js-profile-page').removeClass("hidden");
+    populateProfile();
 }
 
 function handleNavEvent(){
     if(CURRENT_SESSION.event_id === false){
         alert('You must create or select an event first!')
     }else{
-    let event = CURRENT_SESSION.event;
+    let eventId = CURRENT_SESSION.event_id;
     //console.log(event);
-    getEventInformation(event);}
+    getEventInformation(eventId);}
 }
 
 function Logout(){
@@ -271,6 +279,7 @@ function showWelcomePage(data){
     $('.js-event-page').addClass("hidden");
     $('.js-nav-bar').removeClass("hidden");
     $('.js-activity-page').addClass("hidden");
+    $('.js-profile-page').addClass("hidden");
 
     const welcome = renderWelcome();
     $('.welcome-page').html(welcome);
@@ -290,7 +299,7 @@ function renderWelcome(){
 
                 <p class="handwrite">My events</p>
                 <div class="event-buttons">
-                    ${button}
+                    ${button.join("")}
                 </div>
                 <button type="button" class="make-new-event red-sticker">New Event</button>
             </div>
@@ -333,12 +342,12 @@ function renderUserEvents(event){
 function generateEventButtons(){
     //console.log('generate event buttons ran')
     let button = []
-    //console.log(CURRENT_SESSION.user_events.length);
+    //console.log(CURRENT_SESSION.user_events);
     if(!(CURRENT_SESSION.user_events.length === 0)){
         for(let i=0; i<CURRENT_SESSION.user_events.length; i++){
             //console.log(i);
             //console.log(`console.log(Event: ${CURRENT_SESSION.user_events[i].name}`);
-            button.push(`<button type="button" class="event-button generate-sticker" id="${CURRENT_SESSION.user_events[i].name}">${CURRENT_SESSION.user_events[i].name}</button>`)
+            button.push(`<button type="button" class="event-button generate-sticker" id="${CURRENT_SESSION.user_events[i].id}">${CURRENT_SESSION.user_events[i].name}</button>`)
         }}
     //console.log(button)
     return button;
@@ -408,17 +417,16 @@ function postNewEvent(data){
 
 function handleEventButton(){
     $('.event-button').click(function(e){
-        let name = this.id;
-        //console.log(name)
-        getEventInformation(name)
+        let id = this.id;
+        getEventInformation(id)
     }) 
 }
 
-function getEventInformation(event){
-    console.log('get event information');
+function getEventInformation(id){
+    //console.log('get event information');
     $.ajax({
         type: "GET",
-        url: `/event/${event}`,
+        url: `/event/${id}`,
         contentType: 'application/json',
         success: showEventPage,
         dataType: "json"
@@ -431,6 +439,8 @@ function showEventPage(data){
     $('.js-welcome-page').addClass("hidden");
     $('.js-activity-page').addClass("hidden");
     $('.js-event-page').removeClass("hidden");
+    $('.js-profile-page').addClass("hidden");
+    $('.nav-button').removeClass("invisible");
 
     CURRENT_SESSION.event = data.name;
     CURRENT_SESSION.event_id = data.id;
@@ -441,8 +451,8 @@ function showEventPage(data){
     let dates = data.dates;
     let id = data.id;
 
-    console.log(`userID: ${CURRENT_SESSION.user_id}`);
-    console.log(`organizerId: ${CURRENT_SESSION.organizer_id}`);
+    //console.log(`userID: ${CURRENT_SESSION.user_id}`);
+    //console.log(`organizerId: ${CURRENT_SESSION.organizer_id}`);
 
     const event = renderEvent(name, location, dates)
     retrieveActivities(id);
@@ -450,11 +460,10 @@ function showEventPage(data){
     $('.event-information').html(event);
     handleEditEventButtons();
     handleDeleteEvent();
-    handleViewProfile()
     handleNewActivity();
 
     if(CURRENT_SESSION.user_id === CURRENT_SESSION.organizer_id){
-        console.log('not equal')
+        //console.log('not equal')
         $('.include-edit').hover(function(){
             $(this).find('button').removeClass("invisible");
         }, function(){
@@ -600,8 +609,8 @@ function handleEditDatesButton(){
 
 //update function for all event update forms
 function updateEvent(data){
-    console.log(CURRENT_SESSION.event_id)
-    console.log(data);
+    //console.log(CURRENT_SESSION.event_id)
+    //console.log(data);
     $.ajax({
         type: "PUT",
         url: `/event/${CURRENT_SESSION.event_id}`,
@@ -614,10 +623,10 @@ function updateEvent(data){
 
 //delete event
 function handleDeleteEvent(){
-    $('.js-delete-event').click(e => confirmDeleteEvent())
+    $('.js-delete-event').click(e => confirmDelete())
 }
 
-function confirmDeleteEvent(){
+function confirmDelete(id){
     let confirm = `
         <h3 class="handwrite">Are you sure?</h3>
         <p>This action cannot be undone</p>
@@ -627,12 +636,17 @@ function confirmDeleteEvent(){
         </div>`
     openModal()
     $('.lined-paper').html(confirm)
-    handleConfirmDeleteEvent()
+    handleConfirmDelete(id)
     handleCancelDelete()
 }
 
-function handleConfirmDeleteEvent(){
-    $('.yes-delete').click(e => DeleteEvent())
+function handleConfirmDelete(id){
+    $('.yes-delete').click(function(e){
+        if(!($('.js-event-page').hasClass("hidden"))){
+            DeleteEvent()
+        }else{DeleteActivity(id)}
+    })
+    //console.log(`confirm delete: ${id}`)
 }
 
 function handleCancelDelete(){
@@ -647,22 +661,7 @@ function DeleteEvent(){
         success: closeModal(),
         dataType: "json"
     })
-    .then(showWelcomePage())
-}
-
-function handleViewProfile(){
-    $('.js-user-profile').click(function(e){
-        console.log('view profile button clicked')
-
-    })
-}
-
-function showUserPage(){
-
-}
-
-function renderUserPage(){
-    
+    .then(showWelcomePage)
 }
 
 //displays activites that have been created under the event
@@ -681,7 +680,7 @@ function retrieveActivities(eventId){
 
 function displayActivities(data){
     if(!(data.length==0)){
-    console.log(`activities: ${data}`);
+    //console.log(`activities: ${data}`);
     const activity = data.map((item, index) => renderActivities(item))
     $('.all-activities').html(activity);
     handleRSVP();}
@@ -759,6 +758,7 @@ function handleNewActivity(){
 function handleActivity(){
     $('.js-event-page').on('click', '.activity-name', function(e){
         let id = this.id
+        //console.log(`handle activity: ${this.id}`)
         showActivityPage(id);
     });
 };
@@ -857,7 +857,7 @@ function showGuestInfo(){
 
 function showBasicInfo(){
     $('.show-basic-info').click(function(){
-        console.log('basic info clicked')
+        //console.log('basic info clicked')
         $('.price-info').addClass('hidden')
         $('.guest-info').addClass('hidden')
         $('.basic-info').removeClass('hidden')
@@ -870,7 +870,7 @@ function showBasicInfo(){
 function handleSubmitNewActivity(){
     $('.js-activity-form').on('submit', function(e){
         e.preventDefault();
-        console.log('submit activity clicked')
+        //console.log('submit activity clicked')
         //console.log($(this).find(`#kid-friendly`.checked))
         let kids = parseInt($(this).find('#kids-attending').val(), 10);
         if(kids){kids=kids}else kids=0;
@@ -903,7 +903,7 @@ function handleSubmitNewActivity(){
             activity_comments: $(this).find('.comments').val()
         }
         //console.log('handle submit activity ran');
-        console.log(data);
+        //console.log(data);
         //console.log(CURRENT_SESSION.user_id);
         postNewActivity(data);
         closeModal();
@@ -929,12 +929,13 @@ function retrieveActivityId(results){
 function showActivityPage(id){
     $('.js-event-page').addClass("hidden");
     $('.js-activity-page').removeClass("hidden");
+    $('.js-profile-page').addClass("hidden");
     $('body, html').scrollTop(0);
     retrieveActivityData(id)
 }
 
 function retrieveActivityData(id){
-    console.log('retrieve activity data ran')
+    //console.log('retrieve activity data ran')
     $.ajax({
         type: "GET",
         url: `activity/${id}`,
@@ -1052,7 +1053,7 @@ function calculateCost(data){
         totalCost = `
             <div class="activity-cost">
                 <p>$${adultCost.toFixed([2])} /person</p>
-                <p>$${groupCost.toFixed([2])} /group of ${data.group_size}</p>
+                <p>$${groupCost.toFixed([2])} /group of  ${data.group_size}</p>
             </div>`
     }
 
@@ -1132,7 +1133,7 @@ function refreshPage(id){
 }
 
 function handleSubmitComment(){
-    console.log('handle submit comment ran')
+    //console.log('handle submit comment ran')
     $('.comment-section').submit(function(e){
         e.preventDefault();
         let comment = $(this).find('.text-input').val();
@@ -1143,13 +1144,13 @@ function handleSubmitComment(){
             id: id,
             name: name
         }
-        console.log(data);
+        //console.log(data);
         updateComments(data);
     })
 }
 
 function updateComments(data){
-    console.log('update comments ran')
+    //console.log('update comments ran')
     $.ajax({
         type: "PUT",
         url: `activity/comments/${data.id}`,
@@ -1157,6 +1158,276 @@ function updateComments(data){
         contentType: "application/json",
         success: retrieveActivityData(data.id),
         dataType: "json"})
+}
+
+function populateProfile(){
+    //console.log('populate profile ran')
+    let data = {
+        userId: CURRENT_SESSION.user_id,
+        eventId: CURRENT_SESSION.event_id
+    }
+    //let myActivities = getUserActivities(data)
+    //console.log(data);
+    getHostedActvities(data)
+    getUserActivities(data)
+    handleUserActivity();
+}
+
+function getHostedActvities(data){
+    //console.log('get hosted activites ran')
+    let URL = `activity/host?userId=${data.userId}&eventId=${data.eventId}`
+    //console.log(URL)
+    $.ajax({
+        type: "GET",
+        url: URL,
+        contentType: "application/json",
+        success: publishHostedActivities,
+        dataType: "json"})
+}
+
+function getUserActivities(data){
+    $.ajax({
+        type: "GET",
+        url: `activity/user?userId=${data.userId}&eventId=${data.eventId}`,
+        contentType: "application/json",
+        success: publishUserActivites,
+        dataType: "json"})
+}
+
+function publishHostedActivities(results){
+    //console.log('publish hosted activities ran')
+    //console.log(results)
+    let hosted = renderHostedActivities(results)
+    //console.log(`hosted: ${hosted}`)
+    $('.user-host-activities').html(hosted)
+
+}
+
+function publishUserActivites(results){
+    //console.log('publish user activities ran')
+    //console.log(results);
+    let going = renderUserActivities(results)
+    //console.log(`going: ${going}`)
+    $('.user-attend-activities').html(going)
+}
+
+function renderHostedActivities(results){
+    if(!(results.length==0)){
+        //console.log(`activities: ${results}`);
+        const activity = results.map((item, index) => generateHostedActivities(item))
+    return`
+        <div class="paper green-border rotate-left activity-details">
+            <div class="thumb-yellow"></div>
+            <h3 class="handwrite">Activities you are hosting</h3>
+            <div class="hosted-activities">
+            ${activity.join("")}
+            </div>
+        </div>`}else{return`<div></div>`}
+}
+
+function renderUserActivities(results){
+    if(!(results.length==0)){
+        //console.log(`activities: ${results}`);
+        const activity = results.map((item, index) => generateUserActivities(item))
+    return`
+        <div class="paper blue-border rotate-right activity-details">
+            <div class="thumb-red"></div>
+            <h3 class="handwrite">Activites you are attending</h3>
+            <div class="user-activities">
+                ${activity.join("")}
+            </div>
+        </div>`}else{return`<div></div>`}
+}
+
+function generateHostedActivities(results){
+    let activity = []
+    return`
+    <div class="each-hosted" id="${results.id}">
+        <button type="button" class="activity-name host-activity-name">${results.name}</button>
+        <div class="activity-buttons">
+            <button type="button" class="delete-activity">Delete</button>
+            <button type="button" class="edit-activity">Edit</button>
+        </div>
+    </div>`
+}
+
+function generateUserActivities(results){
+    let activity = []
+    return`
+        <button type="button" class="activity-name user-activity-name" id="${results.id}">${results.name}</button>`
+}
+
+function handleUserActivity(){
+    $('.js-profile-page').on('click', '.user-activity-name', function(e){
+        let id = this.id;
+        showActivityPage(id);
+    });
+    $('.js-profile-page').on('click', '.host-activity-name', function(e){
+        let id = $(this).parents('.each-hosted').attr("id");
+        showActivityPage(id);
+    });
+    $('.js-profile-page').on('click', '.delete-activity', function(e){
+        let id = $(this).parents('.each-hosted').attr("id");
+        confirmDelete(id);
+    });
+    $('.js-profile-page').on('click', '.edit-activity', function(e){
+        let id = $(this).parents('.each-hosted').attr("id");
+        //console.log(id);
+        editActivityForm(id)
+    });
+};
+
+function DeleteActivity(id){
+    //console.log(`delete activity: ${id}`)
+    $.ajax({
+        type: "DELETE",
+        url: `/activity/${id}`,
+        contentType: 'application/json',
+        success: closeModal(),
+        dataType: "json"
+    })
+    .then(showProfilePage)
+}
+
+function editActivityForm(id){
+    $.ajax({
+        type: "GET",
+        url: `/activity/${id}`,
+        contentType: "application/json",
+        success: displayEditActivity,
+        dataType: "json"
+    })
+}
+
+function displayEditActivity(results){
+    console.log('display edit activity ran');
+    openModal();
+    let form = renderEditActivity(results)
+    $('.lined-paper').html(form)
+    handleUpdateActivity();
+    handleSubmitEditActivity();
+}
+
+function renderEditActivity(results){
+    let name = "";
+    let url = "";
+    let date = "";
+    let time = "";
+    let kidCost = "";
+    let adultCost = "";
+    let groupCost = "";
+    let groupSize = "";
+    if(results.name){name=results.name}
+    if(results.url){url=results.url}
+    if(results.date){date=results.data}
+    if(results.time){date=results.time}
+    if(results.kid_cost){kidCost=results.kid_cost}
+    if(results.adult_cost){adultCost=results.adult_cost}
+    if(results.group_cost){groupCost=results.group_cost}
+    if(results.group_size){groupSize=results.group_size}
+
+    return`
+            <form class="js-update-activity-form">
+                <fieldset class="basic-info">
+                    <legend>Provide Activity Information</legend>
+                    <div class="input-line">    
+                        <label for="activity-name">Activity name</label>
+                        <input type="text" name="activity-name" id="activity-name" placeholder="${name}">
+                    </div>
+                    <div class="input-line">    
+                        <label for="activity-url">Website link (opt)</label>
+                        <input type="text" name="activity-url" id="activity-url" placeholder="${url}">
+                    </div>
+                    <div class="input-line"> 
+                        <label for="activity-date">Date</label>
+                        <input type="date" name="activity-date" id="activity-date" class="date" placeholder=${date}>
+                    </div>
+                    <div class="input-line"> 
+                        <label for="activity-time">Time</label>
+                        <input type="time" name="activity-time" id="activity-time" placeholder=${time}>
+                    </div>
+                    <div class="input-line">    
+                        <label for="kid-friendly">Children under 12?</label>                  
+                        <input type="checkbox" name="kid-friendly" id="kid-friendly">                        
+                    </div>
+                </fieldset>
+                <fieldset class="price-info hidden">
+                    <legend>How much will it cost?</legend>
+                    <div class="input-line price-line"> 
+                        <input type="number" step="0.01" name="adult-cost" id="adult-cost" placeholder="$${adultCost}">
+                        <label for="adult-cost">per adult</label>
+                    </div>
+                    <div class="input-line price-line"> 
+                        <input type="number" step="0.01" name="kid-cost" id="kid-cost" placeholder="$${kidCost}">
+                        <label for="kid-cost">per child under 12</label>
+                    </div>
+                    <div class="input-line price-line"> 
+                        <input type="number" step="0.01" name="group-cost" id="group-cost" placeholder="$${groupCost}">
+                        <label for="group-cost">per group of</label>
+                    </div>
+                    <div class="input-line price-line"> 
+                        <input type="number" name="group-size" id="group-size" placeholder="$${groupSize}">
+                        <label for="group-size">people</label>
+                    </div>
+                </fieldset>
+                <div class="form-buttons">
+                    <button type="button" class="show-basic-info sticker-green">Basic</button>
+                    <button type="button" class="show-price-info sticker-green">Price?</button>
+                    <button type="submit" class="submit-update-activity sticker" id="${results.id}">Submit</button>
+                </div>
+            </form>`
+}
+
+function handleUpdateActivity(){
+    $('.show-price-info').click(function(){
+        $('.basic-info').addClass('hidden')
+        $('.price-info').removeClass('hidden')
+    })
+
+    $('.show-basic-info').click(function(){
+        $('.basic-info').removeClass('hidden')
+        $('.price-info').addClass('hidden')
+    })
+}
+
+function handleSubmitEditActivity(){
+        $('.js-update-activity-form').on('submit', function(e){
+            e.preventDefault();
+            const data = {
+                id: $(this).find('.submit-update-activity').attr("id")
+            }
+            let kidCost = parseFloat($(this).find('#kid-cost').val(), 10);
+            if(kidCost){data.kid_cost = kidCost}
+            let adultCost = parseFloat($(this).find('#adult-cost').val(), 10);
+            if(adultCost){data.adult_cost = adultCost}
+            let groupCost = parseFloat($(this).find('#group-cost').val(), 10);
+            if(groupCost){data.group_cost = groupCost}
+            let groupSize = parseInt($(this).find('#group-size').val(), 10);
+            if(groupSize){data.group_size=groupSize}
+            let name = $(this).find('#activity-name').val();
+            if(name){data.activity_name = name}
+            let url = $(this).find('#activity-url').val();
+            if(url){data.activity_url = url}
+            let date = $(this).find('#activity-date').val();
+            if(date){data.activity_date = date}
+            let time = $(this).find('#activity-time').val()
+            if(time){data.activity_time = time}
+
+            putEditActivity(data);
+            closeModal();
+        });
+}
+
+function putEditActivity(data){
+    console.log(data)
+    $.ajax({
+        type: "PUT",
+        url: `/activity/${data.id}`,
+        data: JSON.stringify(data),
+        contentType: "application/json",
+        success: closeModal,
+        dataType: "json"
+    }).then(showProfilePage)
 }
 
 function handleInviteLink(){

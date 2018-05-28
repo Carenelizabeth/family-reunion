@@ -9,15 +9,16 @@
         <link href="https://fonts.googleapis.com/css?family=Alfa+Slab+One|Pangolin|Roboto" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Walter+Turncoat" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Passion+One" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Sriracha" rel="stylesheet">
     </head>
 </html>
 <body>
     <nav class="js-nav-bar hidden">
-        <button class="nav-button nav-welcome">Welcome</button>
-        <button class="nav-button nav-event">Event</button>
-        <button class="nav-button nav-invite">Invite</button>
-        <button class="nav-button nav-profile">Profile</button>
-        <button class="nav-button nav-logout">Log Out</button>
+        <button class="nav-button nav-welcome invisible">Welcome</button>
+        <button class="nav-button nav-event invisible">Event</button>
+        <button class="nav-button nav-invite invisible">Invite</button>
+        <button class="nav-button nav-profile invisible">Profile</button>
+        <button class="nav-button nav-logout invisible">Log Out</button>
     </nav>
     <main>
         <section class="js-landing-page">
@@ -71,6 +72,14 @@
         <section class="js-activity-page hidden bulletin" aria-live="polite">
             <div class="content activity-page"></div>
         </section>
+
+        <section class="js-profile-page hidden bulletin" aria-live="polite">
+            <div class="content profile-page">
+                <div class="user-info"></div>
+                <div class="user-host-activities"></div>
+                <div class="user-attend-activities"></div>
+            </div>
+        </section> 
 
     </main>
 

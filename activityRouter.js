@@ -27,6 +27,35 @@ router.get('/event/:eventId', (req, res) => {
         });
 });
 
+router.get('/host', (req, res) => {
+    Activity
+        .find({activity_host: req.query.userId, 
+            eventId: req.query.eventId
+        })
+        .then(activites => {res.json(activites.map(a => a.serialize()));})
+        .catch(err =>{
+            console.error(err);
+            res.status(500).json({error: 'Internal server error'})
+        });
+})
+
+router.get('/user', (req, res) => {
+    console.log(req.query.userId)
+    console.log(req.query.eventId)
+    Activity
+        .find(
+            {activity_host: {$ne: req.query.userId},
+            attendees: {$all: [req.query.userId]}, 
+            eventId: req.query.eventId, 
+        })
+        .then(activities => {res.json(activities.map(a => a.serialize()));})
+        .catch(err =>{
+            console.error(err);
+            res.status(500).json({error: 'Internal server error'})
+        })
+        
+})
+
 router.get('/:id', (req,res) =>{
     Activity
         .findById(req.params.id)
@@ -98,12 +127,20 @@ router.put('/:id', (req, res) => {
     }
 
     const update = {}
-    const updateable = ['activity_name', 'activity_date', 'activity_time', 'kid_cost', 'adult_cost', 'group_cost', 'group_size', 'kid_number', 'adult_number']
+    const updateable = ['activity_name', 'activity_url','activity_date', 'activity_time', 'kid_cost', 'adult_cost', 'group_cost', 'group_size']
     updateable.forEach(field =>{
         if (field in req.body){
             update[field] = req.body[field]
         }
     });
+
+    /*const increment = {}
+    const incrementable = [ 'kid_cost', 'adult_cost', 'group_cost', 'group_size']
+    incrementable.forEach(field =>{
+        if (field in req.body){
+            incremend[field] = req.body[field]
+        }
+    })*/
     
     Activity
         .findByIdAndUpdate(req.params.id, {$set: update})
@@ -131,7 +168,7 @@ router.put('/comments/:id', (req, res) =>{
         .catch(err => res.status(500).json({message: 'Internal server error'}))
 })
 
-router.delete('/', (req, res) =>{
+router.delete('/:id', (req, res) =>{
     Activity
         .findByIdAndRemove(req.params.id)
         .then(() => {
