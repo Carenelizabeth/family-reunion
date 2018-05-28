@@ -782,11 +782,66 @@ textarea{
     font-weight: bold;
 }
 
+.edit-activity{
+    padding: 20px;
+    margin: 10px;
+    background: white;
+    color: #048B3E;
+    border: 2px dashed #04883E;
+    border-radius: 10px;
+    box-shadow: 0 0 0 4px white;
+    font-size: 18px;
+    font-weight: bold;
+    flex: auto;
+}
+
+.delete-activity{
+    padding: 20px;
+    margin: 10px;
+    background: white;
+    color: #F83846;
+    border: 2px dashed #F83846;
+    border-radius: 10px;
+    box-shadow: 0 0 0 4px white;
+    font-size: 18px;
+    font-weight: bold;
+    flex: auto;
+}
+
+.edit-activity:hover, .edit-activity:focus{
+    background: #04883E;
+    color: white;
+    border: 2px dashed white;
+    box-shadow: 0 0 0 4px #04883E;
+}
+
+.delete-activity:hover, .delete-activity:focus{
+    background: #F83846;
+    color: white;
+    border: 2px dashed white;
+    box-shadow: 0 0 0 4px #F83846;
+}
+
 .activity-name:hover, .activity-name:focus{
     background: #021D59;
     color: white;
     border: 2px dashed white;
     box-shadow: 0 0 0 4px #021D59;
+}
+
+.each-hosted{
+    display: flex;
+    flex-direction: column;
+    border-bottom: solid 1px #021D59;
+}
+
+.activity-buttons{
+    display: flex;
+}
+
+.user-activities{
+    display: flex;
+    flex-direction: column;
 }
 
 .contain-modal{
@@ -970,4 +1025,8 @@ cite::before{
     font-size: 5vh;
     color: #04B1DA;
     text-shadow: 2px 2px 2px black;
+}
+
+.user-attend-activities{
+    margin-left: 20px;
 }

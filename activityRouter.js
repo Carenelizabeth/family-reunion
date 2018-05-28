@@ -160,7 +160,7 @@ router.put('/comments/:id', (req, res) =>{
         .catch(err => res.status(500).json({message: 'Internal server error'}))
 })
 
-router.delete('/', (req, res) =>{
+router.delete('/:id', (req, res) =>{
     Activity
         .findByIdAndRemove(req.params.id)
         .then(() => {
