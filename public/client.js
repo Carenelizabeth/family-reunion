@@ -70,7 +70,7 @@ function renderLoginForm(){
                     </div>
                     <div class="input-line"> 
                         <label for="user-password">Password</label>
-                        <input type="text" name="user-password" id="user-password" required>
+                        <input type="password" name="user-password" id="user-password" required>
                     </div>
                 </fieldset>
                 <button type="submit sticker" class="js-login-button sticker">Submit</button>
@@ -98,7 +98,7 @@ function renderCreateAccount(){
                     </div>
                     <div class="input-line"> 
                         <label for="user-password">Password</label>
-                        <input type="text" name="user-password" id="user-password" required>
+                        <input type="password" name="user-password" id="user-password" required>
                     </div>
                 </fieldset>
                 <button type="submit" class="js-create-account-button sticker">Submit</button>
