@@ -27,6 +27,35 @@ router.get('/event/:eventId', (req, res) => {
         });
 });
 
+router.get('/host', (req, res) => {
+    Activity
+        .find({activity_host: req.query.userId, 
+            eventId: req.query.eventId
+        })
+        .then(activites => {res.json(activites.map(a => a.serialize()));})
+        .catch(err =>{
+            console.error(err);
+            res.status(500).json({error: 'Internal server error'})
+        });
+})
+
+router.get('/user', (req, res) => {
+    console.log(req.query.userId)
+    console.log(req.query.eventId)
+    Activity
+        .find(
+            {activity_host: {$ne: req.query.userId},
+            attendees: {$all: [req.query.userId]}, 
+            eventId: req.query.eventId, 
+        })
+        .then(activities => {res.json(activities.map(a => a.serialize()));})
+        .catch(err =>{
+            console.error(err);
+            res.status(500).json({error: 'Internal server error'})
+        })
+        
+})
+
 router.get('/:id', (req,res) =>{
     Activity
         .findById(req.params.id)

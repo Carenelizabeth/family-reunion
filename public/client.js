@@ -221,6 +221,7 @@ function showProfilePage(){
     $('.js-activity-page').addClass("hidden");
     $('.js-event-page').addClass("hidden");
     $('.js-profile-page').removeClass("hidden");
+    populateProfile();
 }
 
 function handleNavEvent(){
@@ -298,7 +299,7 @@ function renderWelcome(){
 
                 <p class="handwrite">My events</p>
                 <div class="event-buttons">
-                    ${button}
+                    ${button.join("")}
                 </div>
                 <button type="button" class="make-new-event red-sticker">New Event</button>
             </div>
@@ -417,11 +418,6 @@ function postNewEvent(data){
 function handleEventButton(){
     $('.event-button').click(function(e){
         let id = this.id;
-<<<<<<< HEAD
-        //console.log(name)
-=======
-        console.log(id)
->>>>>>> master
         getEventInformation(id)
     }) 
 }
@@ -463,7 +459,6 @@ function showEventPage(data){
     $('.event-information').html(event);
     handleEditEventButtons();
     handleDeleteEvent();
-    handleViewProfile()
     handleNewActivity();
 
     if(CURRENT_SESSION.user_id === CURRENT_SESSION.organizer_id){
@@ -661,21 +656,6 @@ function DeleteEvent(){
         dataType: "json"
     })
     .then(showWelcomePage())
-}
-
-function handleViewProfile(){
-    $('.js-user-profile').click(function(e){
-        console.log('view profile button clicked')
-
-    })
-}
-
-function showUserPage(){
-
-}
-
-function renderUserPage(){
-    
 }
 
 //displays activites that have been created under the event
@@ -1171,6 +1151,33 @@ function updateComments(data){
         contentType: "application/json",
         success: retrieveActivityData(data.id),
         dataType: "json"})
+}
+
+function populateProfile(){
+    console.log('populate profile ran')
+    let data = {
+        userId: CURRENT_SESSION.user_id,
+        eventId: CURRENT_SESSION.event_id
+    }
+    //let myActivities = getUserActivities(data)
+    console.log(data);
+    let myHosted = getHostedActvities(data)
+}
+
+function getHostedActvities(data){
+    console.log('get hosted activites ran')
+    $.ajax({
+        type: "GET",
+        url: `activity/host`,
+        data: JSON.stringify(data),
+        contentType: "application/json",
+        success: publishUserActivites,
+        dataType: "json"})
+}
+
+function publishUserActivites(results){
+    console.log('publish user activities ran')
+    console.log(results);
 }
 
 function handleInviteLink(){
