@@ -473,6 +473,7 @@ function showEventPage(data){
     handleEditEventButtons();
     handleDeleteEvent();
     handleNewActivity();
+    handleDetailsButton();
 
     if(CURRENT_SESSION.user_id === CURRENT_SESSION.organizer_id){
         //console.log('not equal')
@@ -501,27 +502,39 @@ function handleMenuClose(){
 
 function renderEvent(name, location, dates){
     return`
-        <div class="event-header">
-            <div class="include-edit">
-                <h2 class="event-name title">${name}</h2>
-                <div class="event-button-section">
-                    <button type="button" class="js-delete-event not-organizer invisible sticker">Delete</button>  
+        <div class='event-header'>
+                <div class='event-info'>
+                    <button type='button' class="show-event-details triangle-sticker">Details</button>
+                    <div class='include-edit'>
+                        <h2 class='event-name title'>${name}</h2>
+                    <div class='event-button-section'>
+                        <button type='button' class='js-delete-event not-organizer invisible sticker'>Delete</button>  
+                    </div>
                 </div>
-            </div>
-            </div>
-                <div class="event-details-section">
-                    <div class="include-edit">
-                        <p>${location}!</p>
-                        <button type="button" class="edit edit-event-location not-organizer invisible">edit</button>
+                    <button type='button' class='js-make-activity make-activity circle-sticker'>New Activity</button>
+                </div>
+                <div class='event-details-section'>
+                    <div class='include-edit'>
+                        <p class='event-details hidden'>${location}!</p>
+                        <button type='button' class='edit edit-event-location not-organizer invisible edit-hidden hidden'>edit</button>
                     </div>
-                    <div class="include-edit">
-                        <p>${dates}</p>
-                        <button type="button" class="edit edit-event-dates not-organizer invisible">edit</button>
+                    <div class='include-edit' >
+                        <p class='event-details hidden'>${dates}</p>
+                        <button type='button' class='edit edit-event-dates not-organizer invisible edit-hidden hidden'>edit</button>
                     </div>
-                    <button type="button" class="js-make-activity make-activity circle-sticker">New Activity</button>
                 </div>
             <div>
         </div>` 
+}
+
+function handleDetailsButton(){
+    console.log('handle details button');
+    $('.event-information').on('click', '.show-event-details', function(e){
+        console.log('details clicked');
+        $('.show-event-details').toggleClass('rotate')
+        $('.event-details').toggleClass('hidden')
+        $('.edit-hidden').toggleClass('hidden')
+    })
 }
 
 /*<div class="event-details-section">

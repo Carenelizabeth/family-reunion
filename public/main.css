@@ -426,7 +426,7 @@ i{
 .title{
     font-family: 'Passion One', sans-serif;
     font-size: 8vh;
-    margin: 50px 0 50px 0;
+    margin-top: 50px;
     letter-spacing: .8vh;
     text-align: center;
     font-weight: 900;
@@ -517,21 +517,13 @@ i{
     right: -120px;
 }
 
-.make-new-event, .make-activity{
+.make-new-event,{
     position: absolute;
     top: -5vh;
     right: 0;
     -ms-transform: rotate(-10deg); 
     -webkit-transform: rotate(-10deg); 
     transform: rotate(-10deg);
-}
-
-.make-activity{
-    height: 15vh;
-    width:15vh;
-    font-size: 2vh;
-    bottom: 10vh;
-    right: 0vh;
 }
 
 .sample-buttons{
@@ -1007,6 +999,35 @@ cite::before{
     margin-left: 20px;
 }
 
+.triangle-sticker{
+    background-image: url(images/triangle-sticker.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    min-width: 60px;
+    min-height: 60px;
+    color: #FFF485;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.make-activity{
+    min-height: 60px;
+    min-width: 60px;
+    font-size: 14px;
+    bottom: 10vh;
+    right: 0vh;
+}
+
+.event-info{
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.rotate{
+    transform: rotate(90deg);
+}
+
 @media only screen and (min-width: 500px){
 
     .login-buttons{
@@ -1039,6 +1060,8 @@ cite::before{
 
     .title{
         font-size: 12vh;
+        margin-bottom: 5vh;
+        flex-shrink: 1;
     }
 
     /*.control-menu{
@@ -1054,6 +1077,17 @@ cite::before{
         top: 0;
     }*/
 
+    .triangle-sticker{
+        min-height: 100px;
+        min-width: 100px;
+        font-size: 18px;
+    }
+
+    .make-activity{
+        min-height: 100px;
+        min-width: 100px;
+        font-size: 18px;
+    }
 }
 
 @media only screen and (min-width: 1000px){
