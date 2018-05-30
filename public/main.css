@@ -252,7 +252,6 @@ fieldset{
 
 .emphasis{
     color: #0F4030;
-    font-size: 2.4vh;
     font-weight: bold;
     margin-bottom: 10px;
 }
@@ -547,8 +546,8 @@ i{
 }
 
 .sample-user{
-    width: 11vh;
-    height: 11vh;
+    width: 100px;
+    height: 100px;
 }
 
 .invite-friends,{
@@ -638,13 +637,13 @@ textarea{
     flex-direction: column;
 }
 
-.event-header{
+/*.event-header{
     display: flex;
     flex-direction: column;
     flex: auto;
     justify-content: space-between;
     padding: 20px;
-}
+}*/
 
 .include-edit{
     display: flex;
@@ -750,43 +749,43 @@ textarea{
 }
 
 .edit-activity{
-    padding: 20px;
+    padding: 5px 20px;
     margin: 10px;
-    background: white;
-    color: #048B3E;
-    border: 2px dashed #04883E;
+    background: #04883E;
+    color: white;
+    border: 2px dashed white;
+    box-shadow: 0 0 0 4px #04883E;
     border-radius: 10px;
-    box-shadow: 0 0 0 4px white;
     font-size: 18px;
     font-weight: bold;
     flex: auto;
 }
 
 .delete-activity{
-    padding: 20px;
+    padding: 5px 20px;
     margin: 10px;
-    background: white;
-    color: #F83846;
-    border: 2px dashed #F83846;
+    background: #F83846;
+    color: white;
+    border: 2px dashed white;
+    box-shadow: 0 0 0 4px #F83846;
     border-radius: 10px;
-    box-shadow: 0 0 0 4px white;
     font-size: 18px;
     font-weight: bold;
     flex: auto;
 }
 
 .edit-activity:hover, .edit-activity:focus{
-    background: #04883E;
-    color: white;
-    border: 2px dashed white;
-    box-shadow: 0 0 0 4px #04883E;
+    background: white;
+    color: #048B3E;
+    border: 2px dashed #04883E;
+    box-shadow: 0 0 0 4px white;
 }
 
 .delete-activity:hover, .delete-activity:focus{
-    background: #F83846;
-    color: white;
-    border: 2px dashed white;
-    box-shadow: 0 0 0 4px #F83846;
+    background: white;
+    color: #F83846;
+    border: 2px dashed #F83846;
+    box-shadow: 0 0 0 4px white;
 }
 
 .activity-name:hover, .activity-name:focus{
@@ -1026,8 +1025,8 @@ cite::before{
     background-image: url(images/triangle-sticker.png);
     background-size: contain;
     background-repeat: no-repeat;
-    min-width: 30px;
-    min-height: 30px;
+    min-width: 40px;
+    min-height: 40px;
 }
 
 .make-activity{
@@ -1041,14 +1040,20 @@ cite::before{
     transform: rotate(-10deg);
 }
 
-.event-info{
+/*.event-info{
     display: flex;
     justify-content: center;
     align-items: flex-end;
-}
+}*/
 
 .rotate{
     transform: rotate(90deg);
+}
+
+.rotate-modal{
+    transform: rotate(270deg);
+    width: 100%;
+    height: 100%;
 }
 
 .form-buttons{
@@ -1057,6 +1062,16 @@ cite::before{
     flex-wrap: wrap;
     align-content: center;
 }
+
+.more-info{
+    max-width: 66%;
+    display: flex;
+    justify-content: space-between;
+    margin: 0 auto;
+    align-items: center;
+}
+
+
 
 @media only screen and (min-width: 500px){
 
@@ -1090,7 +1105,6 @@ cite::before{
 
     .title{
         font-size: 12vh;
-        margin-bottom: 5vh;
         margin-top: calc(5vh + 50px);
         flex-shrink: 1;
     }
@@ -1100,7 +1114,7 @@ cite::before{
     }
 
     .lined-paper{
-        margin-left: 70px;
+        padding-left: 70px;
     }
 
     /*.control-menu{
@@ -1128,8 +1142,8 @@ cite::before{
     }
 
     .triangle-sticker{
-        height: 50px;
-        width: 50px;
+        height: 100px;
+        width: 100px;
     }
 
     .activity-details, .activity-discussion{
@@ -1140,6 +1154,11 @@ cite::before{
         align-items: center;
     }
 
+    .collapsed-details{
+        flex-grow: 1;
+        height: 4px;
+        border-bottom: 4px dashed #DEB84C;
+    }
 
 }
 
@@ -1154,12 +1173,14 @@ cite::before{
         justify-content: space-between;
     }
 
+    .welcome-paper{
+        width: 650px;
+    }
+
 }
 
 @media only screen and (min-width: 1000px){
     
-
-
     nav{
         background-image: url(images/top-border.png);
         background-repeat: repeat-x;
@@ -1228,5 +1249,47 @@ cite::before{
     .activity-details, .activity-discussion{
         margin: 0 40px;
     }
+
+    .content{
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+}
+
+@media only screen and (max-height: 800px){
+    h1{
+        font-size: 32px;
+    }
+
+    h2, legend{
+        font-size: 24px;
+    }
+
+    p{
+        font-size: 18px;
+    }
+
+    .handwrite{
+        font-size: 18px;
+    }
+
+    .title{
+        font-size: 50px;
+    }
+
+    .red-sticker{
+        height: 75px;
+        width: 75px;
+    }
+
+    .triangle-sticker{
+        height: 50px;
+        width: 50px;
+    }
+
+    .event-details-section p{
+        font-size: 24px;
+    }
+
 }
 

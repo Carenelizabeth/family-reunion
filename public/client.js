@@ -239,9 +239,9 @@ function Logout(){
 }
 
 function handleInvite(){
-    if(!mqMedium.matches){
-        $('.modal').addClass('rotate')
-    }
+    /*if(!mqMedium.matches){
+        $('.modal').addClass('rotate-modal')
+    }*/
     //console.log(CURRENT_SESSION.event_id);
     if(CURRENT_SESSION.event_id === false){
         alert('You must create or select an event first!')
@@ -270,7 +270,8 @@ function getInviteURL(){
 function handleCloseInvite(){
     $('.js-close-invite').click(e => {
         closeModal()
-        $('.modal').removeClass('rotate')})
+       // $('.modal').removeClass('rotate-modal')
+    })
 }
 
 //once user logs on, they can choose an event or make a new one
@@ -304,7 +305,7 @@ function renderWelcome(){
     //console.log(button);
     return`
         <h3 class='title'>WELCOME</h3>
-        <div class='paper blue-border'>
+        <div class='paper blue-border welcome-paper'>
             <div class='thumb-yellow'></div>
             <div class='button-section'>
 
@@ -446,6 +447,8 @@ function getEventInformation(id){
 
 function showEventPage(data){
     //console.log('show event page ran');
+    $('body, html').scrollTop(0);
+    
     if(!mqLarge.matches){
         console.log('screen is less than 1000px')
         $('.control-menu').removeClass('hidden');
@@ -506,30 +509,30 @@ function handleMenuClose(){
 }
 
 function renderEvent(name, location, dates){
-    return`
-        <div class='event-header'>
-                <div class='event-info'>
-                    <button type='button' class="show-event-details triangle-sticker"></button>
+    return`           
+        <div class='include-edit'>
+            <h2 class='event-name title'>${name}</h2>
+            <div class='event-button-section'>
+            <button type='button' class='js-delete-event not-organizer invisible sticker'></button>  
+            </div>
+        </div>                                        
+            
+        <div class='more-info'>
+            <button type='button' class='show-event-details triangle-sticker'></button>
+                <div class='collapsed-details'></div>
+                <div class='event-details-section'>                   
                     <div class='include-edit'>
-                        <h2 class='event-name title'>${name}</h2>
-                    <div class='event-button-section'>
-                        <button type='button' class='js-delete-event not-organizer invisible sticker'></button>  
-                    </div>
-                </div>
-                    <button type='button' class='js-make-activity make-activity circle-sticker'>New</button>
-                </div>
-                <div class='event-details-section'>
-                    <div class='include-edit'>
-                        <p class='event-details hidden'>${location}!</p>
+                        <p class='event-details hidden'>${location}</p>
                         <button type='button' class='edit edit-event-location not-organizer invisible edit-hidden hidden'>edit</button>
                     </div>
-                    <div class='include-edit' >
+                    <div class='include-edit'>
                         <p class='event-details hidden'>${dates}</p>
                         <button type='button' class='edit edit-event-dates not-organizer invisible edit-hidden hidden'>edit</button>
-                    </div>
+                    </div>                    
                 </div>
-            <div>
-        </div>` 
+            <button type='button' class='js-make-activity make-activity circle-sticker'>New Activity</button>
+        </div>
+        ` 
 }
 
 function handleDetailsButton(){
@@ -1262,7 +1265,7 @@ function renderHostedActivities(results){
         //console.log(`activities: ${results}`);
         const activity = results.map((item, index) => generateHostedActivities(item))
     return`
-        <div class="paper green-border rotate-left activity-details">
+        <div class="paper blue-border rotate-left activity-details">
             <div class="thumb-yellow"></div>
             <h3 class="handwrite">Activities you are hosting</h3>
             <div class="hosted-activities">
@@ -1276,7 +1279,7 @@ function renderUserActivities(results){
         //console.log(`activities: ${results}`);
         const activity = results.map((item, index) => generateUserActivities(item))
     return`
-        <div class="paper blue-border rotate-right activity-details">
+        <div class="paper green-border rotate-right activity-details">
             <div class="thumb-red"></div>
             <h3 class="handwrite">Activites you are attending</h3>
             <div class="user-activities">
@@ -1517,6 +1520,7 @@ function openModal(){
 
 function closeModal(){
     $('.contain-modal').addClass('behind')
+    $('.lined-paper').html(`<div></div>`)
 }
 
 function handleCloseModal(){
