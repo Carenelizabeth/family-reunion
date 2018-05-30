@@ -239,6 +239,9 @@ function Logout(){
 }
 
 function handleInvite(){
+    if(!mqMedium.matches){
+        $('.modal').addClass('rotate')
+    }
     //console.log(CURRENT_SESSION.event_id);
     if(CURRENT_SESSION.event_id === false){
         alert('You must create or select an event first!')
@@ -265,7 +268,9 @@ function getInviteURL(){
 }
 
 function handleCloseInvite(){
-    $('.js-close-invite').click(e => closeModal())
+    $('.js-close-invite').click(e => {
+        closeModal()
+        $('.modal').removeClass('rotate')})
 }
 
 //once user logs on, they can choose an event or make a new one
@@ -504,14 +509,14 @@ function renderEvent(name, location, dates){
     return`
         <div class='event-header'>
                 <div class='event-info'>
-                    <button type='button' class="show-event-details triangle-sticker">Details</button>
+                    <button type='button' class="show-event-details triangle-sticker"></button>
                     <div class='include-edit'>
                         <h2 class='event-name title'>${name}</h2>
                     <div class='event-button-section'>
-                        <button type='button' class='js-delete-event not-organizer invisible sticker'>Delete</button>  
+                        <button type='button' class='js-delete-event not-organizer invisible sticker'></button>  
                     </div>
                 </div>
-                    <button type='button' class='js-make-activity make-activity circle-sticker'>New Activity</button>
+                    <button type='button' class='js-make-activity make-activity circle-sticker'>New</button>
                 </div>
                 <div class='event-details-section'>
                     <div class='include-edit'>
@@ -1473,6 +1478,7 @@ function putEditActivity(data){
 
 function handleInviteLink(){
     //console.log('handle invite link ran');
+
     let eventId = getQueryVariable('eventId')
     let event = getQueryVariable('name')
     //console.log(eventId);
