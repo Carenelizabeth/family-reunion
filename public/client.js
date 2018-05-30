@@ -448,7 +448,7 @@ function getEventInformation(id){
 function showEventPage(data){
     //console.log('show event page ran');
     $('body, html').scrollTop(0);
-    
+
     if(!mqLarge.matches){
         console.log('screen is less than 1000px')
         $('.control-menu').removeClass('hidden');
@@ -518,7 +518,7 @@ function renderEvent(name, location, dates){
         </div>                                        
             
         <div class='more-info'>
-            <button type='button' class='show-event-details triangle-sticker'></button>
+            <button type='button' class='show-event-details triangle-sticker'>Details</button>
                 <div class='collapsed-details'></div>
                 <div class='event-details-section'>                   
                     <div class='include-edit'>
@@ -539,9 +539,10 @@ function handleDetailsButton(){
     console.log('handle details button');
     $('.event-information').on('click', '.show-event-details', function(e){
         console.log('details clicked');
-        $('.show-event-details').toggleClass('rotate')
-        $('.event-details').toggleClass('hidden')
-        $('.edit-hidden').toggleClass('hidden')
+        $('.show-event-details').toggleClass('rotate');
+        $('.event-details').toggleClass('hidden');
+        $('.edit-hidden').toggleClass('hidden');
+        $('collapsed-details').toggleClass('hidden');
     })
 }
 
