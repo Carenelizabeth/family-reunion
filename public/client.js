@@ -7,6 +7,9 @@ const CURRENT_SESSION = {
     organizer_id: ""
 };
 
+const mqMedium = window.matchMedia("(min-width: 500px");
+const mqLarge = window.matchMedia("(min-width: 1000px");
+
 
 
 //Initial set up, allowing user to choose to log in or create a new account
