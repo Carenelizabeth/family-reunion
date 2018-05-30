@@ -146,26 +146,25 @@ describe('Activity API endpoint', function(){
                     expect(res.body.kid_number).to.equal(newAct.kid_number);
                     expect(res.body.adult_number).to.equal(newAct.adult_number);
                     expect(res.body.activity_comments.comment).to.equal(newAct.activity_comments.comment);
-                    //console.log(res.body.id);
-                    //return Activity.findById(res.body.id);
+                    return Activity.findById(res.body.id);
                 })
-                /*.then(function(nAct){
-                    expect(nAct.body.activity_name).to.equal(newAct.activity_name);
-                    expect(nAct.body.eventId).to.equal(newAct.eventId);
-                    expect(nAct.body.activity_url).to.equal(newAct.activity_url);
-                    expect(nAct.body.activityData).to.equal(newAct.activity_date);
-                    expect(nAct.body.activity_time).to.equal(newAct.activity_time);
-                    expect(nAct.body.kids_welcome).to.equal(newAct.kids_welcome);
-                    expect(nAct.body.kid_cost).to.equal(newAct.kid_cost);
-                    expect(nAct.body.adult_cost).to.equal(newAct.adult_cost);
-                    expect(nAct.body.group_cost).to.equal(newAct.group_cost);
-                    expect(nAct.body.group_size).to.equal(newAct.group_size);
-                    expect(nAct.body.activity_host).to.equal(newAct.activity_host);
-                    expect(nAct.body.host_name).to.equal(newAct.host_name);
-                    expect(nAct.body.attendees).to.include(newAct.attendees);
-                    expect(nAct.body.kid_number).to.equal(newAct.kid_number);
-                    expect(nAct.body.adult_number).to.equal(newAct.adult_number);
-                });*/
+                .then(function(nAct){
+                    expect(nAct.activity_name).to.equal(newAct.activity_name);
+                    expect(nAct.eventId).to.equal(newAct.eventId);
+                    expect(nAct.activity_url).to.equal(newAct.activity_url);
+                    expect(nAct.activity_date).to.equal(newAct.activity_date);
+                    expect(nAct.activity_time).to.equal(newAct.activity_time);
+                    expect(nAct.kids_welcome).to.equal(newAct.kids_welcome);
+                    expect(nAct.kid_cost).to.equal(newAct.kid_cost);
+                    expect(nAct.adult_cost).to.equal(newAct.adult_cost);
+                    expect(nAct.group_cost).to.equal(newAct.group_cost);
+                    expect(nAct.group_size).to.equal(newAct.group_size);
+                    expect(nAct.activity_host).to.equal(newAct.activity_host);
+                    expect(nAct.host_name).to.equal(newAct.host_name);
+                    expect(nAct.attendees).to.include(newAct.attendees);
+                    expect(nAct.kid_number).to.equal(newAct.kid_number);
+                    expect(nAct.adult_number).to.equal(newAct.adult_number);
+                });
         });
 
     });
@@ -231,7 +230,7 @@ describe('Activity API endpoint', function(){
             })
         })
 
-        /*it('should add a comment to the array', function(){
+        it('should add a comment to the array', function(){
             const newComment = {
                 comment: faker.lorem.sentence(),
                 name: faker.internet.userName()
@@ -244,7 +243,7 @@ describe('Activity API endpoint', function(){
                     newComment.id = act.id;
                     console.log(newComment);
                 return chai.request(app)
-                    .put(`activity/comments/${newComment.id}`)
+                    .put(`/activity/comments/${newComment.id}`)
                     .send(newComment)
                 })
             
@@ -253,10 +252,11 @@ describe('Activity API endpoint', function(){
                 return Activity.findById(newComment.id)
             })
             .then(function(comment){
-                expect(comment.activity_comments.comment).to.equal(newComment.comment);
-                expect(comment.activity_comments.name).to.equal(newComment.name);
+                console.log(`comment: ${comment}`);
+                const foundComment = comment.activity_comments.filter(c => c.comment === newComment.comment && c.name === newComment.name)
+                expect(foundComment).to.have.lengthOf(1)
             })
-        })*/
+        })
     });
 
     describe('DELETE endpoint', function(){

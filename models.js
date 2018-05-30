@@ -53,7 +53,7 @@ const activitySchema = new Schema({
 
 activitySchema.methods.serialize = function(){
     return{
-        id: this.id,
+        id: this._id,
         eventId: this.eventId,
         name: this.activity_name,
         url: this.activity_url,

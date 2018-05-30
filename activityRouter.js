@@ -40,8 +40,6 @@ router.get('/host', (req, res) => {
 })
 
 router.get('/user', (req, res) => {
-    console.log(req.query.userId)
-    console.log(req.query.eventId)
     Activity
         .find(
             {activity_host: {$ne: req.query.userId},
