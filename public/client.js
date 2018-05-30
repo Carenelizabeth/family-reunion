@@ -211,7 +211,47 @@ function handleNavButtons(){
     $('.nav-logout').click(e => location.reload());
     $('.nav-invite').click(e => handleInvite());
     $('.nav-profile').click(e => showProfilePage());
+    $('.nav-details').click(e =>getEventDetails());
     //handleProfile();  
+}
+
+function getEventDetails(){
+    $.ajax({
+        type: "GET",
+        url: `/event/${CURRENT_SESSION.event_id}`,
+        contentType: 'application/json',
+        dataType: "json",
+        success: displayEventDetails
+    })
+}
+
+function displayEventDetails(results){
+    let data=renderEventDetails(results)
+    openModal()
+    $('.lined-paper').html(data)
+    handleEditEventButtons()
+}
+
+function renderEventDetails(data){
+    console.log(data)
+    let edit = 'edit';
+    let location;
+    let dates;
+    if(data.location){location=data.location}
+        else{location = `There is no location! Add one now?`, edit = 'add'}
+    if(data.dates.length>3){dates=data.dates}
+        else{dates = `There are no dates! Add them now?`, edit = 'add'}
+    return `
+        <div class='event-details-section'>                   
+            <div class='include-edit'>
+                <p class='handwrite'>${location}</p>
+                <button type='button' class='edit edit-event-location'>${edit}</button>
+            </div>
+            <div class='include-edit'>
+                <p class='handwrite'>${dates}</p>
+                <button type='button' class='edit edit-event-dates'>${edit}</button>
+            </div>                    
+        </div>`
 }
 
 function showProfilePage(){
@@ -509,31 +549,38 @@ function handleMenuClose(){
 }
 
 function renderEvent(name, location, dates){
+    let edit = 'edit';
+    if(location){location=location}
+        else{location = `Add a location?`, edit = 'add'}
+    if(dates.length>1){dates=dates}
+        else{dates = `Add the dates?`, edit = 'add'}
+
     return`           
         <div class='include-edit'>
             <h2 class='event-name title'>${name}</h2>
             <div class='event-button-section'>
             <button type='button' class='js-delete-event not-organizer invisible sticker'></button>  
             </div>
-        </div>                                        
-            
+        </div>
+        <button type='button' class='js-make-activity make-activity circle-sticker'>New Activity</button>` 
+}
+
+/*            
         <div class='more-info'>
             <button type='button' class='show-event-details triangle-sticker'>Details</button>
                 <div class='collapsed-details'></div>
                 <div class='event-details-section'>                   
                     <div class='include-edit'>
                         <p class='event-details hidden'>${location}</p>
-                        <button type='button' class='edit edit-event-location not-organizer invisible edit-hidden hidden'>edit</button>
+                        <button type='button' class='edit edit-event-location not-organizer edit-hidden hidden'>${edit}</button>
                     </div>
                     <div class='include-edit'>
                         <p class='event-details hidden'>${dates}</p>
-                        <button type='button' class='edit edit-event-dates not-organizer invisible edit-hidden hidden'>edit</button>
+                        <button type='button' class='edit edit-event-dates not-organizer edit-hidden hidden'>${edit}</button>
                     </div>                    
                 </div>
             <button type='button' class='js-make-activity make-activity circle-sticker'>New Activity</button>
-        </div>
-        ` 
-}
+        </div>*/
 
 function handleDetailsButton(){
     console.log('handle details button');
@@ -542,7 +589,7 @@ function handleDetailsButton(){
         $('.show-event-details').toggleClass('rotate');
         $('.event-details').toggleClass('hidden');
         $('.edit-hidden').toggleClass('hidden');
-        $('collapsed-details').toggleClass('hidden');
+        $('collapsed-details').addClass('hidden');
     })
 }
 

@@ -66,6 +66,7 @@ main{
 
 
 nav{
+    padding-top: 20px;
     background-image: url(images/side-border.png);
     background-repeat: repeat-y;
     height: 100%;
@@ -105,7 +106,6 @@ nav{
     left: 0;
     font-size: 20px;
     z-index: 2;
-    background-color: #FAD451;
     height: 50px;
     width: 100%;
 }
@@ -272,6 +272,11 @@ fieldset{
     background-color: white;
     box-shadow: 0 0 0 4px white;
     cursor: pointer;
+}
+
+edit:hover{
+    background-color: #048B3E;
+    box-shadow: 0 0 0 4px #048B3E;
 }
 
 i{
@@ -632,10 +637,10 @@ textarea{
     margin-bottom: 20px;
 }
 
-.event-page{
+/*.event-page{
     display: flex;
     flex-direction: column;
-}
+}*/
 
 /*.event-header{
     display: flex;
@@ -719,22 +724,10 @@ textarea{
 .event-details-section{
     position: relative;
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     justify-content: center;
     margin-bottom:1vh;
-    color: white;
-    font-weight: bold;
-    text-shadow: 2px 2px 2px black;
 }
-
-.event-details-section p{
-    font-size: 4vh;
-    margin-right: 5px;
-    margin-left: 5px;
-    text-align: center;
-}
-
-
 
 .activity-name{
     padding: 20px;
@@ -1032,11 +1025,12 @@ cite::before{
 }
 
 .make-activity{
+    position: absolute;
+    bottom: -80px;
+    right: 10px;
     min-height: 100px;
     min-width: 100px;
     font-size: 14px;
-    bottom: 10vh;
-    right: 0vh;
     -ms-transform: rotate(-10deg); 
     -webkit-transform: rotate(-10deg); 
     transform: rotate(-10deg);
@@ -1073,9 +1067,22 @@ cite::before{
     align-items: center;
 }
 
+.collapsed-details{
+    flex-grow: 1;
+    border-bottom: 4px dashed #DEB84C;
+    margin: 0 10%;
+}
 
+.event-information{
+    position: relative;
+}
 
 @media only screen and (min-width: 500px){
+
+    .make-activity{
+        top: 10px;
+        bottom: auto;
+    }
 
     .login-buttons{
         display: flex;
@@ -1131,11 +1138,11 @@ cite::before{
         align-items: center;
     }
 
-    .collapsed-details{
-        flex-grow: 1;
-        height: 4px;
-        border-bottom: 4px dashed #DEB84C;
-        margin: 0 10%;
+    .triangle-sticker rotate{
+        height: 100px;
+        width: 100px;
+        text-align: center;
+        font-size: 18px; 
     }
 
 }
