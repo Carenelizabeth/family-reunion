@@ -271,36 +271,43 @@ function handleCloseInvite(){
 //once user logs on, they can choose an event or make a new one
 function showWelcomePage(data){
     //console.log('show welcome page');
+    $('body, html').scrollTop(0);
 
-    $('.js-landing-page').addClass("hidden");
-    $('.login-page').addClass("hidden");
-    $('.js-welcome-page').removeClass("hidden");
-    $('.js-event-page').addClass("hidden");
-    $('.js-nav-bar').removeClass("hidden");
-    $('.js-activity-page').addClass("hidden");
-    $('.js-profile-page').addClass("hidden");
+    if(mqLarge.matches){
+        console.log('large screen detected')
+        $('.js-nav-bar').removeClass('hidden');}
+    /*else
+        {console.log('screen is less than 1000px')
+        $('.menu').removeClass('hidden')}*/
+
+    $('.js-landing-page').addClass('hidden');
+    $('.login-page').addClass('hidden');
+    $('.js-welcome-page').removeClass('hidden');
+    $('.js-event-page').addClass('hidden');    
+    $('.js-activity-page').addClass('hidden');
+    $('.js-profile-page').addClass('hidden');
 
     const welcome = renderWelcome();
     $('.welcome-page').html(welcome);
 
     handleEventButton();
     handleNewEventButton();
-}   
+}
 
 function renderWelcome(){
     let button = generateEventButtons()
     //console.log(button);
     return`
-        <h3 class="title">WELCOME</h3>
-        <div class="paper blue-border">
-            <div class="thumb-yellow"></div>
-            <div class="button-section">
+        <h3 class='title'>WELCOME</h3>
+        <div class='paper blue-border'>
+            <div class='thumb-yellow'></div>
+            <div class='button-section'>
 
-                <p class="handwrite">My events</p>
-                <div class="event-buttons">
-                    ${button.join("")}
+                <p class='handwrite'>My events</p>
+                <div class='event-buttons'>
+                    ${button.join('')}
                 </div>
-                <button type="button" class="make-new-event red-sticker">New Event</button>
+                <button type='button' class='make-new-event red-sticker'>New Event</button>
             </div>
         </div>`
 }
@@ -368,19 +375,19 @@ function newEventForm(){
 
 function renderNewEventForm(){
     return`
-    <form class="new-event-form">
+    <form class='new-event-form'>
         <fieldset>
-            <legend class="handwrite">Create Your Event</legend>
-            <label for="event-name">Name</label>
-            <input type="text" name="event-name" id="event-name">
-            <label for="event-location">Location</label>
-            <input type="text" name="event-location" id="event-location">
+            <legend class='handwrite'>Create Your Event</legend>
+            <label for='event-name'>Name</label>
+            <input type='text' name='event-name' id='event-name'>
+            <label for='event-location'>Location</label>
+            <input type='text' name='event-location' id='event-location'>
             <label for="event-start-date">Start date</label>
-            <input type="date" name="event-start-date" id="event-start-date">
+            <input type='date' name='event-start-date' id='event-start-date'>
             <label for="event-end-date">End date</label>
-            <input type="date" name="event-end-date" id="event-end-date">
+            <input type='date' name='event-end-date' id='event-end-date'>
         </fieldset>
-        <button type="submit" class="submit-new-event sticker">Submit</button> 
+        <button type='submit' class='submit-new-event sticker'>Submit</button> 
     </form>`
 }
 
@@ -405,12 +412,12 @@ function handleSubmitNewEvent(){
 function postNewEvent(data){
     //console.log('post new event ran');
     $.ajax({
-        type: "POST",
-        url: "/event",
+        type: 'POST',
+        url: '/event',
         data: JSON.stringify(data),
         contentType: 'application/json',
         success: showEventPage,
-        dataType: "json"
+        dataType: 'json'
     })
 }
 
@@ -424,22 +431,28 @@ function handleEventButton(){
 function getEventInformation(id){
     //console.log('get event information');
     $.ajax({
-        type: "GET",
+        type: 'GET',
         url: `/event/${id}`,
         contentType: 'application/json',
         success: showEventPage,
-        dataType: "json"
+        dataType: 'json'
     })
 }
 
 function showEventPage(data){
     //console.log('show event page ran');
+    if(!mqLarge.matches){
+        console.log('screen is less than 1000px')
+        $('.control-menu').removeClass('hidden');
+        $('.menu').removeClass('hidden');
+    }
+
     closeModal();
-    $('.js-welcome-page').addClass("hidden");
-    $('.js-activity-page').addClass("hidden");
-    $('.js-event-page').removeClass("hidden");
-    $('.js-profile-page').addClass("hidden");
-    $('.nav-button').removeClass("invisible");
+    $('.js-welcome-page').addClass('hidden');
+    $('.js-activity-page').addClass('hidden');
+    $('.js-event-page').removeClass('hidden');
+    $('.js-profile-page').addClass('hidden');
+    $('.nav-button').removeClass('invisible');
 
     CURRENT_SESSION.event = data.name;
     CURRENT_SESSION.event_id = data.id;
@@ -468,6 +481,22 @@ function showEventPage(data){
         }, function(){
             $(this).find('button').addClass("invisible");
         });}
+}
+
+function handleMenuButton(){
+    $('.menu').click(function(e){
+        $('.js-nav-bar').removeClass('hidden');
+        $('.menu').addClass('hidden');
+        $('.close-menu').removeClass('hidden');
+    })
+}
+
+function handleMenuClose(){
+    $('.close-menu').click(function(e){
+        $('.js-nav-bar').addClass('hidden');
+        $('.menu').removeClass('hidden');
+        $('.close-menu').addClass('hidden');
+    })
 }
 
 function renderEvent(name, location, dates){
@@ -1420,36 +1449,36 @@ function handleSubmitEditActivity(){
 function putEditActivity(data){
     console.log(data)
     $.ajax({
-        type: "PUT",
+        type: 'PUT',
         url: `/activity/${data.id}`,
         data: JSON.stringify(data),
-        contentType: "application/json",
+        contentType: 'application/json',
         success: closeModal,
-        dataType: "json"
+        dataType: 'json'
     }).then(showProfilePage)
 }
 
 function handleInviteLink(){
     //console.log('handle invite link ran');
-    let eventId = getQueryVariable("eventId")
-    let event = getQueryVariable("name")
+    let eventId = getQueryVariable('eventId')
+    let event = getQueryVariable('name')
     //console.log(eventId);
     //console.log(name);
     CURRENT_SESSION.event_id = eventId;
     if(!event==false){
-        let eventName = event.split("+").join(" ")
-        $('.welcome-message').html(`You have been invited to join <p class="invite-name">${eventName}</p>`)
+        let eventName = event.split('+').join(' ')
+        $('.welcome-message').html(`You have been invited to join <p class='invite-name'>${eventName}</p>`)
         //console.log(eventName)
         $('.js-not-invite').remove();
-        $('.intro-content').addClass("intro-content-invite")}
+        $('.intro-content').addClass('intro-content-invite')}
 }
 
 function getQueryVariable(variable){
     let query = window.location.search.substring(1);
-    const querypart = query.split("&");
+    const querypart = query.split('&');
     //console.log(querypart);
     for(let i=0; i<querypart.length; i++){;
-        let querypair = querypart[i].split("=");
+        let querypair = querypart[i].split('=');
         if (querypair[0] == variable){return querypair[1]}
     }
     return (false);
@@ -1464,17 +1493,29 @@ function escKeyHandler(){
   }
 
 function openModal(){
-    $('.contain-modal').removeClass("behind")
+    $('.contain-modal').removeClass('behind')
 }
 
 function closeModal(){
-    $('.contain-modal').addClass("behind")
+    $('.contain-modal').addClass('behind')
 }
 
 function handleCloseModal(){
     $('.overlay').click(e => closeModal());
 }
 
+function handleNavBar(){
+    if(!mqLarge.matches){
+        $('.js-nav-bar').click(function(e){ 
+            $('.js-nav-bar').addClass('hidden');
+            $('.menu').removeClass('hidden');
+            $('.close-menu').addClass('hidden');
+        })}
+}
+
+handleNavBar();
+handleMenuButton();
+handleMenuClose();
 escKeyHandler();
 handleMockUsers();
 handleInviteLink();
