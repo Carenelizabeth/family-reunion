@@ -41,26 +41,26 @@ function handleMockUsers(){
 
 function displayLogin(){
     $('.landing-page').addClass("hidden");
-    $('.login-page').removeClass("hidden");
+    //$('.login-page').removeClass("hidden");
+    openModal()
     const login = renderLoginForm();
-    $('.login-page').html(login);
+    $('.lined-paper').html(login);
     handleLoginButton();
 }
 
 function displayCreateAccount(){
     $('.landing-page').addClass("hidden");
-    $('.login-page').removeClass("hidden");
+    //$('.login-page').removeClass("hidden");
+    openModal()
     const createUser = renderCreateAccount();
-    $('.login-page').html(createUser);
+    $('.lined-paper').html(createUser);
     handleNewAccount();
 }
 
 //form for loggin ing
 function renderLoginForm(){
     return`
-    <div class="content">
-        <div class="paper yellow-border">
-            <div class="thumb-green"></div>
+
             <form class="js-login">
                 <fieldset>
                     <legend>Log In</legend>
@@ -74,17 +74,12 @@ function renderLoginForm(){
                     </div>
                 </fieldset>
                 <button type="submit sticker" class="js-login-button sticker">Submit</button>
-            </form>
-        </div>
-    </div>`
+            </form>`
 }
 
 //form for creating a new account
 function renderCreateAccount(){
     return`
-    <div class="content">
-        <div class="paper yellow-border">
-            <div class="thumb-green"></div>
             <form class="js-create-account">
                 <fieldset>
                     <legend>Create New Account</legend>
@@ -102,15 +97,14 @@ function renderCreateAccount(){
                     </div>
                 </fieldset>
                 <button type="submit" class="js-create-account-button sticker">Submit</button>
-            </form>
-        </div>
-    </div>`
+            </form>`
 }
 
 //The next section handles user login and selecting the event
 function handleLoginButton(){
     $('.js-login').submit(function(e){
         e.preventDefault();
+        closeModal()
         let username = $(this).find('#login-username').val();
         let password = $(this).find('#user-password').val();
         CURRENT_SESSION.username = username;
@@ -181,6 +175,7 @@ function pushNewUser(){
 function handleNewAccount(){
     $('.js-create-account').submit(function(e){
         e.preventDefault();
+        closeModal();
         console.log('create Account clicked');
         const data = {
             username: $(this).find('#create-user-name').val(),
@@ -275,6 +270,7 @@ function showWelcomePage(data){
     //console.log('show welcome page');
 
     $('.js-landing-page').addClass("hidden");
+    $('.login-page').addClass("hidden");
     $('.js-welcome-page').removeClass("hidden");
     $('.js-event-page').addClass("hidden");
     $('.js-nav-bar').removeClass("hidden");

@@ -65,15 +65,7 @@ main{
 }
 
 nav{
-    background-image: url(images/top-border.png);
-    background-repeat: repeat-x;
-    height: 100px;
-    width: 100%;
-    position: fixed;
-    z-index: 1;
-    padding: 0 20px;
-    display: flex;
-    justify-content: space-around;
+    display: none;
 }
 
 .nav-button{
@@ -101,8 +93,8 @@ section{
 }
 
 .bulletin{
-    height: calc(100%-80px);
-    margin-top: 80px;
+    width: 100%;
+    height: 100%;
 }
 
 h2{
@@ -179,6 +171,7 @@ fieldset{
 
 .input-line{
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
     margin: 10px 0;
 }
@@ -217,7 +210,9 @@ fieldset{
     color: #FFF485;
 }
 
-
+.landing-page{
+    margin-top: 3vh;
+}
 
 .intro-checklist{
     padding-left: 20px;
@@ -268,26 +263,16 @@ i{
     display: none;
 }
 
-.content{
+/*.content{
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-}
+}*/
 
 
 .js-create-account .input-line{
     display: flex;
     justify-content: flex-end;
-}
-
-.js-landing-page{
-    background:
-        linear-gradient(
-            rgba(255, 255, 255, .4),
-            rgba(255, 255, 255, .4)
-        ),url(images/summerCamp.jpg);
-    background-size: cover;
 }
 
 .thumbtacks{
@@ -323,12 +308,12 @@ i{
 }
 
 .paper{
-    position: relative;
-    max-width: 960px;
-    padding: 2vh 50px;
+    width: 90%;
+    padding: 2vh 5%;
     min-height: 40vh;
+    max-height: 100%;
     height: auto;
-    margin: 0 auto;
+    margin: 3vh auto 2vh auto;
     background-color: #F2ECE3;
     -webkit-box-shadow: 0 0 4px rgba(0, 0, 0, 0.2), inset 0 0 50px rgba(0, 0, 0, 0.1);
 	-moz-box-shadow: 0 0 4px rgba(0, 0, 0, 0.2), inset 0 0 50px rgba(0, 0, 0, 0.1);
@@ -450,42 +435,16 @@ i{
 }
 
 .welcome-page{
-    height: 80%;
+    height: 100%;
+    width: 100%;
+    justify-content: center;
     flex-direction: column;
 }
-
-/*.paper:before, .paper:after{
-    position: absolute;
-	width: 40%;
-	height: 10px;
-	content: ' ';
-	left: 12px;
-	bottom: 12px;
-	background: transparent;
-	-webkit-transform: skew(-5deg) rotate(-5deg);
-	-moz-transform: skew(-5deg) rotate(-5deg);
-	-ms-transform: skew(-5deg) rotate(-5deg);
-	-o-transform: skew(-5deg) rotate(-5deg);
-	transform: skew(-5deg) rotate(-5deg);
-	-webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
-	-moz-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
-	box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
-	z-index: -1;
-}
-
-.paper:after{
-	left: auto;
-	right: 12px;
-	-webkit-transform: skew(3deg) rotate(3deg);
-	-moz-transform: skew(3deg) rotate(3deg);
-	-ms-transform: skew(3deg) rotate(3deg);
-	-o-transform: skew(3deg) rotate(3deg);
-	transform: skew(deg) rotate(3deg);
-}*/
 
 .intro-content{
     display: flex;
     justify-content: space-around;
+    flex-wrap: wrap;
     margin: 25px 0;
 }
 
@@ -506,6 +465,7 @@ i{
 
 .login-buttons{
     display: flex;
+    flex-wrap: wrap;
     justify-content: flex-start;
 }
 
@@ -536,8 +496,8 @@ i{
 
 .make-new-event, .make-activity{
     position: absolute;
-    bottom: -40px;
-    right: -100px;
+    top: -5vh;
+    right: 0;
     -ms-transform: rotate(-10deg); 
     -webkit-transform: rotate(-10deg); 
     transform: rotate(-10deg);
@@ -553,12 +513,9 @@ i{
 
 .sample-buttons{
     display: flex;
-    flex-wrap: wrap-reverse;
-    align-content: center;
-    width: 250px;
-    margin-left: -50px;
+    flex-wrap: wrap;
+    width: 100%;
     justify-content: space-around;
-    align-items: space-around;
 }
 
 .circle-sticker{
@@ -598,8 +555,8 @@ form .sticker{
 legend{
     font-family: 'Roboto', sans-serif;
     color: #0F4030;
-    font-size: 32px;
-
+    font-size: 3.2vh;
+    margin-bottom: 1vh;
 }
 
 .generate-sticker{
@@ -616,13 +573,13 @@ legend{
 
 .red-sticker{
     align-self: flex-end;
-    width: 150px;
-    height: 150px;
+    width: 10vh;
+    height: 10vh;
     background-image: url(images/sticker-red-circle.png);
     background-size: contain;
     background-repeat: no-repeat;
     color: #FFF485;
-    font-size: 24;
+    font-size: 2.4vh;
     font-weight: bold;
 }
 
@@ -687,6 +644,7 @@ textarea{
 }
 
 .button-section{
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -697,7 +655,6 @@ textarea{
 
 .event-button-section{
     position: absolute;
-    margin: 0 auto;
     bottom: 2vh;
     display: flex;
     padding-left: 500px;
@@ -726,12 +683,7 @@ textarea{
     transform: scale(1.05);
 }
 
-.event-information{
-    width: 960px;
-}
-
 .all-activities{
-    width: 960px;
     display: flex;
     margin: 40px auto;
     justify-content: space-around;
@@ -742,8 +694,7 @@ textarea{
     position: relative;
     padding: 10px 20px;
     margin: 20px 10px;
-    width: 250px;
-    max-width: 400px;
+    width: 90%;
     min-height: 325px;
     display: flex;
     flex-direction: column;
@@ -754,6 +705,7 @@ textarea{
 .event-details-section{
     position: relative;
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     margin-bottom:1vh;
     margin-top: -4vh;
@@ -1030,3 +982,100 @@ cite::before{
 .user-attend-activities{
     margin-left: 20px;
 }
+
+@media only screen and (min-width: 500px){
+
+    .login-buttons{
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+    }
+
+    .paper{
+        width: 60%;
+    }
+
+    .red-sticker{
+        width: 15vh;
+        height: 15vh;
+    }
+
+    .make-new-event{
+        right: -100px;
+    }
+
+    .wrapper{
+        width: 250px;
+        max-width: 400px;
+    }
+
+}
+
+@media only screen and (min-width: 1000px){
+
+    nav{
+        background-image: url(images/top-border.png);
+        background-repeat: repeat-x;
+        height: 100px;
+        width: 100%;
+        position: fixed;
+        z-index: 1;
+        padding: 0 20px;
+        display: flex;
+        justify-content: space-around;
+    }
+
+    .bulletin{
+        height: calc(100% - 80px);
+        margin-top: 80px;
+    }
+
+    .paper{
+        width: 500px;
+    }
+
+    .welcome-paper{
+        width: 960px;
+    }
+
+    .js-landing-page{
+        background:
+            linear-gradient(
+                rgba(255, 255, 255, .4),
+                rgba(255, 255, 255, .4)
+            ),url(images/summerCamp.jpg);
+        background-size: cover;
+    }
+
+    .landing-page{
+        margin-top: 10vh;
+    }
+
+    .login-page{
+        padding-top: 20vh;
+    }
+
+    .sample-buttons{
+        display: flex;
+        flex-wrap: wrap-reverse;
+        align-content: center;
+        width: 250px;
+        margin-left: -50px;
+        align-self: flex-end; 
+        justify-content: space-around;
+        align-items: space-around;
+    }
+
+    .input-line{
+        flex-direction: row;
+    }
+
+    form{
+        width: 500px;
+        margin: 20px;
+    }
+
+
+
+}
+
