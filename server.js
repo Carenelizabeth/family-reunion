@@ -9,7 +9,7 @@ const passport = require('passport');
 
 mongoose.Promise = global.Promise;
 
-const eventRouter = require('./routers/activityRouter');
+const eventRouter = require('./routers/eventRouter');
 const userRouter = require('./routers/userRouter');
 const activityRouter = require('./routers/activityRouter');
 const {router: authRouter, localStrategy, jwtStrategy} = require('./auth')
