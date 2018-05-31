@@ -125,7 +125,7 @@ router.put('/:id', (req, res) => {
     }
 
     const update = {}
-    const updateable = ['activity_name', 'activity_url','activity_date', 'activity_time', 'kid_cost', 'adult_cost', 'group_cost', 'group_size']
+    const updateable = ['activity_name', 'activity_url','activity_date', 'activity_time', 'kid_cost', 'adult_cost', 'group_cost', 'group_size', 'kids_welcome']
     updateable.forEach(field =>{
         if (field in req.body){
             update[field] = req.body[field]
