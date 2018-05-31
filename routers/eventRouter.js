@@ -10,7 +10,7 @@ const morgan = require('morgan');
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
-const {User, Event} = require('./models');
+const {User, Event} = require('../models/eventModel');
 
 const app = express();
 

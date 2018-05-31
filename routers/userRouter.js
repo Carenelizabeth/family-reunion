@@ -11,7 +11,7 @@ const mongoose = require('mongoose');
 const passport = require('passport')
 mongoose.Promise = global.Promise;
 
-const {User, Event} = require('./models');
+const {User, Event} = require('../models/userModel');
 
 const app = express();
 

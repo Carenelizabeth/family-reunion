@@ -10,7 +10,7 @@ const morgan = require('morgan');
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
-const {Activity} = require('./models');
+const {Activity} = require('../models/activityModel');
 
 const app = express();
 
