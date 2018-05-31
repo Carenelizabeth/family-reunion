@@ -6,9 +6,9 @@ const faker = require('faker');
 const mongoose = require('mongoose');
 
 const expect = chai.expect;
-const userRouter = require('../userRouter');
+const userRouter = require('../routers/userRouter');
 
-const {User} = require('../models')
+const {User} = require('../models/userModel')
 const {app, runServer, closeServer} = require('../server.js');
 const {TEST_DATABASE_URL} = require('../config.js')
 
