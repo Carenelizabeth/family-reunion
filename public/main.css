@@ -1031,6 +1031,7 @@ cite::before{
     min-height: 100px;
     min-width: 100px;
     font-size: 14px;
+    z-index: 2;
     -ms-transform: rotate(-10deg); 
     -webkit-transform: rotate(-10deg); 
     transform: rotate(-10deg);
@@ -1110,12 +1111,6 @@ cite::before{
 
     .welcome-paper{
         width: 80%;
-    }
-
-    .title{
-        font-size: 12vh;
-        margin-top: calc(5vh + 50px);
-        flex-shrink: 1;
     }
 
     .right-margin{
@@ -1238,6 +1233,10 @@ cite::before{
     .content{
         max-width: 1200px;
         margin: 0 auto;
+    }
+
+    .welcome-paper{
+        max-width: 650px;
     }
 }
 

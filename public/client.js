@@ -1,14 +1,14 @@
 const CURRENT_SESSION = {
-    username: "",
-    user_id: "",
+    username: '',
+    user_id: '',
     user_events: [],
-    event: "",
-    event_id: "",
-    organizer_id: ""
+    event: '',
+    event_id: '',
+    organizer_id: ''
 };
 
-const mqMedium = window.matchMedia("(min-width: 500px");
-const mqLarge = window.matchMedia("(min-width: 1000px");
+const mqMedium = window.matchMedia('(min-width: 500px)');
+const mqLarge = window.matchMedia('[(min-width: 1000px)');
 
 
 
@@ -20,22 +20,22 @@ function handleStartButtons(){
 
 function handleMockUsers(){
     $('.js-aunt-judy').click(function(e){
-        let username = "Aunt Judy";
-        let password = "judysfunvacation";
+        let username = 'Aunt Judy';
+        let password = 'judysfunvacation';
         CURRENT_SESSION.username = username;
         handleLogin(username, password);
     })
 
     $('.js-cousin-bob').click(function(e){
-        let username = "Cousin Bob";
-        let password = "bobsfunvacation";
+        let username = 'Cousin Bob';
+        let password = 'bobsfunvacation';
         CURRENT_SESSION.username = username;
         handleLogin(username, password);
     })
 
     $('.js-grandma-jo').click(function(e){
-        let username = "Grandma Jo";
-        let password = "josfunvacation";
+        let username = 'Grandma Jo';
+        let password = 'josfunvacation';
         CURRENT_SESSION.username = username;
         handleLogin(username, password);
     })
@@ -43,8 +43,7 @@ function handleMockUsers(){
 }
 
 function displayLogin(){
-    $('.landing-page').addClass("hidden");
-    //$('.login-page').removeClass("hidden");
+    $('.landing-page').addClass('hidden');
     openModal()
     const login = renderLoginForm();
     $('.lined-paper').html(login);
@@ -52,8 +51,7 @@ function displayLogin(){
 }
 
 function displayCreateAccount(){
-    $('.landing-page').addClass("hidden");
-    //$('.login-page').removeClass("hidden");
+    $('.landing-page').addClass('hidden');
     openModal()
     const createUser = renderCreateAccount();
     $('.lined-paper').html(createUser);
@@ -64,42 +62,42 @@ function displayCreateAccount(){
 function renderLoginForm(){
     return`
 
-            <form class="js-login">
+            <form class='js-login'>
                 <fieldset>
                     <legend>Log In</legend>
-                    <div class="input-line"> 
-                        <label for="login-username">Username</label>
-                        <input type="text" name="login-username" id="login-username" class="login-username" required>
+                    <div class='input-line'> 
+                        <label for='login-username'>Username</label>
+                        <input type='text' name='login-username' id='login-username' class='login-username' required>
                     </div>
-                    <div class="input-line"> 
-                        <label for="user-password">Password</label>
-                        <input type="password" name="user-password" id="user-password" required>
+                    <div class='input-line'> 
+                        <label for='user-password'>Password</label>
+                        <input type='password' name='user-password' id='user-password' required>
                     </div>
                 </fieldset>
-                <button type="submit sticker" class="js-login-button sticker">Submit</button>
+                <button type='submit sticker' class='js-login-button sticker'>Submit</button>
             </form>`
 }
 
 //form for creating a new account
 function renderCreateAccount(){
     return`
-            <form class="js-create-account">
+            <form class='js-create-account'>
                 <fieldset>
                     <legend>Create New Account</legend>
-                    <div class="input-line"> 
-                        <label for="create-user-name">Choose a public user name</label>
-                        <input type="text" name="create-user-name" id="create-user-name" required>
+                    <div class='input-line'> 
+                        <label for='create-user-name'>Choose a public user name</label>
+                        <input type='text' name='create-user-name' id='create-user-name' required>
                     </div>
-                    <div class="input-line"> 
-                        <label for="login-email">Email</label>
-                        <input type="text" name="login-email" id="login-email" class="user-email" required>
+                    <div class='input-line'> 
+                        <label for='login-email'>Email</label>
+                        <input type='text' name='login-email' id='login-email' class='user-email' required>
                     </div>
-                    <div class="input-line"> 
-                        <label for="user-password">Password</label>
-                        <input type="password" name="user-password" id="user-password" required>
+                    <div class='input-line'> 
+                        <label for='user-password'>Password</label>
+                        <input type='password' name='user-password' id='user-password' required>
                     </div>
                 </fieldset>
-                <button type="submit" class="js-create-account-button sticker">Submit</button>
+                <button type='submit' class='js-create-account-button sticker'>Submit</button>
             </form>`
 }
 
@@ -112,8 +110,8 @@ function handleLoginButton(){
         let password = $(this).find('#user-password').val();
         CURRENT_SESSION.username = username;
         handleLogin(username, password);
-        $(this).find('#login-username').val("");
-        $(this).find('#user-password').val("");
+        $(this).find('#login-username').val('');
+        $(this).find('#user-password').val('');
     });
 };
 
@@ -122,12 +120,12 @@ function handleLogin(username, password){
                 password: password}
     //console.log(data);
     $.ajax({
-        type: "POST",
-        url: "/auth/login",
+        type: 'POST',
+        url: '/auth/login',
         data: JSON.stringify(data),
-        contentType: "application/json",
+        contentType: 'application/json',
         success: getUserData,
-        dataType: "json"
+        dataType: 'json'
     })
 }
 
@@ -140,11 +138,11 @@ function getUserData(token){
         beforeSend: function(xhr){
             xhr.setRequestHeader(`Authorization`, `Bearer ${authToken}`)
         },
-        type: "GET",
+        type: 'GET',
         url: `/user/userdata/${CURRENT_SESSION.username}`,
-        contentType: "application/json",
+        contentType: 'application/json',
         success: updateSessionInformation,
-        dataType: "json"
+        dataType: 'json'
     })
     .then(pushNewUser)
     .then(getUserEvents)
@@ -164,13 +162,13 @@ function pushNewUser(){
         userId: CURRENT_SESSION.user_id
     }
     //console.log(data)
-    if (!eventId == ""){
+    if (!eventId == ''){
     $.ajax({
-        type: "PUT",
+        type: 'PUT',
         url: `/event/adduser/${eventId}`,
         data: JSON.stringify(data),
-        contentType: "application/json",
-        dataType: "json"
+        contentType: 'application/json',
+        dataType: 'json'
     })}
 }
 
@@ -193,12 +191,12 @@ function createAccount(data){
     //console.log('create account ran');
     //console.log('data');
     $.ajax({
-        type: "POST",
-        url: "/user",
+        type: 'POST',
+        url: '/user',
         data: JSON.stringify(data),
         contentType: 'application/json',
         success: updateSessionInformation,
-        dataType: "json"
+        dataType: 'json'
     })
     .then(pushNewUser)
     .then(getUserEvents)
@@ -217,10 +215,10 @@ function handleNavButtons(){
 
 function getEventDetails(){
     $.ajax({
-        type: "GET",
+        type: 'GET',
         url: `/event/${CURRENT_SESSION.event_id}`,
         contentType: 'application/json',
-        dataType: "json",
+        dataType: 'json',
         success: displayEventDetails
     })
 }
@@ -242,6 +240,7 @@ function renderEventDetails(data){
     if(data.dates.length>3){dates=data.dates}
         else{dates = `There are no dates! Add them now?`, edit = 'add'}
     return `
+        <h2 class='emphasis'>${CURRENT_SESSION.event}</h2>
         <div class='event-details-section'>                   
             <div class='include-edit'>
                 <p class='handwrite'>${location}</p>
@@ -255,53 +254,42 @@ function renderEventDetails(data){
 }
 
 function showProfilePage(){
-    $('.js-welcome-page').addClass("hidden");
-    $('.js-activity-page').addClass("hidden");
-    $('.js-event-page').addClass("hidden");
-    $('.js-profile-page').removeClass("hidden");
+    $('.js-welcome-page').addClass('hidden');
+    $('.js-activity-page').addClass('hidden');
+    $('.js-event-page').addClass('hidden');
+    $('.js-profile-page').removeClass('hidden');
     populateProfile();
 }
 
 function handleNavEvent(){
-    if(CURRENT_SESSION.event_id === false){
-        alert('You must create or select an event first!')
-    }else{
     let eventId = CURRENT_SESSION.event_id;
-    //console.log(event);
-    getEventInformation(eventId);}
+    getEventInformation(eventId);
 }
 
 function Logout(){
     //let URL = `${window.location.protocol}//${window.location.host}`;
     //Window.location.href=URL;
     //location.reload();
-    window.location = window.location.href.split("?")[0];
+    window.location = window.location.href.split('?')[0];
 }
 
 function handleInvite(){
-    /*if(!mqMedium.matches){
-        $('.modal').addClass('rotate-modal')
-    }*/
-    //console.log(CURRENT_SESSION.event_id);
-    if(CURRENT_SESSION.event_id === false){
-        alert('You must create or select an event first!')
-    }else{
     openModal()
     let link = renderInvite()
     $('.lined-paper').html(link)
-    handleCloseInvite()}
+    handleCloseInvite()
 }
 
 function renderInvite(){
     let inviteURL = getInviteURL()
     return`
-        <h3 class="handwrite handwrite-small">Copy this link to invite friends and family!</h3>
-        <div class="link-box"><p>${inviteURL}</p></div>
-        <button type="button" class="sticker-green js-close-invite">Got it!</button>`
+        <h3 class='handwrite handwrite-small'>Copy this link to invite friends and family!</h3>
+        <div class='link-box'><p>${inviteURL}</p></div>
+        <button type='button' class='sticker-green js-close-invite'>Got it!</button>`
 }
 
 function getInviteURL(){
-    let eventName=CURRENT_SESSION.event.split(" ").join("+");
+    let eventName=CURRENT_SESSION.event.split(' ').join('+');
     let query=`eventId=${CURRENT_SESSION.event_id}&name=${eventName}`
     let inviteURL = `${window.location.protocol}//${window.location.host}?${query}`
     return inviteURL
@@ -363,10 +351,10 @@ function renderWelcome(){
 function getUserEvents(){
     //console.log('get user events ran');
     $.ajax({
-        type: "GET",
+        type: 'GET',
         url: `/event/byUserId/${CURRENT_SESSION.user_id}`,
         contentType: 'application/json',
-        dataType: "json",
+        dataType: 'json',
         success: updateUserEvents
     })
 }
@@ -399,7 +387,7 @@ function generateEventButtons(){
         for(let i=0; i<CURRENT_SESSION.user_events.length; i++){
             //console.log(i);
             //console.log(`console.log(Event: ${CURRENT_SESSION.user_events[i].name}`);
-            button.push(`<button type="button" class="event-button generate-sticker" id="${CURRENT_SESSION.user_events[i].id}">${CURRENT_SESSION.user_events[i].name}</button>`)
+            button.push(`<button type='button' class='event-button generate-sticker' id='${CURRENT_SESSION.user_events[i].id}'>${CURRENT_SESSION.user_events[i].name}</button>`)
         }}
     //console.log(button)
     return button;
@@ -428,9 +416,9 @@ function renderNewEventForm(){
             <input type='text' name='event-name' id='event-name'>
             <label for='event-location'>Location</label>
             <input type='text' name='event-location' id='event-location'>
-            <label for="event-start-date">Start date</label>
+            <label for='event-start-date'>Start date</label>
             <input type='date' name='event-start-date' id='event-start-date'>
-            <label for="event-end-date">End date</label>
+            <label for='event-end-date'>End date</label>
             <input type='date' name='event-end-date' id='event-end-date'>
         </fieldset>
         <button type='submit' class='submit-new-event sticker'>Submit</button> 
@@ -526,9 +514,9 @@ function showEventPage(data){
     if(CURRENT_SESSION.user_id === CURRENT_SESSION.organizer_id){
         //console.log('not equal')
         $('.include-edit').hover(function(){
-            $(this).find('button').removeClass("invisible");
+            $(this).find('button').removeClass('invisible');
         }, function(){
-            $(this).find('button').addClass("invisible");
+            $(this).find('button').addClass('invisible');
         });}
 }
 
@@ -593,23 +581,6 @@ function handleDetailsButton(){
     })
 }
 
-/*<div class="event-details-section">
-<div class="event-details wrapper-event-details blue-border">
-    <div class="thumb-green"></div>
-    <p class="label">Location:</p>
-    <div class="include-edit">
-        <p class="emphasis">${location}!</p>
-        <button type="button" class="edit edit-event-location not-organizer hidden">edit</button>
-    </div>
-    <p class="label">Dates:</p>
-    <div class="include-edit">
-        <p class="emphasis">${dates}</p>
-        <button type="button" class="edit edit-event-dates not-organizer hidden">edit</button>
-    </div>
-    <p class="emphasis">Join a fun activity below or create your own!</p>
-    <button type="button" class="js-make-activity circle-sticker">New Activity</button>
-</div> */
-
 //buttons for editing event: only the creator of the event can edit
 function handleEditEventButtons(){
     $('.edit-event-name').click(function(e){
@@ -635,32 +606,32 @@ function handleEditEventButtons(){
 //forms for editing individual aspects of the events
 function editEventName(){
     return `
-        <form class="js-edit-event-name js-edit">
-            <label for="edit-event-name">Enter new event name</label>
-            <input type="text" name="edit-event-name" id="edit-event-name">
-            <button type="submit" class="sticker-green">Submit</button>
+        <form class='js-edit-event-name js-edit'>
+            <label for='edit-event-name'>Enter new event name</label>
+            <input type='text' name='edit-event-name' id='edit-event-name'>
+            <button type='submit' class='sticker-green'>Submit</button>
         </form>   
     `
 }
 
 function editEventLocation(){
     return `
-    <form class="js-edit-event-location js-edit">
-        <label for="edit-event-location">Enter new event location</label>
-        <input type="text" name="edit-event-location" id="edit-event-location">
-        <button type="submit" class="sticker-green">Submit</button>
+    <form class='js-edit-event-location js-edit'>
+        <label for='edit-event-location'>Enter new event location</label>
+        <input type='text' name='edit-event-location' id='edit-event-location'>
+        <button type='submit' class='sticker-green'>Submit</button>
     </form>   
 `
 }
 
 function editEventDates(){
     return `
-        <form class="js-edit-event-dates js-edit">
-            <label for="edit-event-dates">Enter new start date</label>
-            <input type="date" name="edit-event-start" id="edit-event-start">
-            <label for="edit-event-dates">Enter new end date</label>
-            <input type="date" name="edit-event-end" id="edit-event-end">
-            <button type="submit" class="sticker-green">Submit</button>
+        <form class='js-edit-event-dates js-edit'>
+            <label for='edit-event-dates'>Enter new start date</label>
+            <input type='date' name='edit-event-start' id='edit-event-start'>
+            <label for='edit-event-dates'>Enter new end date</label>
+            <input type='date' name='edit-event-end' id='edit-event-end'>
+            <button type='submit' class='sticker-green'>Submit</button>
         </form>   
     `
 }
@@ -709,12 +680,12 @@ function updateEvent(data){
     //console.log(CURRENT_SESSION.event_id)
     //console.log(data);
     $.ajax({
-        type: "PUT",
+        type: 'PUT',
         url: `/event/${CURRENT_SESSION.event_id}`,
         data: JSON.stringify(data),
         contentType: 'application/json',
         success: handleNavEvent,
-        dataType: "json"
+        dataType: 'json'
     })
 }
 
@@ -725,11 +696,11 @@ function handleDeleteEvent(){
 
 function confirmDelete(id){
     let confirm = `
-        <h3 class="handwrite">Are you sure?</h3>
+        <h3 class='handwrite'>Are you sure?</h3>
         <p>This action cannot be undone</p>
-        <div class="confirm-buttons">
-            <button type="button" class="cancel-delete sticker">Cancel</button>
-            <button type="button" class="yes-delete sticker">Delete</button>
+        <div class='confirm-buttons'>
+            <button type='button' class='cancel-delete sticker'>Cancel</button>
+            <button type='button' class='yes-delete sticker'>Delete</button>
         </div>`
     openModal()
     $('.lined-paper').html(confirm)
@@ -739,7 +710,7 @@ function confirmDelete(id){
 
 function handleConfirmDelete(id){
     $('.yes-delete').click(function(e){
-        if(!($('.js-event-page').hasClass("hidden"))){
+        if(!($('.js-event-page').hasClass('hidden'))){
             DeleteEvent()
         }else{DeleteActivity(id)}
     })
@@ -752,11 +723,11 @@ function handleCancelDelete(){
 
 function DeleteEvent(){
     $.ajax({
-        type: "DELETE",
+        type: 'DELETE',
         url: `/event/${CURRENT_SESSION.event_id}`,
         contentType: 'application/json',
         success: closeModal(),
-        dataType: "json"
+        dataType: 'json'
     })
     .then(showWelcomePage)
 }
@@ -767,10 +738,10 @@ function retrieveActivities(eventId){
     //console.log(eventId)
 
     $.ajax({
-        type: "GET",
+        type: 'GET',
         url: `/activity/event/${eventId}`,
         contentType: 'application/json',
-        dataType: "json",
+        dataType: 'json',
         success: displayActivities
     })
 }
@@ -786,7 +757,7 @@ function displayActivities(data){
 function renderActivities(results){
 
     let price = calculateCost(results);
-    if(price === 0){price = `<div class="free"></div>`}else{price = `<div></div>`}
+    if(price === 0){price = `<div class='free'></div>`}else{price = `<div></div>`}
     
     let kidNumber = 0;
     let adultNumber = results.adult_number;
@@ -801,37 +772,32 @@ function renderActivities(results){
     }else {number = `${number} people are`}
 
     let kids = `<div></div>`;
-    //console.log(results.kids_welcome);
-    //console.log(results.kids_welcome===true);
-    if(results.kids_welcome===true){kids = `<div class="js-kid-friendly"></div>`}
+    if(results.kids_welcome===true){kids = `<div class='js-kid-friendly'></div>`}
 
     let attend;
-    //console.log(results.attendees[0]);
-    //console.log(`"${CURRENT_SESSION.user_id}"`);
-    //console.log(results.attendees[0].includes(CURRENT_SESSION.user_id));
     if(results.attendees.includes(CURRENT_SESSION.user_id)){
-        attend = `<div class="already-going"></div>`
+        attend = `<div class='already-going'></div>`
     }else{
-        attend = `<button type="button" name="${results.name}" class="js-RSVP sticker-green-circle" id="${results.id}">Join!</button>`
+        attend = `<button type='button' name='${results.name}' class='js-RSVP sticker-green-circle' id='${results.id}'>Join!</button>`
     }
 
-    let thumbColorArray = ["thumb-yellow", "thumb-green", "thumb-red"]
-    let borderColorArray = ["light-blue-border", "yellow-border", "green-border", "blue-border"]
-    let rotateArray = ["rotate-right", "rotate-left"]
-    let flexArray = ["flex-grow", "flex-grow-more", "flex-grow-most"]
+    let thumbColorArray = ['thumb-yellow', 'thumb-green', 'thumb-red']
+    let borderColorArray = ['light-blue-border', 'yellow-border', 'green-border', 'blue-border']
+    let rotateArray = ['rotate-right', 'rotate-left']
+    let flexArray = ['flex-grow', 'flex-grow-more', 'flex-grow-most']
     let thumbColor = thumbColorArray[Math.floor(Math.random()*thumbColorArray.length)]
     let borderColor = borderColorArray[Math.floor(Math.random()*borderColorArray.length)]
     let rotate = rotateArray[Math.floor(Math.random()*rotateArray.length)]
     let flex = flexArray[Math.floor(Math.random()*flexArray.length)]
 
     return `        
-        <div class="activity wrapper ${borderColor} ${rotate} ${flex}">
-            <div class="${thumbColor}"></div>
-            <button type="button" class="activity-name" id="${results.id}">${results.name}</button>
-            <div class="attending">
-                <p class="fun-text">${number} going</p>
+        <div class='activity wrapper ${borderColor} ${rotate} ${flex}'>
+            <div class='${thumbColor}'></div>
+            <button type='button' class='activity-name' id='${results.id}'>${results.name}</button>
+            <div class='attending'>
+                <p class='fun-text'>${number} going</p>
             </div>
-            <div class="extra-info">                
+            <div class='extra-info'>                
                 ${price}
                 ${kids}
             </div>
@@ -863,69 +829,69 @@ function handleActivity(){
 //form for creating a new activity; appears in modal
 function createActivity(){
     return`
-            <form class="js-activity-form">
-                <fieldset class="basic-info">
+            <form class='js-activity-form'>
+                <fieldset class='basic-info'>
                     <legend>Provide Activity Information</legend>
-                    <div class="input-line">    
-                        <label for="activity-name">Activity name</label>
-                        <input type="text" name="activity-name" id="activity-name" required>
+                    <div class='input-line'>    
+                        <label for='activity-name'>Activity name</label>
+                        <input type='text' name='activity-name' id='activity-name' required>
                     </div>
-                    <div class="input-line">    
-                        <label for="activity-url">Website link (opt)</label>
-                        <input type="text" name="activity-url" id="activity-url">
+                    <div class='input-line'>    
+                        <label for='activity-url'>Website link (opt)</label>
+                        <input type='text' name='activity-url' id='activity-url'>
                     </div>
-                    <div class="input-line"> 
+                    <div class='input-line'> 
                         <label>Additional information</label>
                     </div>
-                        <textarea class="text-input comments"></textarea>
-                    <div class="input-line"> 
-                        <label for="activity-date">Date (optional)</label>
-                        <input type="date" name="activity-date" id="activity-date" class="date">
+                        <textarea class='text-input comments'></textarea>
+                    <div class='input-line'> 
+                        <label for='activity-date'>Date (optional)</label>
+                        <input type='date' name='activity-date' id='activity-date' class='date'>
                     </div>
-                    <div class="input-line"> 
-                        <label for="activity-time">Time (optional)</label>
-                        <input type="time" name="activity-time" id="activity-time">
+                    <div class='input-line'> 
+                        <label for='activity-time'>Time (optional)</label>
+                        <input type='time' name='activity-time' id='activity-time'>
                     </div>
-                    <div class="input-line">    
-                        <label for="kid-friendly">Children under 12?</label>                  
-                        <input type="checkbox" name="kid-friendly" id="kid-friendly">                        
+                    <div class='input-line'>    
+                        <label for='kid-friendly'>Children under 12?</label>                  
+                        <input type='checkbox' name='kid-friendly' id='kid-friendly'>                        
                     </div>
                 </fieldset>
-                <fieldset class="price-info hidden">
+                <fieldset class='price-info hidden'>
                     <legend>How much will it cost?</legend>
-                    <div class="input-line price-line"> 
-                        <input type="number" step="0.01" name="adult-cost" id="adult-cost" placeholder="e.g. 5.00">
-                        <label for="adult-cost">per adult</label>
+                    <div class='input-line price-line'> 
+                        <input type='number' step='0.01' name='adult-cost' id='adult-cost' placeholder='e.g. 5.00'>
+                        <label for='adult-cost'>per adult</label>
                     </div>
-                    <div class="input-line price-line"> 
-                        <input type="number" step="0.01" name="kid-cost" id="kid-cost" placeholder="e.g. 3.00">
-                        <label for="kid-cost">per child under 12</label>
+                    <div class='input-line price-line'> 
+                        <input type='number' step='0.01' name='kid-cost' id='kid-cost' placeholder='e.g. 3.00'>
+                        <label for='kid-cost'>per child under 12</label>
                     </div>
-                    <div class="input-line price-line"> 
-                        <input type="number" step="0.01" name="group-cost" id="group-cost" placeholder="e.g. 80.00">
-                        <label for="group-cost">per group of</label>
+                    <div class='input-line price-line'> 
+                        <input type='number' step='0.01' name='group-cost' id='group-cost' placeholder='e.g. 80.00'>
+                        <label for='group-cost'>per group of</label>
                     </div>
-                    <div class="input-line price-line"> 
-                        <input type="number" name="group-size" id="group-size" placeholder="e.g. 10">
-                        <label for="group-size">people</label>
+                    <div class='input-line price-line'> 
+                        <input type='number' name='group-size' id='group-size' placeholder='e.g. 10'>
+                        <label for='group-size'>people</label>
                     </div>
                 </fieldset>
-                <fieldset class="guest-info hidden">
+                <fieldset class='guest-info hidden'>
                     <legend>Who else are you bringing?</legend>
-                    <div class="input-line">
-                        <label for="kids-attending">Kids (under 12)</label>
-                        <input type="number" max="10" min="1" name="kids-attending" id="kids-attending">
+                    <div class='input-line'>
+                        <label for='kids-attending'>Kids (under 12)</label>
+                        <input type='number' max='10' min='1' name='kids-attending' id='kids-attending'>
                     </div>
-                    <div class="input-line">
-                        <label for="adults-attending">Adults</label>
-                        <input type="number" max="10" min="1" name="adults-attending" id="adults-attending">
+                    <div class='input-line'>
+                        <label for='adults-attending'>Adults</label>
+                        <input type='number' max='10' min='1' name='adults-attending' id='adults-attending'>
                     </div>
                 </fieldset>
-                <div class="form-buttons">
-                        <button type="button" class="show-basic-info sticker-green hidden">Basic</button>
-                        <button type="button" class="show-price-info sticker-green">Price?</button>
-                        <button type="button" class="show-guest-info sticker-green">Details</button>
-                    <button type="submit" class="submit-new-activity sticker">Submit</button>
+                <div class='form-buttons'>
+                        <button type='button' class='show-basic-info sticker-green hidden'>Basic</button>
+                        <button type='button' class='show-price-info sticker-green'>Price?</button>
+                        <button type='button' class='show-guest-info sticker-green'>Details</button>
+                    <button type='submit' class='submit-new-activity sticker'>Submit</button>
                 </div>
             </form>`
 }
@@ -987,7 +953,7 @@ function handleSubmitNewActivity(){
             activity_url: $(this).find('#activity-url').val(),
             activity_date: $(this).find('#activity-date').val(),
             activity_time: $(this).find('#activity-time').val(),
-            kids_welcome: $(this).find(`#kid-friendly`).is(":checked"),
+            kids_welcome: $(this).find(`#kid-friendly`).is(':checked'),
             kid_cost: kidCost,
             adult_cost: adultCost,
             group_cost: groupCost,
@@ -1009,12 +975,12 @@ function handleSubmitNewActivity(){
 
 function postNewActivity(data){
     $.ajax({
-        type: "POST",
-        url: "/activity",
+        type: 'POST',
+        url: '/activity',
         data: JSON.stringify(data),
-        contentType: "application/json",
+        contentType: 'application/json',
         success: retrieveActivityId,
-        dataType: "json"
+        dataType: 'json'
     })
 }
 
@@ -1024,9 +990,9 @@ function retrieveActivityId(results){
 }
 
 function showActivityPage(id){
-    $('.js-event-page').addClass("hidden");
-    $('.js-activity-page').removeClass("hidden");
-    $('.js-profile-page').addClass("hidden");
+    $('.js-event-page').addClass('hidden');
+    $('.js-activity-page').removeClass('hidden');
+    $('.js-profile-page').addClass('hidden');
     $('body, html').scrollTop(0);
     retrieveActivityData(id)
 }
@@ -1034,11 +1000,11 @@ function showActivityPage(id){
 function retrieveActivityData(id){
     //console.log('retrieve activity data ran')
     $.ajax({
-        type: "GET",
+        type: 'GET',
         url: `activity/${id}`,
-        contentType: "application/json",
+        contentType: 'application/json',
         success: displayActivityPage,
-        dataType: "json"
+        dataType: 'json'
     })
 }
 
@@ -1051,17 +1017,17 @@ function displayActivityPage(results){
 
 function renderActivityPage(data){
     let cost = calculateCost(data);
-    if(cost === 0){cost = `<div class="free"></div>`}
+    if(cost === 0){cost = `<div class='free'></div>`}
     const comments = []
 
     let kids = `<div></div>`;
-    if(data.kids_welcome===true){kids = `<div class="js-kid-friendly"></div>`}
+    if(data.kids_welcome===true){kids = `<div class='js-kid-friendly'></div>`}
 
     let attend;
     if(data.attendees.includes(CURRENT_SESSION.user_id)){
-        attend = `<div class="already-going"></div>`
+        attend = `<div class='already-going'></div>`
     }else{
-        attend = `<button type="button" name="${data.name}" class="js-RSVP sticker-green-circle circle-sticker-bigger" id="${data.id}">Join!</button>`
+        attend = `<button type='button' name='${data.name}' class='js-RSVP sticker-green-circle circle-sticker-bigger' id='${data.id}'>Join!</button>`
     }
 
     let date;
@@ -1072,7 +1038,7 @@ function renderActivityPage(data){
     
     for (i=0; i<data.activity_comments.length; i++){
         let eachComment = `
-            <div class="comment">
+            <div class='comment'>
                 <blockquote>${data.activity_comments[i].comment}</blockquote>
                 <cite>${data.activity_comments[i].name}</cite>
             </div>`
@@ -1080,17 +1046,17 @@ function renderActivityPage(data){
     }
 
     let link=`<p></p>`
-    if(data.url){link=`<p><a href=${data.url} target="_blank">Visit Website</a></p>`};
+    if(data.url){link=`<p><a href=${data.url} target='_blank'>Visit Website</a></p>`};
 
     return`
-        <h2 class="title">${data.name}</h2>
-        <div class="activity-detail-section">            
-            <div class="activity-details paper light-blue-border rotate-left">
-                <div class="thumb-green"></div>
-                <div class="activity-content">
-                    <h3 class="handwrite">Activity details</h3>
+        <h2 class='title'>${data.name}</h2>
+        <div class='activity-detail-section'>            
+            <div class='activity-details paper light-blue-border rotate-left'>
+                <div class='thumb-green'></div>
+                <div class='activity-content'>
+                    <h3 class='handwrite'>Activity details</h3>
                     <p>Host: ${data.host_name} </p>
-                    <div class="date-time">
+                    <div class='date-time'>
                         ${date}
                         ${time}
                     </div>                
@@ -1104,13 +1070,13 @@ function renderActivityPage(data){
                     ${link}
                 </div>
             </div>
-            <div class="activity-discussion paper green-border rotate-right">
-                <div class="thumb-yellow"></div>
-                <form class= "comment-section">
-                    <h3 class="handwrite">Join the discussion!</h3>
-                    ${comments.join("")}
-                    <textarea class="text-input"></textarea>
-                    <button type="submit" class="submit-comment text-area sticker" name="${data.id}">Comment</button>
+            <div class='activity-discussion paper green-border rotate-right'>
+                <div class='thumb-yellow'></div>
+                <form class= 'comment-section'>
+                    <h3 class='handwrite'>Join the discussion!</h3>
+                    ${comments.join('')}
+                    <textarea class='text-input'></textarea>
+                    <button type='submit' class='submit-comment text-area sticker' name='${data.id}'>Comment</button>
                 </form>
             </div>
         </div>`
@@ -1135,20 +1101,20 @@ function calculateCost(data){
     if (adultCost === 0 && kidCost === 0 && groupCost === 0){
         totalCost = 0;
     }else if (adultCost === 0 && kidCost === 0 && groupCost > 0){
-        totalCost = `<div class="activity-cost"><p>Group Price: $${groupCost.toFixed([2])}/group of${data.group_size}</p></div>`
+        totalCost = `<div class='activity-cost'><p>Group Price: $${groupCost.toFixed([2])}/group of${data.group_size}</p></div>`
     }else if (groupCost === 0 && kidCost > 0 && adultCost > 0){
         adult = adultCost.toFixed([2]);
         child = kidCost.toFixed([2]);
-        totalCost = `<div class="activity-cost">
+        totalCost = `<div class='activity-cost'>
                         <p>Adult price: $${adultCost.toFixed([2])}</p>
                         <p>Child price: $${kidCost.toFixed([2])}</p></div>`
     }else if(groupCost === 0 && kidCost === 0 && adultCost > 0){
-        totalCost = `<div class="activity-cost">
+        totalCost = `<div class='activity-cost'>
                         <p>Price: $${adultCost.toFixed([2])} per person </p>
                     </div>`
     }else{
         totalCost = `
-            <div class="activity-cost">
+            <div class='activity-cost'>
                 <p>$${adultCost.toFixed([2])} /person</p>
                 <p>$${groupCost.toFixed([2])} /group of  ${data.group_size}</p>
             </div>`
@@ -1173,17 +1139,17 @@ function handleRSVP(){
 //form for adding a response; appears in modal
 function respondActivity(id, name){
     return`        
-        <section class="rsvp-page">
-            <form class="js-rsvp-form">
-                <h3 class="handwrite">${name}</h3>
+        <section class='rsvp-page'>
+            <form class='js-rsvp-form'>
+                <h3 class='handwrite'>${name}</h3>
                 <fieldset>
                     <legend>Are you bringing anyone?</legend>
-                    <label for="kids-attending">Kids (under 12)</label>
-                    <input type="number" max="10" min="0"name="kids-attending" id="kids-attending">
-                    <label for="adults-attending">Adults (aside from you)</label>
-                    <input type="number" max="10" min="0" name="adults-attending" id="adults-attending">
+                    <label for='kids-attending'>Kids (under 12)</label>
+                    <input type='number' max='10' min='0'name='kids-attending' id='kids-attending'>
+                    <label for='adults-attending'>Adults (aside from you)</label>
+                    <input type='number' max='10' min='0' name='adults-attending' id='adults-attending'>
                 </fieldset>
-                <button type="submit" class="submit-rsvp sticker" id="${id}">Join</button>
+                <button type='submit' class='submit-rsvp sticker' id='${id}'>Join</button>
             </form>
         </section>`
 }
@@ -1197,7 +1163,7 @@ function handleSubmitResponse(){
         if(kids){kids=kids}else kids=0;
         let adults = parseInt($(this).find('#adults-attending').val(), 10);
         if(adults){adults=adults}else adults=0; adults++;      
-        let id = $(this).find('.submit-rsvp').attr("id");
+        let id = $(this).find('.submit-rsvp').attr('id');
         let data = {
             id: id,
             adult_number: adults,
@@ -1212,18 +1178,18 @@ function handleSubmitResponse(){
 function updateJoinActivity(data){
     //console.log(data.id)
     $.ajax({
-        type: "PUT",
+        type: 'PUT',
         url: `activity/join/${data.id}`,
         data: JSON.stringify(data),
-        contentType: "application/json",
+        contentType: 'application/json',
         success: refreshPage(data.id),
-        dataType: "json"})
+        dataType: 'json'})
     .then(closeModal)
 }
 
 function refreshPage(id){
-    console.log($('.js-activity-page').hasClass("hidden"));
-    if($('.js-activity-page').hasClass("hidden")){
+    console.log($('.js-activity-page').hasClass('hidden'));
+    if($('.js-activity-page').hasClass('hidden')){
         console.log('activity page hidden');
         getEventInformation(CURRENT_SESSION.event);
     }else{console.log('event page hidden'); retrieveActivityData(id)}
@@ -1234,7 +1200,7 @@ function handleSubmitComment(){
     $('.comment-section').submit(function(e){
         e.preventDefault();
         let comment = $(this).find('.text-input').val();
-        let id = $(this).find('.submit-comment').attr("name");
+        let id = $(this).find('.submit-comment').attr('name');
         let name = CURRENT_SESSION.username;
         let data = {
             comment: comment,
@@ -1249,12 +1215,12 @@ function handleSubmitComment(){
 function updateComments(data){
     //console.log('update comments ran')
     $.ajax({
-        type: "PUT",
+        type: 'PUT',
         url: `activity/comments/${data.id}`,
         data: JSON.stringify(data),
-        contentType: "application/json",
+        contentType: 'application/json',
         success: retrieveActivityData(data.id),
-        dataType: "json"})
+        dataType: 'json'})
 }
 
 function populateProfile(){
@@ -1275,63 +1241,54 @@ function getHostedActvities(data){
     let URL = `activity/host?userId=${data.userId}&eventId=${data.eventId}`
     //console.log(URL)
     $.ajax({
-        type: "GET",
+        type: 'GET',
         url: URL,
-        contentType: "application/json",
+        contentType: 'application/json',
         success: publishHostedActivities,
-        dataType: "json"})
+        dataType: 'json'})
 }
 
 function getUserActivities(data){
     $.ajax({
-        type: "GET",
+        type: 'GET',
         url: `activity/user?userId=${data.userId}&eventId=${data.eventId}`,
-        contentType: "application/json",
+        contentType: 'application/json',
         success: publishUserActivites,
-        dataType: "json"})
+        dataType: 'json'})
 }
 
 function publishHostedActivities(results){
-    //console.log('publish hosted activities ran')
-    //console.log(results)
     let hosted = renderHostedActivities(results)
-    //console.log(`hosted: ${hosted}`)
     $('.user-host-activities').html(hosted)
-
 }
 
 function publishUserActivites(results){
-    //console.log('publish user activities ran')
-    //console.log(results);
     let going = renderUserActivities(results)
-    //console.log(`going: ${going}`)
     $('.user-attend-activities').html(going)
 }
 
 function renderHostedActivities(results){
     if(!(results.length==0)){
-        //console.log(`activities: ${results}`);
         const activity = results.map((item, index) => generateHostedActivities(item))
     return`
-        <div class="paper blue-border rotate-left activity-details">
-            <div class="thumb-yellow"></div>
-            <h3 class="handwrite">Activities you are hosting</h3>
-            <div class="hosted-activities">
-            ${activity.join("")}
+        <div class='paper blue-border rotate-left activity-details'>
+            <div class='thumb-yellow'></div>
+            <h3 class='handwrite'>Activities you are hosting</h3>
+            <div class='hosted-activities'>
+            ${activity.join('')}
             </div>
         </div>`}else{return`<div></div>`}
 }
 
 function renderUserActivities(results){
     if(!(results.length==0)){
-        //console.log(`activities: ${results}`);
         const activity = results.map((item, index) => generateUserActivities(item))
     return`
-        <div class="paper green-border rotate-right activity-details">
-            <div class="thumb-red"></div>
-            <h3 class="handwrite">Activites you are attending</h3>
-            <div class="user-activities">
-                ${activity.join("")}
+        <div class='paper green-border rotate-right activity-details'>
+            <div class='thumb-red'></div>
+            <h3 class='handwrite'>Activites you are attending</h3>
+            <div class='user-activities'>
+                ${activity.join('')}
             </div>
         </div>`}else{return`<div></div>`}
 }
@@ -1339,11 +1296,11 @@ function renderUserActivities(results){
 function generateHostedActivities(results){
     let activity = []
     return`
-    <div class="each-hosted" id="${results.id}">
-        <button type="button" class="activity-name host-activity-name">${results.name}</button>
-        <div class="activity-buttons">
-            <button type="button" class="delete-activity">Delete</button>
-            <button type="button" class="edit-activity">Edit</button>
+    <div class='each-hosted' id='${results.id}'>
+        <button type='button' class='activity-name host-activity-name'>${results.name}</button>
+        <div class='activity-buttons'>
+            <button type='button' class='delete-activity'>Delete</button>
+            <button type='button' class='edit-activity'>Edit</button>
         </div>
     </div>`
 }
@@ -1351,7 +1308,7 @@ function generateHostedActivities(results){
 function generateUserActivities(results){
     let activity = []
     return`
-        <button type="button" class="activity-name user-activity-name" id="${results.id}">${results.name}</button>`
+        <button type='button' class='activity-name user-activity-name' id='${results.id}'>${results.name}</button>`
 }
 
 function handleUserActivity(){
@@ -1360,15 +1317,15 @@ function handleUserActivity(){
         showActivityPage(id);
     });
     $('.js-profile-page').on('click', '.host-activity-name', function(e){
-        let id = $(this).parents('.each-hosted').attr("id");
+        let id = $(this).parents('.each-hosted').attr('id');
         showActivityPage(id);
     });
     $('.js-profile-page').on('click', '.delete-activity', function(e){
-        let id = $(this).parents('.each-hosted').attr("id");
+        let id = $(this).parents('.each-hosted').attr('id');
         confirmDelete(id);
     });
     $('.js-profile-page').on('click', '.edit-activity', function(e){
-        let id = $(this).parents('.each-hosted').attr("id");
+        let id = $(this).parents('.each-hosted').attr('id');
         //console.log(id);
         editActivityForm(id)
     });
@@ -1377,22 +1334,22 @@ function handleUserActivity(){
 function DeleteActivity(id){
     //console.log(`delete activity: ${id}`)
     $.ajax({
-        type: "DELETE",
+        type: 'DELETE',
         url: `/activity/${id}`,
         contentType: 'application/json',
         success: closeModal(),
-        dataType: "json"
+        dataType: 'json'
     })
     .then(showProfilePage)
 }
 
 function editActivityForm(id){
     $.ajax({
-        type: "GET",
+        type: 'GET',
         url: `/activity/${id}`,
-        contentType: "application/json",
+        contentType: 'application/json',
         success: displayEditActivity,
-        dataType: "json"
+        dataType: 'json'
     })
 }
 
@@ -1406,14 +1363,14 @@ function displayEditActivity(results){
 }
 
 function renderEditActivity(results){
-    let name = "";
-    let url = "";
-    let date = "";
-    let time = "";
-    let kidCost = "";
-    let adultCost = "";
-    let groupCost = "";
-    let groupSize = "";
+    let name = '';
+    let url = '';
+    let date = '';
+    let time = '';
+    let kidCost = '';
+    let adultCost = '';
+    let groupCost = '';
+    let groupSize = '';
     if(results.name){name=results.name}
     if(results.url){url=results.url}
     if(results.date){date=results.data}
@@ -1424,53 +1381,53 @@ function renderEditActivity(results){
     if(results.group_size){groupSize=results.group_size}
 
     return`
-            <form class="js-update-activity-form">
-                <fieldset class="basic-info">
+            <form class='js-update-activity-form'>
+                <fieldset class='basic-info'>
                     <legend>Provide Activity Information</legend>
-                    <div class="input-line">    
-                        <label for="activity-name">Activity name</label>
-                        <input type="text" name="activity-name" id="activity-name" placeholder="${name}">
+                    <div class='input-line'>    
+                        <label for='activity-name'>Activity name</label>
+                        <input type='text' name='activity-name' id='activity-name' placeholder='${name}'>
                     </div>
-                    <div class="input-line">    
-                        <label for="activity-url">Website link (opt)</label>
-                        <input type="text" name="activity-url" id="activity-url" placeholder="${url}">
+                    <div class='input-line'>    
+                        <label for='activity-url'>Website link (opt)</label>
+                        <input type='text' name='activity-url' id='activity-url' placeholder='${url}'>
                     </div>
-                    <div class="input-line"> 
-                        <label for="activity-date">Date</label>
-                        <input type="date" name="activity-date" id="activity-date" class="date" placeholder=${date}>
+                    <div class='input-line'> 
+                        <label for='activity-date'>Date</label>
+                        <input type='date' name='activity-date' id='activity-date' class='date' placeholder=${date}>
                     </div>
-                    <div class="input-line"> 
-                        <label for="activity-time">Time</label>
-                        <input type="time" name="activity-time" id="activity-time" placeholder=${time}>
+                    <div class='input-line'> 
+                        <label for='activity-time'>Time</label>
+                        <input type='time' name='activity-time' id='activity-time' placeholder=${time}>
                     </div>
-                    <div class="input-line">    
-                        <label for="kid-friendly">Children under 12?</label>                  
-                        <input type="checkbox" name="kid-friendly" id="kid-friendly">                        
+                    <div class='input-line'>    
+                        <label for='kid-friendly'>Children under 12?</label>                  
+                        <input type='checkbox' name='kid-friendly' id='kid-friendly'>                        
                     </div>
                 </fieldset>
-                <fieldset class="price-info hidden">
+                <fieldset class='price-info hidden'>
                     <legend>How much will it cost?</legend>
-                    <div class="input-line price-line"> 
-                        <input type="number" step="0.01" name="adult-cost" id="adult-cost" placeholder="$${adultCost}">
-                        <label for="adult-cost">per adult</label>
+                    <div class='input-line price-line'> 
+                        <input type='number' step='0.01' name='adult-cost' id='adult-cost' placeholder='$${adultCost}'>
+                        <label for='adult-cost'>per adult</label>
                     </div>
-                    <div class="input-line price-line"> 
-                        <input type="number" step="0.01" name="kid-cost" id="kid-cost" placeholder="$${kidCost}">
-                        <label for="kid-cost">per child under 12</label>
+                    <div class='input-line price-line'> 
+                        <input type='number' step='0.01' name='kid-cost' id='kid-cost' placeholder='$${kidCost}'>
+                        <label for='kid-cost'>per child under 12</label>
                     </div>
-                    <div class="input-line price-line"> 
-                        <input type="number" step="0.01" name="group-cost" id="group-cost" placeholder="$${groupCost}">
-                        <label for="group-cost">per group of</label>
+                    <div class='input-line price-line'> 
+                        <input type='number' step='0.01' name='group-cost' id='group-cost' placeholder='$${groupCost}'>
+                        <label for='group-cost'>per group of</label>
                     </div>
-                    <div class="input-line price-line"> 
-                        <input type="number" name="group-size" id="group-size" placeholder="$${groupSize}">
-                        <label for="group-size">people</label>
+                    <div class='input-line price-line'> 
+                        <input type='number' name='group-size' id='group-size' placeholder='$${groupSize}'>
+                        <label for='group-size'>people</label>
                     </div>
                 </fieldset>
-                <div class="form-buttons">
-                    <button type="button" class="show-basic-info sticker-green">Basic</button>
-                    <button type="button" class="show-price-info sticker-green">Price?</button>
-                    <button type="submit" class="submit-update-activity sticker" id="${results.id}">Submit</button>
+                <div class='form-buttons'>
+                    <button type='button' class='show-basic-info sticker-green'>Basic</button>
+                    <button type='button' class='show-price-info sticker-green'>Price?</button>
+                    <button type='submit' class='submit-update-activity sticker' id='${results.id}'>Submit</button>
                 </div>
             </form>`
 }
@@ -1491,7 +1448,7 @@ function handleSubmitEditActivity(){
         $('.js-update-activity-form').on('submit', function(e){
             e.preventDefault();
             const data = {
-                id: $(this).find('.submit-update-activity').attr("id")
+                id: $(this).find('.submit-update-activity').attr('id')
             }
             let kidCost = parseFloat($(this).find('#kid-cost').val(), 10);
             if(kidCost){data.kid_cost = kidCost}
