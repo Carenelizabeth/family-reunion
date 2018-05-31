@@ -6,10 +6,10 @@ const faker = require('faker');
 const mongoose = require('mongoose');
 
 const expect = chai.expect;
-const activityRouter = require('../activityRouter');
+const activityRouter = require('../routers/activityRouter');
 
-const {Activity} = require('../models')
-const {Event} = require('../models')
+const {Activity} = require('../models/activityModel')
+const {Event} = require('../models/eventModel')
 const {app, runServer, closeServer} = require('../server.js');
 const {TEST_DATABASE_URL} = require('../config.js')
 
