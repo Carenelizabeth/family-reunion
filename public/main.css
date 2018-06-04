@@ -309,7 +309,7 @@ i{
 
 .thumb-yellow{
     width: 30px;
-    height: 30px;
+    min-height: 30px;
     margin: 0 auto 10px auto;
     background-image: url(images/thumb-yellow.png);
     background-repeat: no-repeat;
@@ -318,7 +318,7 @@ i{
 
 .thumb-green{
     width: 30px;
-    height: 30px;
+    min-height: 30px;
     margin: 0 auto 10px auto;
     background-image: url(images/thumb-green.png);
     background-repeat: no-repeat;
@@ -327,7 +327,7 @@ i{
 
 .thumb-red{
     width: 30px;
-    height: 30px;
+    min-height: 30px;
     margin: 0 auto 10px auto;
     background-image: url(images/thumb-red.png);
     background-repeat: no-repeat;
@@ -562,9 +562,14 @@ i{
 }
 
 .js-login{
-    max-width: 400px;
-    margin: 50px auto;
     min-height: 300px;
+}
+
+.login{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
 }
 
 form .sticker{
@@ -676,7 +681,6 @@ textarea{
     position: absolute;
     bottom: 2vh;
     display: flex;
-    padding-left: 500px;
 }
 
 .event-buttons{
@@ -690,6 +694,7 @@ textarea{
     -webkit-transform: rotate(-2deg); 
     transform: rotate(-2deg);
     margin-right: 30px;
+    height: 40px;
 }
 
 .js-RSVP{
@@ -1037,12 +1042,6 @@ cite::before{
     transform: rotate(-10deg);
 }
 
-/*.event-info{
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-}*/
-
 .rotate{
     transform: rotate(90deg);
 }
@@ -1153,8 +1152,9 @@ cite::before{
         justify-content: space-between;
     }
 
-    .welcome-paper{
+    .welcome-paper, .login{
         width: 650px;
+        min-height: 500px;
     }
 
 }

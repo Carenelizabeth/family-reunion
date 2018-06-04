@@ -44,24 +44,25 @@ function handleMockUsers(){
 
 function displayLogin(){
     $('.landing-page').addClass('hidden');
-    openModal()
+    $('.login-page').removeClass('hidden');
     const login = renderLoginForm();
-    $('.lined-paper').html(login);
+    $('.login-page').html(login);
     handleLoginButton();
 }
 
 function displayCreateAccount(){
     $('.landing-page').addClass('hidden');
-    openModal()
+    $('.login-page').removeClass('hidden');
     const createUser = renderCreateAccount();
-    $('.lined-paper').html(createUser);
+    $('.login-page').html(createUser);
     handleNewAccount();
 }
 
 //form for loggin ing
 function renderLoginForm(){
     return`
-
+        <div class='paper orange-border login'>
+            <div class='thumb-green'></div>
             <form class='js-login'>
                 <fieldset>
                     <legend>Log In</legend>
@@ -74,13 +75,16 @@ function renderLoginForm(){
                         <input type='password' name='user-password' id='user-password' required>
                     </div>
                 </fieldset>
-                <button type='submit sticker' class='js-login-button sticker'>Submit</button>
-            </form>`
+                <button type='submit' class='js-login-button sticker'>Submit</button>
+            </form>
+        </div>`
 }
 
 //form for creating a new account
 function renderCreateAccount(){
     return`
+        <div class='paper orange-border login'>
+            <div class='thumb-green'></div>
             <form class='js-create-account'>
                 <fieldset>
                     <legend>Create New Account</legend>
@@ -98,11 +102,13 @@ function renderCreateAccount(){
                     </div>
                 </fieldset>
                 <button type='submit' class='js-create-account-button sticker'>Submit</button>
-            </form>`
+            </form>
+        </div>`
 }
 
 //The next section handles user login and selecting the event
 function handleLoginButton(){
+    console.log('handle login button')
     $('.js-login').submit(function(e){
         e.preventDefault();
         closeModal()
@@ -116,15 +122,17 @@ function handleLoginButton(){
 };
 
 function handleLogin(username, password){
+    console.log('handle login ran')
     const data = {username: username,
                 password: password}
-    //console.log(data);
+    console.log(data);
     $.ajax({
         type: 'POST',
         url: '/auth/login',
         data: JSON.stringify(data),
         contentType: 'application/json',
         success: getUserData,
+        error: displayLoginError,
         dataType: 'json'
     })
 }
@@ -142,6 +150,7 @@ function getUserData(token){
         url: `/user/userdata/${CURRENT_SESSION.username}`,
         contentType: 'application/json',
         success: updateSessionInformation,
+        
         dataType: 'json'
     })
     .then(pushNewUser)
@@ -156,6 +165,7 @@ function updateSessionInformation(data){
 }
 
 function pushNewUser(){
+    console.log('push new user ran')
     let eventId = CURRENT_SESSION.event_id
     const data = {
         id: eventId,
@@ -170,6 +180,12 @@ function pushNewUser(){
         contentType: 'application/json',
         dataType: 'json'
     })}
+}
+
+function displayLoginError(){
+    console.log('display login error ran');
+    displayLogin();
+    alert('Incorrect username or password');
 }
 
 //these next function handle creating a new user account
@@ -196,11 +212,21 @@ function createAccount(data){
         data: JSON.stringify(data),
         contentType: 'application/json',
         success: updateSessionInformation,
+        error: function(err){
+            const response=JSON.parse(err.responseText);
+            console.log(response.message)
+            alert(response.message)
+        },
         dataType: 'json'
     })
     .then(pushNewUser)
     .then(getUserEvents)
+    .catch(function(err){
+        const response=JSON.parse(err.responseText);
+        console.log(response.message)
+    })
 }
+
 
 //the nav bar is displayed for the first time on the welcome page
 function handleNavButtons(){
@@ -304,15 +330,12 @@ function handleCloseInvite(){
 
 //once user logs on, they can choose an event or make a new one
 function showWelcomePage(data){
-    //console.log('show welcome page');
+    console.log('show welcome page');
     $('body, html').scrollTop(0);
 
     if(mqLarge.matches){
         console.log('large screen detected')
         $('.js-nav-bar').removeClass('hidden');}
-    /*else
-        {console.log('screen is less than 1000px')
-        $('.menu').removeClass('hidden')}*/
 
     $('.js-landing-page').addClass('hidden');
     $('.login-page').addClass('hidden');
@@ -346,10 +369,10 @@ function renderWelcome(){
         </div>`
 }
 
-//the next section makes a call to get events for a registered user, adds them to the
-//CURRENT_SESSION object and generates a button for each event which are displayed on the Welcome page
+/*the next section makes a call to get events for a registered user, adds them to the
+CURRENT_SESSION object and generates a button for each event which are displayed on the Welcome page*/
 function getUserEvents(){
-    //console.log('get user events ran');
+    console.log('get user events ran');
     $.ajax({
         type: 'GET',
         url: `/event/byUserId/${CURRENT_SESSION.user_id}`,
@@ -360,18 +383,19 @@ function getUserEvents(){
 }
 
 function updateUserEvents(data){
-    //console.log('update user events')
-    //console.log(data);
+    console.log('update user events')
+    console.log(data);
     if (!(data === undefined || data.length === 0)){
+        console.log('data is present')
         const events = data.map((item, index) => renderUserEvents(item))
     CURRENT_SESSION.user_events = events;
-    //console.log(CURRENT_SESSION.user_events);
+    console.log(CURRENT_SESSION.user_events);
     }
     showWelcomePage();
 }
 
 function renderUserEvents(event){
-    //console.log('render user events')
+    console.log('render user events')
 
     const data = {name: event.name,
                   id: event.id}
@@ -380,21 +404,17 @@ function renderUserEvents(event){
 }
 
 function generateEventButtons(){
-    //console.log('generate event buttons ran')
     let button = []
-    //console.log(CURRENT_SESSION.user_events);
     if(!(CURRENT_SESSION.user_events.length === 0)){
         for(let i=0; i<CURRENT_SESSION.user_events.length; i++){
-            //console.log(i);
-            //console.log(`console.log(Event: ${CURRENT_SESSION.user_events[i].name}`);
             button.push(`<button type='button' class='event-button generate-sticker' id='${CURRENT_SESSION.user_events[i].id}'>${CURRENT_SESSION.user_events[i].name}</button>`)
         }}
     //console.log(button)
     return button;
 }
 
-//this sections handles making a new event, including displaying a form, retrieving information,
-//posting a new event and displaying the event page
+/*this sections handles making a new event, including displaying a form, retrieving information,
+posting a new event and displaying the event page*/
 function handleNewEventButton(){
     $('.make-new-event').click(e => newEventForm())
 }
@@ -438,13 +458,11 @@ function handleSubmitNewEvent(){
             event_organizer: CURRENT_SESSION.user_id,
             event_members: CURRENT_SESSION.user_id
         }
-        //console.log(event);
         postNewEvent(event);
     })
 }
 
 function postNewEvent(data){
-    //console.log('post new event ran');
     $.ajax({
         type: 'POST',
         url: '/event',
@@ -463,7 +481,6 @@ function handleEventButton(){
 }
 
 function getEventInformation(id){
-    //console.log('get event information');
     $.ajax({
         type: 'GET',
         url: `/event/${id}`,
@@ -474,7 +491,6 @@ function getEventInformation(id){
 }
 
 function showEventPage(data){
-    //console.log('show event page ran');
     $('body, html').scrollTop(0);
 
     if(!mqLarge.matches){
@@ -499,12 +515,8 @@ function showEventPage(data){
     let dates = data.dates;
     let id = data.id;
 
-    //console.log(`userID: ${CURRENT_SESSION.user_id}`);
-    //console.log(`organizerId: ${CURRENT_SESSION.organizer_id}`);
-
     const event = renderEvent(name, location, dates)
     retrieveActivities(id);
-    //console.log(activity);
     $('.event-information').html(event);
     handleEditEventButtons();
     handleDeleteEvent();
@@ -512,7 +524,6 @@ function showEventPage(data){
     handleDetailsButton();
 
     if(CURRENT_SESSION.user_id === CURRENT_SESSION.organizer_id){
-        //console.log('not equal')
         $('.include-edit').hover(function(){
             $(this).find('button').removeClass('invisible');
         }, function(){
@@ -547,28 +558,12 @@ function renderEvent(name, location, dates){
         <div class='include-edit'>
             <h2 class='event-name title'>${name}</h2>
             <div class='event-button-section'>
-            <button type='button' class='js-delete-event not-organizer invisible sticker'></button>  
+                <button type='button' class='js-delete-event not-organizer invisible sticker'>Delete</button>
+                <button type='button' class='edit-event-name edit not-organizer invisible'>Edit</button>  
             </div>
         </div>
         <button type='button' class='js-make-activity make-activity circle-sticker'>New Activity</button>` 
 }
-
-/*            
-        <div class='more-info'>
-            <button type='button' class='show-event-details triangle-sticker'>Details</button>
-                <div class='collapsed-details'></div>
-                <div class='event-details-section'>                   
-                    <div class='include-edit'>
-                        <p class='event-details hidden'>${location}</p>
-                        <button type='button' class='edit edit-event-location not-organizer edit-hidden hidden'>${edit}</button>
-                    </div>
-                    <div class='include-edit'>
-                        <p class='event-details hidden'>${dates}</p>
-                        <button type='button' class='edit edit-event-dates not-organizer edit-hidden hidden'>${edit}</button>
-                    </div>                    
-                </div>
-            <button type='button' class='js-make-activity make-activity circle-sticker'>New Activity</button>
-        </div>*/
 
 function handleDetailsButton(){
     console.log('handle details button');

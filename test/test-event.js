@@ -13,7 +13,6 @@ const {TEST_DATABASE_URL} = require('../config.js')
 chai.use(chaitHttp);
 
 function seedEventData(){
-    //console.info('seeding event data');
     const eventData = []
     for(let i=1; i<=10; i++){
         eventData.push(generateEventData());
@@ -31,7 +30,6 @@ function generateEventData(){
 }
 
 function tearDownDb(){
-    //console.warn('Deleting database');
     return mongoose.connection.dropDatabase();
 }
 
@@ -83,8 +81,7 @@ describe('Event API endpoint', function(){
                 .then(function(event){
                     expect(singleEvent.id).to.equal(event.id);
                     expect(singleEvent.name).to.equal(event.event_name);
-                    expect(singleEvent.location).to.equal(event.event_location);
-                    //expect(singleEvent.organizer).to.equal(event.event_organizer);
+                    expect(singleEvent.location).to.equal(event.event_location);;
                 });
         });
     });
@@ -93,7 +90,6 @@ describe('Event API endpoint', function(){
 
         it('should add a new event', function(){
             const newEvent = generateEventData();
-            //console.log(newEvent);
 
             return chai.request(app)
                 .post('/event')
@@ -104,14 +100,11 @@ describe('Event API endpoint', function(){
                     expect(res.body).to.include.keys('id', 'name', 'dates', 'location', 'organizer');
                     expect(res.body.name).to.equal(newEvent.event_name);
                     expect(res.body.location).to.equal(newEvent.event_location);
-                    //expect(res.body.dates).to.include(newEvent.event_dates.end_date);
-                    //expect(res.body.organizer).to.equal(newEvent.event_organizer);
                     return Event.findById(res.body.id);
                 })
                 .then(function(nEvent){
                     expect(nEvent.event_name).to.equal(newEvent.event_name);
                     expect(nEvent.event_location).to.equal(newEvent.event_location);
-                    //expect(nEvent.event_organizer).to.equal(newEvent.event_organizer);
                 });
         });
     });

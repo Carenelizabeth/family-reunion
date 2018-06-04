@@ -98,7 +98,7 @@ router.post('/', (req, res) => {
             code: 422,
             reason: 'ValidationError',
             message: tooShort 
-                ? `Must be at least ${sizedFields[tooSmall].min} characters long`
+                ? `Must be at least ${sizedFields[tooShort].min} characters long`
                 : `Must be at most ${sizedFields[tooLong].max} characters long`,
             location: tooShort || tooLong
         });

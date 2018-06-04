@@ -16,7 +16,6 @@ const {TEST_DATABASE_URL} = require('../config.js')
 chai.use(chaitHttp);
 
 function seedActivityData(){
-    console.info('seeding activity data');
     const activityData = []
     for (let i=1; i<=10; i++){
         activityData.push(generateActivityData());
@@ -48,7 +47,6 @@ function generateActivityData(){
 }
 
 function tearDownDb(){
-    console.warn('Deleting database')
     return mongoose.connection.dropDatabase();
 }
 
@@ -111,6 +109,7 @@ describe('Activity API endpoint', function(){
                     expect(singleAct.activity_host).to.equal(res.activity_host);
                 });
         });
+
     });
 
     describe('POST endpoint', function(){
@@ -118,13 +117,11 @@ describe('Activity API endpoint', function(){
             const newAct = generateActivityData()
             delete newAct.activity_comments
             newAct.activity_comments = faker.lorem.sentence();
-            //console.log(newAct);
 
             return chai.request(app)
                 .post('/activity')
                 .send(newAct)
                 .then(function(res){
-                    //console.log(res.body);
                     expect(res).to.have.status(201);
                     expect(res).to.be.json;
                     expect(res.body).to.include.keys('id', 'eventId', 'name', 'url', 'date', 'time', 'kids_welcome',
@@ -180,9 +177,6 @@ describe('Activity API endpoint', function(){
                 .findOne()
                 .then(function(act){
                     updateAct.id = act.id;
-                    //console.log(act);
-                    //console.log(updateAct);
-                    //console.log(updateAct.id);
                 return chai.request(app)
                     .put(`/activity/${updateAct.id}`)
                     .send(updateAct)
@@ -210,10 +204,8 @@ describe('Activity API endpoint', function(){
                 .findOne()
                 .then(function(act){
                     joinAct.id = act.id;
-                    //console.log(joinAct)
                     orgAct.kid_number = act.kid_number;
                     orgAct.adult_number = act.adult_number;
-                    //console.log(orgAct)
                 return chai.request(app)
                     .put(`/activity/join/${joinAct.id}`)
                     .send(joinAct)
@@ -239,9 +231,7 @@ describe('Activity API endpoint', function(){
             return Activity
                 .findOne()
                 .then(function(act){
-                    console.log(act);
                     newComment.id = act.id;
-                    console.log(newComment);
                 return chai.request(app)
                     .put(`/activity/comments/${newComment.id}`)
                     .send(newComment)
@@ -252,7 +242,6 @@ describe('Activity API endpoint', function(){
                 return Activity.findById(newComment.id)
             })
             .then(function(comment){
-                console.log(`comment: ${comment}`);
                 const foundComment = comment.activity_comments.filter(c => c.comment === newComment.comment && c.name === newComment.name)
                 expect(foundComment).to.have.lengthOf(1)
             })

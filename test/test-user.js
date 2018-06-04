@@ -15,7 +15,6 @@ const {TEST_DATABASE_URL} = require('../config.js')
 chai.use(chaitHttp);
 
 function seedUserData(){
-    //console.info('seeding user data');
     const userData = []
     for(let i=1; i<=10; i++){
         userData.push(generateUserData())
@@ -32,7 +31,6 @@ function generateUserData(){
 }
 
 function tearDownDb(){
-    //console.warn('Deleting database');
     return mongoose.connection.dropDatabase();
 }
 
@@ -52,7 +50,7 @@ describe('User API endpoint', function(){
     });
 
     describe('GET endpoint', function(){
-        xit('should return all users', function(){
+        it('should return all users', function(){
             let res;
             return chai.request(app)
                 .get('/user')
@@ -69,7 +67,7 @@ describe('User API endpoint', function(){
                 });
         });
 
-        xit('should return the correct user when called by id', function(){
+        it('should return the correct user when called by id', function(){
             let singleUser;
             return chai.request(app)
                 .get('/user')
@@ -79,7 +77,6 @@ describe('User API endpoint', function(){
                         expect(user).to.include.keys('id', 'username', 'email');
                     });
                     singleUser = res.body[0];
-                    //console.log(singleUser);
                     return User.findById(singleUser.id);
                 })
                 .then(function(user){
@@ -90,15 +87,47 @@ describe('User API endpoint', function(){
         });
     });
 
+    describe('login', function(){
+        
+        it('should return jwt key at login', function(){
+            const testUser = {};
+
+            return User
+                .findOne()
+                .then(function(u){
+                    testUser.username = u.username
+                    testUser.password = u.password
+                })
+                console.log(testUser)
+
+                return chai.request(app)
+                    .post('/auth/login')
+                    .send(testUser)
+                    .then(function(res){
+                        expect(res).to.have.status(200);
+                        expect(res).to.be.an('object');
+                        expect(res).to.include.keys('authToken')
+        
+                    })
+        })
+    })
+
     describe('User authentication', function(){
         
-    })
+            it('should generate and require a jwt on logon', function(){
+            const mockUser = generateUserData();
+            return User.create(mockUser)
+
+            return chai.request(app)
+                .post('/user/userdata')
+
+        });
+    });
 
     describe('POST endpoint', function(){
 
-        xit('should add a new user', function(){
+        it('should add a new user', function(){
             const newUser = generateUserData();
-            //console.log(newUser);
 
             return chai.request(app)
                 .post('/user')
@@ -113,8 +142,6 @@ describe('User API endpoint', function(){
                 })
                 .then(function(nUser){
                     expect(nUser.username).to.equal(newUser.username);
-                    expect(nUser.email).to.equal(newUser.email.toLowerCase());
-                    //console.log(nUser)
                 });
         }); 
         
@@ -122,7 +149,7 @@ describe('User API endpoint', function(){
     });
 
     describe('PUT endpoint, updating current fields', function(){
-        xit('should update user fields', function(){
+        it('should update user fields', function(){
             const updateUser = {
                 username: faker.internet.userName(),
                 email: faker.internet.email(),
@@ -149,22 +176,19 @@ describe('User API endpoint', function(){
     });
 
     describe('DELETE endpoint', function(){
-        xit('should delete a user by id', function(){
+        it('should delete a user by id', function(){
             const deleteUser = {}
 
             return User
                 .findOne()
                 .then(function(user){
                     deleteUser.id = user.id;
-                    //console.log(`Something ${deleteUser.id}`);
                 })
-            return chai.request(app)
-                //console.log('Is this even running?')                     
+            return chai.request(app)                    
                 .delete(`/user/${deleteUser.id}`)
                 .then (function(res){
                     expect(res).to.have.status(204);
                     const deleted = User.findById(deleteUser.id);
-                    //console.log(deleted);
                     return deleted;
                 })
             .then(function(dUser){
