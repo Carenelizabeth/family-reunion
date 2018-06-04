@@ -18,10 +18,12 @@ Landing page:
 ![Landing page](/public/images/landing-page.PNG)
 
 Landing page (From invite link):
+
 *Slightly different appearance, informing users of the event they are joining*
 ![Landing page](pubic/images/invite-landing-page.PNG)
 
 Welcome page:
+
 *Users will be shown any events for which they are registered*
 ![Welcome page](public/images/welcome-page.PNG)
 
@@ -29,6 +31,7 @@ Event page:
 ![Event page](public/images/event-page.PNG)
 
 Create Activity Form:
+
 *The form is split into multiple sections. This allows the user to easier add as many or few details as is necissary.*
 ![Activity form](public/images/new-activity.PNG)
 
@@ -39,5 +42,6 @@ Profile page:
 ![Profile page](public/images/profile-page.PNG)
 
 Invite link:
+
 *This is the link generated to invite others to join the event*
 ![Invite link](public/images/invite-link.PNG)
