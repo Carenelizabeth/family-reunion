@@ -1,5 +1,3 @@
-'use strict';
-
 const express = require('express');
 const router = express.Router();
 
@@ -40,7 +38,6 @@ router.get('/:id', (req, res) => {
 });
 
 router.get('/byUserId/:id', (req, res) => {
-    console.log(req.params.id);
     Event
         .find({event_members: req.params.id})
         .then(events =>{
@@ -73,13 +70,11 @@ router.post('/', (req, res) => {
         .then(event => res.status(201).json(event.serialize()))
         .catch(err => {
             console.error(err);
-            res.status(500).json({error: 'Oh no! Panic!!!'});
+            res.status(500).json({error: 'Internal server error'});
         });
 });
 
 router.put('/:id', (req, res) => {
-    console.log(req.params.id);
-    console.log(req.body.id);
     if (!(req.params.id && req.body.id && req.params.id === req.body.id)) {
         res.status(400).json({
           error: 'Request path id and request body id values must match'
@@ -118,7 +113,6 @@ router.delete('/:id', (req, res) => {
     Event
       .findByIdAndRemove(req.params.id)
       .then(() => {
-        console.log(`Deleted blog post with id ${req.params.id}`);
         res.status(204).end();
       });
 });

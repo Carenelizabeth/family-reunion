@@ -290,13 +290,6 @@ i{
     display: none;
 }
 
-/*.content{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}*/
-
-
 .js-create-account .input-line{
     display: flex;
     justify-content: flex-end;
@@ -627,12 +620,6 @@ input{
     margin-right: 10px;
 }
 
-/*input[type="checkbox"]{
-    height: 30px;
-    width: 30px;
-    text-align: left;
-}*/
-
 input #kid-friendly{
     width: 30px;
     height: 30px;
@@ -641,19 +628,6 @@ input #kid-friendly{
 textarea{
     margin-bottom: 20px;
 }
-
-/*.event-page{
-    display: flex;
-    flex-direction: column;
-}*/
-
-/*.event-header{
-    display: flex;
-    flex-direction: column;
-    flex: auto;
-    justify-content: space-between;
-    padding: 20px;
-}*/
 
 .include-edit{
     display: flex;
@@ -968,6 +942,10 @@ cite::before{
     margin: 20px 0;
 }
 
+.link-box > p {
+    font-size: 2.2vh;
+}
+
 .extra-info{
     display: flex;
     flex-direction: column;
@@ -1090,10 +1068,6 @@ cite::before{
         justify-content: flex-start;
     }
 
-    /*.paper{
-        width: 60%;
-    }*/
-
     .red-sticker{
         width: 15vh;
         height: 15vh;
@@ -1176,10 +1150,6 @@ cite::before{
         height: calc(100% - 80px);
         margin-top: 80px;
     }
-
-    /*.paper{
-        width: 500px;
-    }*/
 
     .welcome-paper{
         width: 960px;

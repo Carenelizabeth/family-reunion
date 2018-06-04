@@ -1,5 +1,3 @@
-'use strict'
-
 const chai = require('chai');
 const chaitHttp = require('chai-http');
 const faker = require('faker');
@@ -10,7 +8,8 @@ const userRouter = require('../routers/userRouter');
 
 const {User} = require('../models/userModel')
 const {app, runServer, closeServer} = require('../server.js');
-const {TEST_DATABASE_URL} = require('../config.js')
+const {TEST_DATABASE_URL, config} = require('../config.js')
+
 
 chai.use(chaitHttp);
 
@@ -98,7 +97,6 @@ describe('User API endpoint', function(){
                     testUser.username = u.username
                     testUser.password = u.password
                 })
-                console.log(testUser)
 
                 return chai.request(app)
                     .post('/auth/login')
@@ -106,20 +104,30 @@ describe('User API endpoint', function(){
                     .then(function(res){
                         expect(res).to.have.status(200);
                         expect(res).to.be.an('object');
-                        expect(res).to.include.keys('authToken')
-        
-                    })
-        })
-    })
+                        expect(res).to.include.keys('authToken')        
+                    });
+        });
+    });
 
     describe('User authentication', function(){
         
-            it('should generate and require a jwt on logon', function(){
+            it('should retrieve user id', function(){
             const mockUser = generateUserData();
             return User.create(mockUser)
+            const token = jwt.sign({user}, config.JWT_SECRET, {
+                subject: mockUser.username,
+                expiresIn: config.JWT_EXPIRY,
+                alogorithm: 'HS256'
+            });
 
             return chai.request(app)
-                .post('/user/userdata')
+                .get('/user/userdata')
+                .set('Authorization', `Bearer ${token}`)
+                .then(function(res){
+                    expect(res).to.have.status(304);
+                    expect(res).to.be.json;
+                    expect(res.body).to.include.keys('id', 'username', 'email')
+                })
 
         });
     });

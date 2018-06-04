@@ -26,6 +26,7 @@ router.get('/event/:eventId', (req, res) => {
         });
 });
 
+//This retrieves that activities that a user is hosting
 router.get('/host', (req, res) => {
     Activity
         .find({activity_host: req.query.userId, 
@@ -37,6 +38,7 @@ router.get('/host', (req, res) => {
         });
 })
 
+//This retrieves activities that the user is part of, but excludes those they are hosting
 router.get('/user', (req, res) => {
     Activity
         .find(
@@ -149,7 +151,6 @@ router.delete('/:id', (req, res) =>{
     Activity
         .findByIdAndRemove(req.params.id)
         .then(() => {
-            console.log('Deleted post')
             res.status(204).end();
         });
 });

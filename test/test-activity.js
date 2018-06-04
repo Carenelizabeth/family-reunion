@@ -1,5 +1,3 @@
-'use strict'
-
 const chai = require('chai');
 const chaitHttp = require('chai-http');
 const faker = require('faker');
