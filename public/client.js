@@ -10,7 +10,7 @@ const CURRENT_SESSION = {
 };
 
 const mqMedium = window.matchMedia('(min-width: 500px)');
-const mqLarge = window.matchMedia('[(min-width: 1000px)');
+const mqLarge = window.matchMedia('(min-width: 1000px)');
 
 
 
@@ -323,6 +323,7 @@ function showWelcomePage(data){
     $('body, html').scrollTop(0);
 
     if(mqLarge.matches){
+        console.log('screen over 1000px')
         $('.js-nav-bar').removeClass('hidden');}
 
     $('.js-landing-page').addClass('hidden');
@@ -1067,8 +1068,8 @@ function calculateCost(data){
     }else if (adultCost === 0 && kidCost === 0 && groupCost > 0){
         totalCost = `<div class='activity-cost'><p>Group Price: $${groupCost.toFixed([2])}/group of${data.group_size}</p></div>`
     }else if (groupCost === 0 && kidCost > 0 && adultCost > 0){
-        adult = adultCost.toFixed([2]);
-        child = kidCost.toFixed([2]);
+        adultCost = adultCost;
+        kidCost = kidCost;
         totalCost = `<div class='activity-cost'>
                         <p>Adult price: $${adultCost.toFixed([2])}</p>
                         <p>Child price: $${kidCost.toFixed([2])}</p></div>`

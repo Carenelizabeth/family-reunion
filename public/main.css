@@ -422,7 +422,7 @@ i{
 
 .title{
     font-family: 'Passion One', sans-serif;
-    font-size: 8vh;
+    font-size: 12vh;
     margin-top: 50px;
     letter-spacing: .8vh;
     text-align: center;
@@ -1203,10 +1203,6 @@ cite::before{
     .content{
         max-width: 1200px;
         margin: 0 auto;
-    }
-
-    .welcome-paper{
-        max-width: 650px;
     }
 }
 
