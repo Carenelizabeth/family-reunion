@@ -474,7 +474,7 @@ function showEventPage(data){
     //if the screen is larger than 1000px, the menu is permanent displayed
     //otherwise, it will be linked to a menu button
     if(!mqLarge.matches){
-        $('.control-menu').removeClass('hidden');
+        $('.control-menu').removeClass('hidden'); 
         $('.menu').removeClass('hidden');
     }
 
