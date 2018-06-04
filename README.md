@@ -49,7 +49,7 @@ This is the link generated to invite others to join the event
 
 **Later on**
 * One thing testers recommended was the ability to sign up as a family, with names and ages or children added to the user
-* A family could separate and kids of different ages could be added to different activities without their parents necessisarily being there
+* A family could separate and kids of different ages could be added to different activities without their parents necessarily being there
 * This will require reconfigure the database schema so it is still far off in planning
 
 ## Learning experiences
