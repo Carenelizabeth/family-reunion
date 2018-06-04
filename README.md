@@ -14,16 +14,14 @@ Now the fun part! Other group members can join the activity and a message board 
 
 ## Screenshots
 
-Landing page:
+**Landing page:**
 ![Landing page](/public/images/screenshots/landing-page.PNG)
 
-Landing page (From invite link):
-
-*Slightly different appearance, informing users of the event they are joining*
-![Landing page](pubic/images/screenshots/invite-landing-page.PNG)
+**Landing page (From invite link):**
+Slightly different appearance, informing users of the event they are joining
+![Landing page](public/images/screenshots/invite-landing-page.PNG)
 
 Welcome page:
-
 *Users will be shown any events for which they are registered*
 ![Welcome page](public/images/screenshots/welcome-page.PNG)
 
