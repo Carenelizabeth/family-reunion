@@ -22,11 +22,11 @@ router.get('/event/:eventId', (req, res) => {
         .find({eventId: req.params.eventId})
         .then(activities => {res.json(activities.map(a => a.serialize()));})
         .catch(err =>{
-            console.error(err);
             res.status(500).json({error: 'Internal server error'})
         });
 });
 
+//This retrieves that activities that a user is hosting
 router.get('/host', (req, res) => {
     Activity
         .find({activity_host: req.query.userId, 
@@ -34,11 +34,11 @@ router.get('/host', (req, res) => {
         })
         .then(activites => {res.json(activites.map(a => a.serialize()));})
         .catch(err =>{
-            console.error(err);
             res.status(500).json({error: 'Internal server error'})
         });
 })
 
+//This retrieves activities that the user is part of, but excludes those they are hosting
 router.get('/user', (req, res) => {
     Activity
         .find(
@@ -48,7 +48,6 @@ router.get('/user', (req, res) => {
         })
         .then(activities => {res.json(activities.map(a => a.serialize()));})
         .catch(err =>{
-            console.error(err);
             res.status(500).json({error: 'Internal server error'})
         })
         
@@ -67,12 +66,9 @@ router.post('/', (req, res) =>{
         const field = required[i];
         if(!(field in req.body)){
             const message = `Missing ${field} in request body`;
-            console.error(message)
             return res.status(400).send(message);
         }
     }
-
-    console.log(req.body);
 
     Activity
         .create({
@@ -95,7 +91,6 @@ router.post('/', (req, res) =>{
         })
         .then(event => res.status(201).json(event.serialize()))
         .catch(err => {
-            console.error(err);
             res.status(500).json({error: 'Internal server error'})
         });
 });
@@ -116,8 +111,6 @@ router.put('/join/:id', (req, res) => {
 });
 
 router.put('/:id', (req, res) => {
-    console.log(req.params.id);
-    console.log(req.body.id);
     if (!(req.params.id && req.body.id && req.params.id === req.body.id)) {
         res.status(400).json({
           error: 'Request path id and request body id values must match'
@@ -131,14 +124,6 @@ router.put('/:id', (req, res) => {
             update[field] = req.body[field]
         }
     });
-
-    /*const increment = {}
-    const incrementable = [ 'kid_cost', 'adult_cost', 'group_cost', 'group_size']
-    incrementable.forEach(field =>{
-        if (field in req.body){
-            incremend[field] = req.body[field]
-        }
-    })*/
     
     Activity
         .findByIdAndUpdate(req.params.id, {$set: update})
@@ -153,12 +138,8 @@ router.put('/comments/:id', (req, res) =>{
         });
     }
 
-    console.log(req.body);
-
     const data = {comment: req.body.comment,
                 name: req.body.name}
-
-    console.log(data)
 
     Activity
         .findByIdAndUpdate(req.params.id, {$addToSet: {activity_comments: data}})
@@ -170,7 +151,6 @@ router.delete('/:id', (req, res) =>{
     Activity
         .findByIdAndRemove(req.params.id)
         .then(() => {
-            console.log('Deleted post')
             res.status(204).end();
         });
 });

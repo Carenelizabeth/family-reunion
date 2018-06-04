@@ -43,8 +43,8 @@ router.get('/:id', (req, res) => {
         });
 });
 
+//authorization needed to retrieve userId, which is used for the rest of the session
 router.get('/userdata/:username', jwtAuth, (req, res) => {
-    console.log(req.params.username);
     User
         .findOne({username: req.params.username})
         .then(user => res.json(user.serialize()))
@@ -98,7 +98,7 @@ router.post('/', (req, res) => {
             code: 422,
             reason: 'ValidationError',
             message: tooShort 
-                ? `Must be at least ${sizedFields[tooSmall].min} characters long`
+                ? `Must be at least ${sizedFields[tooShort].min} characters long`
                 : `Must be at most ${sizedFields[tooLong].max} characters long`,
             location: tooShort || tooLong
         });
@@ -106,7 +106,6 @@ router.post('/', (req, res) => {
 
     let{username, password, email} = req.body;
     email = email.trim();
-    console.log(username);
     return User.find({username})
         .count()
         .then (count => {
@@ -118,11 +117,9 @@ router.post('/', (req, res) => {
                     location: 'username'
                 })
             }
-            console.log(password);
             return User.hashPassword(password);
         })
         .then(hash => {
-            console.log('something ran')
             return User.create({
                 username,
                 password: hash,
@@ -130,7 +127,6 @@ router.post('/', (req, res) => {
             });
         })
         .then(user => {
-            console.log(user)
             return res.status(201).json(user.serialize());
         })
         .catch(err => {
@@ -157,8 +153,6 @@ router.put('/:id', (req, res) =>{
     });
 
     const event = req.body.event_id;
-    console.log(event);
-
     User
         .findByIdAndUpdate(req.params.id, 
             {$set: toUpdate}, 
@@ -172,7 +166,6 @@ router.delete('/:id', (req, res) =>{
     User
         .findByIdAndRemove(req.params.id)
         .then(() => {
-            console.log(`Deleted user with id ${req.params.id}`);
             res.status(204).end();
         });
 });
