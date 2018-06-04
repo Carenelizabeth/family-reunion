@@ -1157,7 +1157,7 @@ function updateJoinActivity(data){
 //or the event page if the user joins from there
 function refreshPage(id){
     if($('.js-activity-page').hasClass('hidden')){
-        getEventInformation(CURRENT_SESSION.event);
+        getEventInformation(CURRENT_SESSION.event_id);
     }else{retrieveActivityData(id)}
 }
 
