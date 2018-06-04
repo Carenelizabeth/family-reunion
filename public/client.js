@@ -1006,7 +1006,7 @@ function renderActivityPage(data){
     if(data.time){time = `<p>Time: ${data.time}</p>`}
 
     
-    for (i=0; i<data.activity_comments.length; i++){
+    for (let i=0; i<data.activity_comments.length; i++){
         let eachComment = `
             <div class='comment'>
                 <blockquote>${data.activity_comments[i].comment}</blockquote>
