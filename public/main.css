@@ -881,6 +881,7 @@ input{
 
 .activity-details h3, .activity-discussion h3{
     padding-bottom: 2px;
+    padding-top: 10px;
     border-bottom: solid 2px #021D59;
 }
 

@@ -993,24 +993,36 @@ function renderActivityPage(data){
     let kids = `<div></div>`;
     if(data.kids_welcome===true){kids = `<div class='js-kid-friendly'></div>`}
 
+    console.log(data.attendees);
+
     let attend;
-    if(data.attendees.includes(CURRENT_SESSION.user_id)){
-        attend = `<div class='already-going'></div>`
-    }else{
-        attend = `<button type='button' name='${data.name}' class='js-RSVP sticker-green-circle circle-sticker-bigger' id='${data.id}'>Join!</button>`
+    console.log(`attend-before: ${attend}`)
+
+    for(let i=0; i<data.attendees.length; i++){
+        console.log(`running: ${i}`)
+        if(data.attendees[i]._id===(CURRENT_SESSION.user_id)){
+            console.log('already going')
+            attend=`<div class='already-going'></div>`
+            break;
+        }else{
+            console.log('not going')
+            attend = `<button type='button' name='${data.name}' class='js-RSVP sticker-green-circle circle-sticker-bigger' id='${data.id}'>Join!</button>`
+    }}
+
+    for(let i=0;i<data.attendees;i++){
+        console.log(i)
     }
 
-    const users = Object.values(data.attendees);
-    console.log(users)
+    console.log(`attend-after: ${attend}`)
 
+    const users = Object.values(data.attendees);
+    
     const attendees = []
 
     for(let i=0; i<users.length; i++){
         attendees.push(`
             <p>${users[i].username}</p>`)
     }
-    console.log(attendees.join(''))
-
     
     let date;
     let time = `<p></p>`
@@ -1044,7 +1056,7 @@ function renderActivityPage(data){
                     ${cost}
                     ${kids}
                     <div>
-                        <p>Who's Going?</p>
+                        <h3 class='handwrite'>Who's Going?</h3>
                         <p>${data.adult_number} adults ${data.kid_number} kids</p>
                     </div>
                     ${attend}
