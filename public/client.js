@@ -856,7 +856,7 @@ function createActivity(){
                         <input type='number' max='10' min='1' name='kids-attending' id='kids-attending'>
                     </div>
                     <div class='input-line'>
-                        <label for='adults-attending'>Adults</label>
+                        <label for='adults-attending'>Adults (aside from you)</label>
                         <input type='number' max='10' min='1' name='adults-attending' id='adults-attending'>
                     </div>
                 </fieldset>

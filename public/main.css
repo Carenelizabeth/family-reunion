@@ -923,6 +923,7 @@ input{
 blockquote{
     font-family: 'Roboto', sans-serif;
     font-size: 2vh; 
+    line-height: 1.3em;
 }
 
 cite{
