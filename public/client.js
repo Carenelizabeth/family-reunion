@@ -1007,7 +1007,7 @@ function renderActivityPage(data){
 
     for(let i=0; i<users.length; i++){
         attendees.push(`
-            <p>${users[i]}</p>`)
+            <p>${users[i].username}</p>`)
     }
     console.log(attendees.join(''))
 
