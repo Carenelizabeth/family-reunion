@@ -1000,12 +1000,23 @@ function renderActivityPage(data){
         attend = `<button type='button' name='${data.name}' class='js-RSVP sticker-green-circle circle-sticker-bigger' id='${data.id}'>Join!</button>`
     }
 
+    const users = Object.values(data.attendees);
+    console.log(users)
+
+    const attendees = []
+
+    for(let i=0; i<users.length; i++){
+        attendees.push(`
+            <p>${users[i]}</p>`)
+    }
+    console.log(attendees.join(''))
+
+    
     let date;
     let time = `<p></p>`
     if(data.date){date = `<p>Date: ${data.date}</p>`}else date = `<p>Date and time are flexible</p>`
     if(data.time){time = `<p>Time: ${data.time}</p>`}
 
-    
     for (let i=0; i<data.activity_comments.length; i++){
         let eachComment = `
             <div class='comment'>
@@ -1037,6 +1048,7 @@ function renderActivityPage(data){
                         <p>${data.adult_number} adults ${data.kid_number} kids</p>
                     </div>
                     ${attend}
+                    ${attendees.join('')}
                     ${link}
                 </div>
             </div>

@@ -3,7 +3,8 @@ const mongoose = require('mongoose');
 require('mongoose-type-email');
 mongoose.Promise = global.Promise;
 
-const Schema = mongoose.Schema
+const userModel = require('./userModel');
+const Schema = mongoose.Schema;
 
 const activitySchema = new Schema({
     eventId: String,
@@ -18,11 +19,15 @@ const activitySchema = new Schema({
     group_size: Number,
     activity_host: String,
     host_name: String,
-    attendees: [String],
+    attendees: [{type: Schema.Types.ObjectId, ref:'user'}],
     kid_number: Number,
     adult_number: Number,
     activity_comments: [{comment: String, name: String}]
-})
+});
+
+/*activitySchema.pre('find', function(){
+    this.populate({path:('user'), select:('username')});
+})*/
 
 activitySchema.methods.serialize = function(){
     return{
@@ -38,8 +43,7 @@ activitySchema.methods.serialize = function(){
         group_cost: this.group_cost,
         group_size: this.group_size,
         host: this.activity_host,
-        host_name: this.host_name,
-        attendees: this.attendees,
+        attendees: this.attendees.map(x => x.username),
         kid_number: this.kid_number,
         adult_number: this.adult_number,
         activity_comments: this.activity_comments

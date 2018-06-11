@@ -56,7 +56,8 @@ router.get('/user', (req, res) => {
 router.get('/:id', (req,res) =>{
     Activity
         .findById(req.params.id)
-        .then(a => res.json(a.serialize()))
+        .populate('attendees', 'username')    
+        .then(a => {res.json(a.serialize()); console.log(a)})
         .catch(err => res.status(500).json({error: 'Internal server error'}));
 })
 
