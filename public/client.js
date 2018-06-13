@@ -1115,7 +1115,7 @@ function deleteComment(data){
         url: `/activity/remove/${id}`,
         data: JSON.stringify(data), 
         contentType: 'application/json',
-        success: retrieveActivities,
+        success: retrieveActivityData,
         dataType: 'json'
     })
 }
