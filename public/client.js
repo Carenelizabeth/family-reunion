@@ -794,6 +794,7 @@ function handleNewActivity(){
 function handleActivity(){
     $('.js-event-page').on('click', '.activity-name', function(e){
         let id = this.id
+        CURRENT_SESSION.activity_id = id;
         showActivityPage(id);
     });
 };
@@ -964,10 +965,11 @@ function showActivityPage(id){
     $('.js-activity-page').removeClass('hidden');
     $('.js-profile-page').addClass('hidden');
     $('body, html').scrollTop(0);
-    retrieveActivityData(id)
+    retrieveActivityData()
 }
 
-function retrieveActivityData(id){
+function retrieveActivityData(){
+    let id = CURRENT_SESSION.activity_id;
     $.ajax({
         type: 'GET',
         url: `activity/${id}`,
@@ -982,6 +984,8 @@ function displayActivityPage(results){
     $('.activity-page').html(activity);
     handleRSVP();
     handleSubmitComment();
+    handleDeleteComment();
+    handleShowDeleteComment();
 }
 
 //the activity page shows details and this function only displays those which apply
@@ -993,27 +997,27 @@ function renderActivityPage(data){
     let kids = `<div></div>`;
     if(data.kids_welcome===true){kids = `<div class='js-kid-friendly'></div>`}
 
-    console.log(data.attendees);
+    //console.log(data.attendees);
 
     let attend;
-    console.log(`attend-before: ${attend}`)
+    //console.log(`attend-before: ${attend}`)
 
     for(let i=0; i<data.attendees.length; i++){
-        console.log(`running: ${i}`)
+        //console.log(`running: ${i}`)
         if(data.attendees[i]._id===(CURRENT_SESSION.user_id)){
-            console.log('already going')
+            //console.log('already going')
             attend=`<div class='already-going'></div>`
             break;
         }else{
-            console.log('not going')
+            //console.log('not going')
             attend = `<button type='button' name='${data.name}' class='js-RSVP sticker-green-circle circle-sticker-bigger' id='${data.id}'>Join!</button>`
     }}
 
     for(let i=0;i<data.attendees;i++){
-        console.log(i)
+        //console.log(i)
     }
 
-    console.log(`attend-after: ${attend}`)
+    //console.log(`attend-after: ${attend}`)
 
     const users = Object.values(data.attendees);
     
@@ -1030,12 +1034,19 @@ function renderActivityPage(data){
     if(data.time){time = `<p>Time: ${data.time}</p>`}
 
     for (let i=0; i<data.activity_comments.length; i++){
-        let eachComment = `
-            <div class='comment'>
-                <blockquote>${data.activity_comments[i].comment}</blockquote>
-                <cite>${data.activity_comments[i].name}</cite>
+        console.log(data.activity_comments[i])
+        if(data.activity_comments[i].comment){
+            let eachComment = `
+            <div class='comment-edit-buttons'>
+                <div class='comment'>
+                    <blockquote>${data.activity_comments[i].comment}</blockquote>
+                    <cite>${data.activity_comments[i].name}</cite>
+                </div>
+                <div class='comment-buttons'>
+                    <button type='button' class='delete-comment invisible' name='${data.activity_comments[i]._id}'>X</button>
+                </div>
             </div>`
-        comments.push(eachComment);
+        comments.push(eachComment);}
     }
 
     let link=`<p></p>`
@@ -1074,6 +1085,39 @@ function renderActivityPage(data){
                 </form>
             </div>
         </div>`
+}
+
+function handleShowDeleteComment(){
+    $('.comment-edit-buttons').hover(function(e){
+            $(this).find('.delete-comment').removeClass('invisible')},
+        function(a){
+            $(this).find('.delete-comment').addClass('invisible')}    
+        )
+}
+
+function handleDeleteComment(){
+    $('.delete-comment').click(function(e){
+        let id = $(this).attr('name');
+        console.log(id);
+        console.log('delete clicked');
+        const data = {commentId: id,
+                        id: CURRENT_SESSION.activity_id}
+        console.log(data);
+        deleteComment(data);
+    })
+}
+
+function deleteComment(data){
+    let id = CURRENT_SESSION.activity_id;
+    console.log(id)
+    $.ajax({
+        type: 'PUT',
+        url: `/activity/remove/${id}`,
+        data: JSON.stringify(data), 
+        contentType: 'application/json',
+        success: retrieveActivityData,
+        dataType: 'json'
+    })
 }
 
 //this function displays only the relevant costs for the activity
@@ -1182,7 +1226,7 @@ function updateJoinActivity(data){
 function refreshPage(id){
     if($('.js-activity-page').hasClass('hidden')){
         getEventInformation(CURRENT_SESSION.event_id);
-    }else{retrieveActivityData(id)}
+    }else{retrieveActivityData()}
 }
 
 
@@ -1193,7 +1237,7 @@ function handleSubmitComment(){
         let comment = $(this).find('.text-input').val();
         let id = $(this).find('.submit-comment').attr('name');
         let name = CURRENT_SESSION.username;
-        let data = {
+        const data = {
             comment: comment,
             id: id,
             name: name
@@ -1208,7 +1252,7 @@ function updateComments(data){
         url: `activity/comments/${data.id}`,
         data: JSON.stringify(data),
         contentType: 'application/json',
-        success: retrieveActivityData(data.id),
+        success: retrieveActivityData,
         dataType: 'json'})
 }
 
