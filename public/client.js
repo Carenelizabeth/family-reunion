@@ -1100,14 +1100,20 @@ function handleDeleteComment(){
         let id = $(this).attr('name');
         console.log(id);
         console.log('delete clicked');
-        //deleteComment(id);
+        const data = {commentId: id,
+                        id: CURRENT_SESSION.activity_id}
+        console.log(data);
+        deleteComment(data);
     })
 }
 
-function deleteComment(id){
+function deleteComment(data){
+    let id = CURRENT_SESSION.activity_id;
+    console.log(id)
     $.ajax({
         type: 'PUT',
-        url: `/activity/comment/${id}`,
+        url: `/activity/remove/${id}`,
+        data: JSON.stringify(data), 
         contentType: 'application/json',
         success: retrieveActivities,
         dataType: 'json'
@@ -1231,7 +1237,7 @@ function handleSubmitComment(){
         let comment = $(this).find('.text-input').val();
         let id = $(this).find('.submit-comment').attr('name');
         let name = CURRENT_SESSION.username;
-        let data = {
+        const data = {
             comment: comment,
             id: id,
             name: name
