@@ -912,6 +912,12 @@ input{
     background-repeat: no-repeat;
 }
 
+.comment-edit-buttons{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
 .comment{
     width: 100%;
     display: flex;
@@ -919,6 +925,11 @@ input{
     align-items: flex-start;
     margin: 1vh 0;
     border-bottom: solid 1px #DEB84C;
+}
+
+.delete-comment{
+    color: #F83846;
+    font-size: 32px;
 }
 
 blockquote{

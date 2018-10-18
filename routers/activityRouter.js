@@ -57,7 +57,7 @@ router.get('/:id', (req,res) =>{
     Activity
         .findById(req.params.id)
         .populate('attendees', 'username')    
-        .then(a => {res.json(a.serialize()); console.log(a)})
+        .then(a => {res.json(a.serialize())})
         .catch(err => res.status(500).json({error: 'Internal server error'}));
 })
 
@@ -144,6 +144,19 @@ router.put('/comments/:id', (req, res) =>{
 
     Activity
         .findByIdAndUpdate(req.params.id, {$addToSet: {activity_comments: data}})
+        .then(a => res.status(204).end())
+        .catch(err => res.status(500).json({message: 'Internal server error'}))
+})
+
+router.put('/remove/:id', (req, res) =>{
+    if (!(req.params.id && req.body.id && req.params.id === req.body.id)) {
+        res.status(400).json({
+          error: 'Request path id and request body id values must match'
+        });
+    }
+
+    Activity
+        .findByIdAndUpdate(req.params.id, {$pull: {activity_comments: {_id: req.body.commentId}}})
         .then(a => res.status(204).end())
         .catch(err => res.status(500).json({message: 'Internal server error'}))
 })
