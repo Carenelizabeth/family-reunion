@@ -1236,6 +1236,7 @@ function getHostedActvities(data){
 }
 
 function getUserActivities(data){
+    console.log(data)
     $.ajax({
         type: 'GET',
         url: `activity/user?userId=${data.userId}&eventId=${data.eventId}`,
@@ -1270,6 +1271,7 @@ function renderHostedActivities(results){
 function renderUserActivities(results){
     if(!(results.length==0)){
         const activity = results.map((item, index) => generateUserActivities(item))
+        console.log(activity)
     return`
         <div class='paper green-border rotate-right activity-details'>
             <div class='thumb-red'></div>
